@@ -30,6 +30,12 @@ class Model extends Schema
 	/* Hash map of changed model attributes */
 	protected $_changed = array();
 	
+	/* Hash map of model associations */
+	protected $_models = array();
+	
+	/* Array of has one model association definitions */
+	public $hasModels = array();
+	
 	/*
 	Contructor
 	
@@ -50,8 +56,11 @@ class Model extends Schema
 	Fetch a model from the server based on the primary key
 	
 	@param [integer] $id The primary key
+	@param [array] $options Hash map of options.
+		"with" => array of model/collection associations to pull in with
+			this fetch request.
 	*/
-	public function fetch($id)
+	public function fetch($id, $options = array())
 	{
 		$attributes = array();
 		if(!$this->_db || !$this->_db->isConnected())
@@ -64,11 +73,20 @@ class Model extends Schema
 		);
 		if($result->isValid())
 		{
-			$row = $result->fetch();
-			$this->set($row);
-			$this->_changed = array();
+			if($result->numRows() > 0)
+			{
+				$row = $result->fetch();
+				$this->set($row);
+				$this->_changed = array();
+				
+				if(isset($options) && isset($options['with']))
+				{
+					$this->_with($options['with']);
+				}
+				return true;
+			}
 		}
-		return true;
+		return false;
 	}
 	
 	/*
@@ -230,26 +248,49 @@ class Model extends Schema
 		return parent::validate($this->_attributes);
 	}
 	
-	/*
-	Return a JSON formatted string representation of the model's attributes
+	/* 
+	Get a reference to an associated model, if it exists.
+	The model must have been fetched via the "with" option or $fetch
+		must be set to true.
 	
-	@return [string] A JSON formatted string representation of the model's attributes
+	@param [string] $key This model's foreign key to the other model.
+	@param [boolean] $fetch Whether or not to force a fetch of the model
+	@return [object,null] Returns the model object, or null
 	*/
-	public function toJSON()
+	public function model($key, $fetch = false)
 	{
-		return JSON::encode($this->_attributes);
+		if($fetch)
+		{
+			if(isset($this->hasModels[$key]))
+			{
+				$this->_models[$key] = $this->_fetchModel($key);
+				return $this->_models[$key];
+			}
+			return null;
+		}
+		if(isset($this->_models[$key]))
+			return $this->_models[$key];
+		return null;
 	}
 	
 	/*
-	Return a compact JSON formatted string representation of the model's attributes.
-	The JSON string is compacted by leaving out the field names and returning the values
+	Return a JSON representation of the model.
+	This is not a string, but an associative array that you can pass to JSON::stringify().
+	
+	The JSON is compacted by leaving out the field names and returning the values
 	as a plain array.
 	
-	@return [string] A JSON formatted string representation of the model's attributes
+	@param [boolean] $compact Whether or not to use a compact representation
+	@return [array] A JSON representation of the model.
 	*/
-	public function toCompactJSON()
+	public function toJSON($compact = false)
 	{
-		return JSON::encode(array_values($this->_attributes));
+		$models = array();
+		foreach($this->_models as $key => $model)
+		{
+			$models[$key] = $model->toJSON($compact);
+		}
+		return (array("attributes" => ($compact ? array_values($this->_attributes) : $this->_attributes), "models" => $models));
 	}
 	
 	/*
@@ -336,6 +377,51 @@ class Model extends Schema
 	public function __isset($attr)
 	{
 		return $this->has($attr);
+	}
+	
+	/*
+	Internal function that loops over with options and pulls
+	in associated models/collections.
+	*/
+	protected function _with($with)
+	{
+		$this->_models = array();
+		if(!is_array($with))
+			$with = array($with);
+		foreach($with as $foreign_key)
+		{
+			// get the model
+			$this->_models[$foreign_key] = $this->_fetchModel($foreign_key);
+		}
+	}
+	
+	/*
+	Internal function to fetch an associated model
+	*/
+	protected function _fetchModel($key)
+	{
+		if(isset($this->hasModels[$key]))
+		{
+			$options = $this->hasModels[$key];
+			if(!isset($options['model']))
+				continue;
+			$classname = $options['model'];
+			// model association exists
+			if($this->get($key) > 0)
+			{
+				$module = $classname;
+				if(substr($module, 0, 1) != "/")
+					$module = "/models/".$module;
+				Backbone::uses($module);
+				if(class_exists($classname))
+				{
+					$instance = new $classname;
+					$instance->fetch($this->get($key));
+					return $instance;
+				}
+			}
+		}
+		return null;
 	}
 }
 ?>

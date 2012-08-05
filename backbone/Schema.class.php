@@ -75,14 +75,16 @@ class Schema
 			{
 				if(isset(Schema::$_schema_cache[$table]))
 				{
-					$this->_schema = Schema::$_schema_cache[$table];
+					$cache = Schema::$_schema_cache[$table];
+					$this->_schema = $cache['schema'];
+					$this->_id = $cache['id'];
 					return $this->_schema;
 				}
 			}
 			$this->_schema = $this->_loadSchema($table);
 			if($cacheable)
 			{
-				Schema::$_schema_cache[$table] = $this->_schema;
+				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_schema);
 			}
 		}
 	}

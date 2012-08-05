@@ -29,6 +29,12 @@ class JSON
 		return json_encode($obj);
 	}
 	
+	/* Wrapper for JSON::encode() */
+	public static function stringify($obj)
+	{
+		return JSON::encode($obj);
+	}
+	
 	/*
 	Decode a JSON formatted string into a php array/object
 	Internally calls json_decode
@@ -40,6 +46,12 @@ class JSON
 	public static function decode($json, $assoc = true)
 	{
 		return json_decode($json, $assoc);
+	}
+	
+	/* Wrapper for JSON::decode() */
+	public static function parse($obj)
+	{
+		return JSON::decode($obj);
 	}
 	
 	/*

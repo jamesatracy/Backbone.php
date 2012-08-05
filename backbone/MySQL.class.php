@@ -438,6 +438,23 @@ class MySQL extends DataSource
 	}
 	
 	/*
+	Writes the current running totals to the end of the query log.
+	*/
+	public function tallyQueryLog()
+	{
+		if(Backbone::$config->get("mysql.log") == true)
+		{
+			if(file_exists(APPPATH.Backbone::$config->get("mysql.logfile")))
+			{
+				$ob = "----------------------------------------------------------------\r\n"; 
+				$ob .= "Total Queries: ".$this->_queries_count."\r\n";
+				$ob .= "Total Duration: ".$this->_queries_time." seconds\r\n";
+				file_put_contents(APPPATH.Backbone::$config->get("mysql.logfile"), $ob, FILE_APPEND);
+			}
+		}
+	}
+	
+	/*
 	Clear the mysql log file if mysql logging is set to true.
 	To set mysql logging to true, Backbone::$config->set("mysql.log", true)
 	To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
