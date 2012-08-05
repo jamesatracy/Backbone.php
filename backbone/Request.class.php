@@ -54,7 +54,10 @@ class Request
 	*/
 	public function here()
 	{
-		$here = str_replace(Backbone::$root, "", $this->path());
+		if(Backbone::$root != "/" )
+			$here = str_replace(Backbone::$root, "", $this->path());
+		else
+			$here = $this->path();
 		if(substr($here, 0, 1) != "/")
 			$here = "/".$here;
 		return $here;
@@ -87,9 +90,10 @@ class Request
 	
 	@param [string] $subpath The relative path
 	@param [boolean] $print If true, then echo the link, otherwise return the string
+	@param [boolean] $ssl Force the link to SSL, if not already
 	@return [string] The link if $print = false
 	*/
-	public function link($subpath, $print = false)
+	public function link($subpath, $print = false, $ssl = false)
 	{
 		$link = "";
 		if($subpath)
@@ -103,7 +107,15 @@ class Request
 			$link =  $this->base().Backbone::$root;
 		}
 		
-		if ($print)
+		if($ssl)
+		{
+			if(stripos($link, "http://") !== false)
+			{
+				$link = str_replace("http://", "https://", $link);
+			}
+		}
+		
+		if($print)
 			echo $link;
 		else
 			return $link;
