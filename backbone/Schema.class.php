@@ -148,15 +148,15 @@ class Schema
 	}
 	
 	/* 
-	Convert the schema to a JSON string
+	Convert the schema to a JSON array
 	
-	@return [string] The JSON formatted schema string
+	@return [string] The JSON formatted schema array
 	*/
 	public function schemaToJSON()
 	{
 		if(!$this->_schema)
 			return "";
-		return JSON::encode($this->_schema);
+		return $this->_schema;
 	}
 	
 	/*
@@ -459,6 +459,9 @@ class Schema
 				{
 					$attrs["unsigned"] = false;
 				}
+				
+				if($default == null && $null == "NO")
+					$default = "0";
 			}
 			else if(substr($type, 0, 5) == "float" || substr($type, 0, 6) == "double")
 			{

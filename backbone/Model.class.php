@@ -198,6 +198,10 @@ class Model extends Schema
 				$this->_errors[] = $this->_db->getError();
 				return false;
 			}
+			if($this->isNew())
+			{
+				$this->_attributes[$this->getID()] = $this->_db->lastInsertID();
+			}
 			$this->_changed = array();
 			// Trigger a changed event on this model. 
 			// The ID of the model is available as the hash of the name of the ID, and the changed
