@@ -166,6 +166,7 @@ class Model extends Schema
 				$attributes[$key] = $this->_attributes[$key];
 			}
 		}
+
 		if(empty($attributes))
 			return true;
 		if($this->validate())
@@ -301,7 +302,7 @@ class Model extends Schema
 	*/
 	public function has($attr)
 	{
-		return (isset($this->_attributes[$attr]) && $this->_attributes[$attr] != null);
+		return (isset($this->_attributes[$attr]));// && $this->_attributes[$attr] != null);
 	}
 	
 	/*

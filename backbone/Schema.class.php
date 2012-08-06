@@ -166,7 +166,8 @@ class Schema
 	*/
 	public function getErrors()
 	{
-		return join(" // ", $this->_errors);
+		return $this->_errors;
+		//return join(" // ", $this->_errors);
 	}
 	
 	/*
@@ -244,6 +245,9 @@ class Schema
 	*/
 	protected function _validateField($field, $name, $value)
 	{
+		if(isset($field['primary']) && $field['primary'])
+			return;
+			
 		if(is_null($value))
 		{
 			// can this field be null?
@@ -364,8 +368,11 @@ class Schema
 			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/", $value, $matches)) 
 			{ 
 				if(!checkdate($matches[2], $matches[3], $matches[1])) { 
-					// invalid datetime
-					$this->_errors[] = "Invalid datetime `".$name."`: ".DataType::export($value);
+					if($value != "0000-00-00 00:00:00")
+					{
+						// invalid datetime
+						$this->_errors[] = "Invalid datetime `".$name."`: ".DataType::export($value);
+					}
 				}
 				else
 				{
@@ -387,7 +394,10 @@ class Schema
 			{ 
 				if(!checkdate($matches[2], $matches[3], $matches[1])) { 
 					// invalid timestamp
-					$this->_errors[] = "Invalid timestamp `".$name."`: ".DataType::export($value);
+					if($value != "0000-00-00 00:00:00")
+					{
+						$this->_errors[] = "Invalid timestamp `".$name."`: ".DataType::export($value);
+					}
 				}
 				else
 				{
@@ -430,6 +440,7 @@ class Schema
 			{
 				// set the primary key
 				$this->_id = $field;
+				$attrs['primary'] = true;
 			}
 			
 			// format type
