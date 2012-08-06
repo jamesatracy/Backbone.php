@@ -293,7 +293,8 @@ class Model extends Schema
 		$models = array();
 		foreach($this->_models as $key => $model)
 		{
-			$models[$key] = $model->toJSON($compact);
+			if($model)
+				$models[$key] = $model->toJSON($compact);
 		}
 		return (array("attributes" => ($compact ? array_values($this->_attributes) : $this->_attributes), "models" => $models));
 	}
