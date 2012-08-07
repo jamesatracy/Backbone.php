@@ -6,16 +6,19 @@ BackboneTest::describe(
 	// class name
 	"DatatSetTest", 
 	// title
-	"DataSet class test suite",  
-	// array of test specifications
-	array(
-		"testSimple" => "Test simple set() and get() functions",
-		"testNested" => "Test nested set() and get() functions"
-	) 
+	"DataSet class test suite"
 );
 
 class DatatSetTest extends TestSuite
 {
+	public static function getTests()
+	{
+		return array(
+			"testSimple" => "Test simple set() and get() functions",
+			"testNested" => "Test nested set() and get() functions"
+		);
+	}
+	
 	public function testSimple()
 	{
 		$set = new DataSet();

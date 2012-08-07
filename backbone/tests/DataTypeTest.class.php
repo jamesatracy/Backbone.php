@@ -6,16 +6,19 @@ BackboneTest::describe(
 	// class name
 	"DataTypeTest", 
 	// title
-	"DataType class test suite",  
-	// array of test specifications
-	array(
-		"testExport" => "Test export()",
-		"testType" => "Test type()"
-	) 
+	"DataType class test suite"
 );
 
 class DataTypeTest extends TestSuite
 {
+	public static function getTests()
+	{
+		return array(
+			"testExport" => "Test export()",
+			"testType" => "Test type()"
+		);
+	}
+	
 	public function testExport()
 	{
 		// booleans

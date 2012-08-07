@@ -10,12 +10,32 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-Backbone::uses("DataType");
+Backbone::uses(array("DataType", "DataSet"));
 
 /* Base class for Test Suites */
 class TestSuite
 {	
 	protected $messages;
+	protected $variables;
+	
+	public function __construct()
+	{
+		$this->variables = new DataSet(array());
+	}
+	
+	/* Output a caption */
+	public function caption($text)
+	{
+		echo '<div style="font-style: italic; margin-top:5px;">'.$text.':</div>';
+	}
+	
+	/* Output error messages */
+	public function errors($text)
+	{
+		if(is_array($text))
+			$text = join("<br/>====> ", $text);
+		echo '<div>====> '.$text.'</div>';
+	}
 	
 	/* Check for a true condition */
 	public function is($conditional)
@@ -61,7 +81,7 @@ class TestSuite
 	/* For boolean false comparison */
 	public function isFalse($condition)
 	{
-		if($condition == false)
+		if($condition != false)
 		{
 			$this->message = DataType::export($condition)." is not false";
 			return false;
@@ -76,7 +96,7 @@ class TestSuite
 	/* For boolean true comparison */
 	public function isTrue($condition)
 	{
-		if($condition == true)
+		if($condition != true)
 		{
 			$this->message = DataType::export($condition)." is not true";
 			return false;
@@ -247,6 +267,66 @@ class TestSuite
 		}
 	}
 	
+	/* For comparing numbers */
+	public function isGreaterThan($condition, $result)
+	{
+		if($condition <= $result)
+		{
+			$this->message = DataType::export($condition)." is not > ".$result;
+			return false;
+		}
+		else
+		{
+			$this->message = DataType::export($condition)." > ".$result;
+			return true;
+		}
+	}
+	
+	/* For comparing numbers */
+	public function isGreaterThanOrEqual($condition, $result)
+	{
+		if($condition < $result)
+		{
+			$this->message = DataType::export($condition)." is not >= ".$result;
+			return false;
+		}
+		else
+		{
+			$this->message = DataType::export($condition)." >= ".$result;
+			return true;
+		}
+	}
+	
+	/* For comparing numbers */
+	public function isLessThan($condition, $result)
+	{
+		if($condition >= $result)
+		{
+			$this->message = DataType::export($condition)." is not < ".$result;
+			return false;
+		}
+		else
+		{
+			$this->message = DataType::export($condition)." < ".$result;
+			return true;
+		}
+	}
+	
+	/* For comparing numbers */
+	public function isLessThanOrEqual($condition, $result)
+	{
+		if($condition > $result)
+		{
+			$this->message = DataType::export($condition)." is not <= ".$result;
+			return false;
+		}
+		else
+		{
+			$this->message = DataType::export($condition)." <= ".$result;
+			return true;
+		}
+	}
+	
 	protected function pushMessage($message)
 	{
 		array_push($this->messages, $message);
@@ -264,6 +344,16 @@ class TestSuite
 		echo '<div style="color: red;">Assertion Failed: '.$message.'</div>';
 		$backtrace = debug_backtrace();
 		echo '<div>====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'];
+	}
+	
+	public function set($key, $value)
+	{
+		$this->variables->set($key, $value);
+	}
+	
+	public function get($key)
+	{
+		return $this->variables->get($key);
 	}
 };
 

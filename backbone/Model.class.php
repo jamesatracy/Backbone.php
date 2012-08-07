@@ -36,6 +36,12 @@ class Model extends Schema
 	/* Array of has one model association definitions */
 	public $hasModels = array();
 	
+	/* Array of additional where conditions to be applied to every model db action */
+	public $where = array();
+	
+	/* Field to update with current timestamp when model is created */
+	public $created = null;
+	
 	/*
 	Contructor
 	
@@ -50,6 +56,8 @@ class Model extends Schema
 		$this->_table = $table;
 		$this->initialize($table);
 		$this->set($this->defaultValues());
+		if($this->created)
+			$this->set($this->created, date('Y-m-d H:i:s', time()));
 	}
 	
 	/* 
@@ -62,13 +70,19 @@ class Model extends Schema
 	*/
 	public function fetch($id, $options = array())
 	{
+		$this->_errors = array();
 		$attributes = array();
 		if(!$this->_db || !$this->_db->isConnected())
 			return false;
+			
+		// select
+		$where = $this->where;
+		$where[$this->getID()] = $id;
+		
 		$result = $this->_db->selectAll(
 			$this->_table, 
 			array(
-				"where" => array($this->getID() => $id)
+				"where" => $where
 			)
 		);
 		if($result->isValid())
@@ -85,6 +99,11 @@ class Model extends Schema
 				}
 				return true;
 			}
+			$this->_errors = "No results returned";
+		}
+		else
+		{
+			$this->_errors = $this->_db->getError();
 		}
 		return false;
 	}
@@ -183,19 +202,25 @@ class Model extends Schema
 			else
 			{
 				// update
+				$where = $this->where;
+				$where[$this->getID()] = $this->get($this->getID());
+		
 				$result = $this->_db->update(
 					$this->_table, 
 					$attributes,
 					array(
-						"where" => array($this->getID() => $this->get($this->getID()))
+						"where" => $where
 					)
 				);
 			}
 			if(!$result)
+			{
+				$this->_errors = array($this->_db->getError());
 				return false;
+			}
 			if(!$result->isValid() || $this->_db->getError())
 			{
-				$this->_errors[] = $this->_db->getError();
+				$this->_errors = array($this->_db->getError());
 				return false;
 			}
 			if($this->isNew())
@@ -222,10 +247,14 @@ class Model extends Schema
 	{
 		if(!$this->_db || !$this->_db->isConnected())
 			return false;
+			
+		$where = $this->where;
+		$where[$this->getID()] = $id;
+				
 		$result = $this->_db->delete(
 			$this->_table, 
 			array(
-				"where" => array($this->getID() => $this->get($this->getID()))
+				"where" => $where
 			)
 		);
 		if(!$result)
@@ -422,8 +451,8 @@ class Model extends Schema
 				if(class_exists($classname))
 				{
 					$instance = new $classname;
-					$instance->fetch($this->get($key));
-					return $instance;
+					if($instance->fetch($this->get($key)))
+						return $instance;
 				}
 			}
 		}

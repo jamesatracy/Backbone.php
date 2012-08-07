@@ -49,7 +49,8 @@ class BackboneTest
 			foreach($list as $suite)
 			{
 				$name = $suite['name'];
-				$tests = $suite['tests'];
+				//$tests = $suite['tests'];
+				$tests = $object::getTests();
 				$count = count($tests);
 				$enumerate[] = array("id" => $index, "name" => $name, "classname" => $object, "count" => $count);
 				$index++;
@@ -67,9 +68,9 @@ class BackboneTest
 	@param [string] $classname The classname of the test suite
 		Should be a valid argument for Backbone::use()
 	*/
-	public static function describe($classname, $name, $tests)
+	public static function describe($classname, $name)
 	{	
-		$current = array("name" => $name, "tests" => $tests);
+		$current = array("name" => $name);
 		if(!isset(self::$suites[$classname]))
 			self::$suites[$classname] = array();
 		self::$suites[$classname][] = &$current;
@@ -129,7 +130,8 @@ class BackboneTest
 	{
 		$instance = new $object;
 		$name = $suite['name'];
-		$tests = $suite['tests'];
+		//$tests = $suite['tests'];
+		$tests = $object::getTests();
 		$count = count($tests);
 		echo "<hr/><h3>".$name." (".$count.")</h3>";
 		
@@ -143,6 +145,7 @@ class BackboneTest
 				call_user_func(array($instance, $method));
 			}
 			$index++;
+			echo "<br/>";
 		}
 		echo "<br/>";
 	}

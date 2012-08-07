@@ -16,6 +16,7 @@ Extend Schema.class by adding custom validation rules.
 
 Built-in rules include:
 "required" => true: field is required (cannot be empty)
+"numeric" => true: field must be numeric (0-9 chars only)
 "email" => true: validate email address
 "url" => true: validate url (with path)
 "min" => value: require a minium value for a field
@@ -33,6 +34,7 @@ class SchemaRules
 	/* An array of rules and function callbacks to invoke for that rule */
 	protected static $_rules = array(
 		"required" => array("SchemaRules", "required"),
+		"numeric" => array("SchemaRules", "numeric"),
 		"email" => array("SchemaRules", "email"),
 		"url" => array("SchemaRules", "url"),
 		"min" => array("SchemaRules", "min"),
@@ -87,10 +89,31 @@ class SchemaRules
 	*/
 	public static function required($name, $value, $args)
 	{
-		if(!empty($value))
+		if(empty($value))
 		{
 			self::$last_error = "Required field: `".$name."`";
 			return false;
+		}
+		return true;
+	}
+	
+	/* 
+	String must be numeric
+	
+	@param [string] $name The name of the field being validated
+	@param [string] $value The value of the field
+	@param [mixed] $args Any additional args for the validator
+	@return [boolean] True if the field validates, false otherwise
+	*/
+	public static function numeric($name, $value, $args)
+	{
+		if(!empty($value))
+		{
+			if(!is_numeric($value))
+			{
+				self::$last_error = "Invalid `".$name."`: ".DataType::export($value)." is not numeric";
+				return false;
+			}
 		}
 		return true;
 	}
