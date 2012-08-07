@@ -134,15 +134,23 @@ class BackboneTest
 		$tests = $object::getTests();
 		$count = count($tests);
 		echo "<hr/><h3>".$name." (".$count.")</h3>";
-		
+
 		// loops over specs
 		$index = 1;
 		foreach($tests as $method => $title)
 		{
 			if(method_exists($object, $method))
 			{
-				echo "<div><strong>(".$index.") ".$title."</strong></div>";
+				$time = time().$index;
+				echo '<div onclick="document.getElementById('.$time.').style.display = document.getElementById('.$time.').style.display == \'none\' ? \'block\' : \'none\'" style="cursor:pointer"><strong>('.$index.') '.$title.'</strong></div>';
+				echo '<div id="'.$time.'" class="suite" style="display:none">';
+				$instance->reset();
+				$instance->startUp();
 				call_user_func(array($instance, $method));
+				$instance->tearDown();
+				echo '</div>';
+				echo '<div>---------------------------------------------------------------</div>';
+				echo '<div>'.$instance->count.' tests. <span style="color:green">'.$instance->passed.' passed</span>. <span style="color:red;'.($instance->failed > 0 ? 'font-weight:bold;': '').'">'.$instance->failed.' failed</span>.</div>';
 			}
 			$index++;
 			echo "<br/>";

@@ -17,10 +17,30 @@ class TestSuite
 {	
 	protected $messages;
 	protected $variables;
+	public $count;
+	public $passed;
+	public $failed;
 	
 	public function __construct()
 	{
 		$this->variables = new DataSet(array());
+	}
+	
+	public function reset()
+	{
+		$this->count = 0;
+		$this->passed = 0;
+		$this->failed = 0;
+	}
+	
+	public function startUp()
+	{
+		return; // stub function
+	}
+	
+	public function tearDown()
+	{
+		return; // stub function
 	}
 	
 	/* Output a caption */
@@ -335,15 +355,19 @@ class TestSuite
 	/* Internal function for formatting passed assertions */
 	protected function passed($message)
 	{
+		$this->count++;
+		$this->passed++;
 		echo '<div style="color: green;">Test Passed: '.$message.'</div>';
 	}
 	
 	/* Internal function for formattign failed assertions */
 	protected function failed($message)
 	{
+		$this->count++;
+		$this->failed++;
 		echo '<div style="color: red;">Assertion Failed: '.$message.'</div>';
 		$backtrace = debug_backtrace();
-		echo '<div>====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'];
+		echo '<div>====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'].'</div>';
 	}
 	
 	public function set($key, $value)

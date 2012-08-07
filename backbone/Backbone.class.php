@@ -140,9 +140,11 @@ class Backbone
 	*/
 	protected static function loadModule($name)
 	{
-		if(!isset(self::$modules[$name]))
+		$classname = end(explode($name, "/"));
+		//if(!isset(self::$modules[$name]))
+		if(!class_exists($classname))
 		{
-			self::$modules[$name] = true;
+			//self::$modules[$name] = true;
 			if(substr($name, 0, 1) == "/")
 			{
 				// load app specific code
