@@ -141,21 +141,24 @@ class BackboneTest
 		{
 			if(method_exists($object, $method))
 			{
-				$time = time().$index;
-				echo '<div onclick="document.getElementById('.$time.').style.display = document.getElementById('.$time.').style.display == \'none\' ? \'block\' : \'none\'" style="cursor:pointer"><strong>('.$index.') '.$title.'</strong></div>';
-				echo '<div id="'.$time.'" class="suite" style="display:none">';
 				$instance->reset();
 				$instance->startUp();
 				call_user_func(array($instance, $method));
 				$instance->tearDown();
+				$time = time().$index;
+				echo '<div>';
+				echo '<strong onclick="document.getElementById('.$time.').style.display = document.getElementById('.$time.').style.display == \'none\' ? \'block\' : \'none\'" style="cursor:pointer">('.$index.') '.$title.'</strong> ['.$instance->count.' tests. <span style="color:green">'.$instance->passed.' passed</span>. <span style="color:red;'.($instance->failed > 0 ? 'font-weight:bold;': '').'">'.$instance->failed.' failed</span>].';
+				//echo '&nbsp;<a href="'.Backbone::$request->base().Backbone::$request->path()."?name=".$suite['classname']."&id=".$suite['id']."&test=".urlencode($method).'">Run Again</a>';
 				echo '</div>';
-				echo '<div>---------------------------------------------------------------</div>';
-				echo '<div>'.$instance->count.' tests. <span style="color:green">'.$instance->passed.' passed</span>. <span style="color:red;'.($instance->failed > 0 ? 'font-weight:bold;': '').'">'.$instance->failed.' failed</span>.</div>';
+				echo '<div id="'.$time.'" class="suite" style="display:'.($instance->failed > 0 ? 'block' : 'none').'">';
+				// test output
+				echo join("", $instance->output);
+				echo '</div>';
 			}
 			$index++;
 			echo "<br/>";
 		}
-		echo "<br/>";
+		//echo "<br/>";
 	}
 };
 

@@ -30,8 +30,12 @@ class Model extends Schema
 	/* Hash map of changed model attributes */
 	protected $_changed = array();
 	
+	/* Hash map of field sanitations */
+	protected $_sanitations = array();
+	
 	/* Hash map of model associations */
 	protected $_models = array();
+	
 	
 	/* Array of has one model association definitions */
 	public $hasModels = array();
@@ -147,6 +151,9 @@ class Model extends Schema
 		{
 			if($this->hasField($key))
 			{
+				// check sanitation rules 
+				$val = $this->_applySanitation($key, $val);
+				
 				// only set this attribute if it exists in the schema
 				if(!isset($this->_attributes[$key]))
 				{
@@ -396,6 +403,20 @@ class Model extends Schema
 		return $attributes;
 	}
 	
+	/*
+	Set the model's field sanitation rules
+	array(
+		"field1" => array(callable, ...),
+		"field2" => array(callable, ...)
+	)
+	
+	@param [array] $sanitations Hash map of sanitation rules
+	*/
+	public function sanitations($sanitations)
+	{
+		$this->_sanitations = $sanitations;
+	}
+	
 	/* Magic __get method that internally calls get() */
 	public function __get($attr)
 	{
@@ -421,9 +442,10 @@ class Model extends Schema
 	protected function _with($with)
 	{
 		$this->_models = array();
-		if(!is_array($with))
+		if(is_string($with))
 			$with = array($with);
-		foreach($with as $foreign_key)
+
+		foreach($with as $index => $foreign_key)
 		{
 			// get the model
 			$this->_models[$foreign_key] = $this->_fetchModel($foreign_key);
@@ -457,6 +479,19 @@ class Model extends Schema
 			}
 		}
 		return null;
+	}
+	
+	/* Internal function for applying sanitation rules */
+	protected function _applySanitation($key, $val)
+	{
+		if(isset($this->_sanitations[$key]))
+		{
+			foreach($this->_sanitations[$key] as $index => $callable)
+			{
+				$val = call_user_func_array($callable, array($val));
+			}
+		}
+		return $val;
 	}
 }
 ?>

@@ -17,9 +17,11 @@ class TestSuite
 {	
 	protected $messages;
 	protected $variables;
+	
 	public $count;
 	public $passed;
 	public $failed;
+	public $output = array(); // for buffering output
 	
 	public function __construct()
 	{
@@ -31,6 +33,7 @@ class TestSuite
 		$this->count = 0;
 		$this->passed = 0;
 		$this->failed = 0;
+		$this->output = array();
 	}
 	
 	public function startUp()
@@ -46,7 +49,7 @@ class TestSuite
 	/* Output a caption */
 	public function caption($text)
 	{
-		echo '<div style="font-style: italic; margin-top:5px;">'.$text.':</div>';
+		$this->output[] = '<div style="font-style: italic; margin-top:5px;">'.$text.':</div>';
 	}
 	
 	/* Output error messages */
@@ -54,7 +57,7 @@ class TestSuite
 	{
 		if(is_array($text))
 			$text = join("<br/>====> ", $text);
-		echo '<div>====> '.$text.'</div>';
+		$this->output[] = '<div>====> '.$text.'</div>';
 	}
 	
 	/* Check for a true condition */
@@ -264,6 +267,22 @@ class TestSuite
 		}
 	}
 	
+	/* For string or number comparison, uses the === operator insted of == for type comparison */
+	public function isReallyEqual($condition, $result)
+	{
+		$bool = ($condition === $result);
+		if(!$bool)
+		{
+			$this->message = DataType::export($condition)." != ".DataType::export($result);
+			return false;
+		}
+		else
+		{
+			$this->message = DataType::export($condition)." == ".DataType::export($result);
+			return true;
+		}
+	}
+	
 	/* For comparing a value with an array of accepted values */
 	public function isIn($condition, $array)
 	{
@@ -357,7 +376,7 @@ class TestSuite
 	{
 		$this->count++;
 		$this->passed++;
-		echo '<div style="color: green;">Test Passed: '.$message.'</div>';
+		$this->output[] = '<div style="color: green;">Test Passed: '.$message.'</div>';
 	}
 	
 	/* Internal function for formattign failed assertions */
@@ -365,9 +384,9 @@ class TestSuite
 	{
 		$this->count++;
 		$this->failed++;
-		echo '<div style="color: red;">Assertion Failed: '.$message.'</div>';
+		$this->output[] = '<div style="color: red;">Assertion Failed: '.$message.'</div>';
 		$backtrace = debug_backtrace();
-		echo '<div>====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'].'</div>';
+		$this->output[] = '<div>====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'].'</div>';
 	}
 	
 	public function set($key, $value)

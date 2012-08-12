@@ -26,7 +26,8 @@ class Sanitize
 	@param [string] $options Options array.
 		array(
 			"html" => true // strip html
-			"upper" => true // strig to upper case
+			"upper" => true // string to upper case
+			"lower" => true // string to lower case
 		)
 	@return [string] The sanitized string
 	*/
@@ -34,7 +35,8 @@ class Sanitize
 	{
 		$options = array_merge(array(
 			"html" => false,
-			"upper" => false
+			"upper" => false,
+			"lower" => false
 		), $options);
 		
 		// First, replace UTF-8 characters.
@@ -54,6 +56,8 @@ class Sanitize
 		
 		if($options['upper'])
 			$string = strtoupper($string);
+		if($options['lower'])
+			$string = strtolower($string);
 		if($options['html'])
 			return trim(Sanitize::html($string));
 		return trim($string);

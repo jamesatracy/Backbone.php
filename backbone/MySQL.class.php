@@ -471,6 +471,18 @@ class MySQL extends DataSource
 		}
 	}
 	
+	/* Get the current running total query count */
+	public function getQueryCount()
+	{
+		return $this->_queries_count;
+	}
+	
+	/* Get the current running total query time in milliseconds */
+	public function getQueryTime()
+	{
+		return $this->_queries_time;
+	}
+	
 	/*
 	Function for formatting mysql table names
 	Internally calls format but allows for an external hook to preprocess
