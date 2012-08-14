@@ -6,8 +6,9 @@ require("load.php");
 
 Backbone::uses("BackboneTest");
 
-BackboneTest::load("DataTypeTest");
 BackboneTest::load("DataSetTest");
+BackboneTest::load("DataTypeTest");
+BackboneTest::load("RequestTest");
 ?>
 <h2>Backbone.php Unit Tests</h2>
 <?php if(Backbone::$request->get("id") == "all"): // run all tests?>

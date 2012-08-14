@@ -75,6 +75,32 @@ class Request
 	}
 	
 	/*
+	Get a query string argument, if it exists, from $_SERVER['QUERY_STRING']
+	Ex: http://www.example.com/path/to/here/?p=1&q=2
+		$request->query("p") => 1
+		$request->query("q") => 2
+		$request->query("r") => null
+	
+	@return [string] The query argument value or null
+	*/
+	public function query($arg)
+	{
+		$queryString = $this->queryString();
+		if(empty($queryString))
+			return null;
+		$queries = array();
+		$queryFields = explode('&', $queryString);
+		foreach($queryFields as $component)
+		{
+			$tmp = explode("=", $component);
+			$queries[$tmp[0]] = (isset($tmp[1]) ? $tmp[1] : "");
+		}
+		if(isset($queries[$arg]))
+			return $queries[$arg];
+		return null;
+	}
+	
+	/*
 	Get the IP address of the request
 	
 	@return [string] The IP address
@@ -122,6 +148,42 @@ class Request
 	}
 	
 	/*
+	Check for a particular property of the request.
+	
+	@param [string] $prop The property to check for.
+		These include:
+			"get"
+			"post"
+			"put"
+			"ajax"
+			"ssl"
+	@return [boolean] True if the request is $prop
+	*/
+	public function is($prop)
+	{
+		if($prop == "get")
+		{
+			return (strtolower($_SERVER['REQUEST_METHOD']) == "get");
+		}
+		else if($prop == "post")
+		{
+			return (strtolower($_SERVER['REQUEST_METHOD']) == "post");
+		}
+		else if($prop == "put")
+		{
+			return (strtolower($_SERVER['REQUEST_METHOD']) == "put");
+		}
+		else if($prop == "ajax")
+		{
+			return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+		}
+		else if($prop == "ssl")
+		{
+			return ($_SERVER['HTTPS'] != false);
+		}
+	}
+	
+	/*
 	Get a specific GET parameter, or get the entire array of GET parameters
 	
 	@param [string] $key The key to retrieve
@@ -137,7 +199,7 @@ class Request
 			else
 				return null;
 		}
-		return $_GET;
+		return (!empty($_GET) ? $_GET : null);
 	}
 	
 	/*
@@ -156,7 +218,26 @@ class Request
 			else
 				return null;
 		}
-		return $_POST;
+		return (!empty($_POST) ? $_POST : null);
+	}
+	
+	/*
+	Get a specific FILES parameter, or get the entire array of FILES parameters
+	
+	@param [string] $key The key to retrieve
+	@return [string, null, array] The value of the key if $key is provided, null if the key does not exist, 
+		or the array of $_FILES params if no $key is supplied
+	*/
+	public function files($key = null)
+	{
+		if($key)
+		{
+			if(isset($_FILES[$key]))
+				return $_FILES[$key];
+			else
+				return null;
+		}
+		return (!empty($_FILES) ? $_FILES : null);
 	}
 };
 
