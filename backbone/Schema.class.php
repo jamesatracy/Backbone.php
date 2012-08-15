@@ -28,6 +28,9 @@ class Schema
 	/* Database connection */
 	protected $_db = null;
 	
+	/* Optional pointer to schema file name */
+	public $schemaFile = null;
+	
 	/* The schema */
 	protected $_schema = array();
 	
@@ -81,7 +84,14 @@ class Schema
 					return $this->_schema;
 				}
 			}
-			$this->_schema = $this->_loadSchema($table);
+			if($this->schemaFile)
+			{
+				$cache = JSON::parse(file_get_contents(ABSPATH.$this->schemaFile));
+				$this->_schema = $cache['schema'];
+				$this->_id = $cache['id'];
+			}
+			else
+				$this->_schema = $this->_loadSchema($table);
 			if($cacheable)
 			{
 				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_schema);
@@ -157,6 +167,19 @@ class Schema
 		if(!$this->_schema)
 			return "";
 		return $this->_schema;
+	}
+	
+	/*
+	Export this schema defintion to a file
+	
+	@param [string] $file The file name relative to the ABSPATH
+		Ex: '/path/to/file/name.schema'
+	*/
+	public function export($file)
+	{
+		if(substr($file, 0, 1) == "/")
+			$file = substr($file, 1);
+		file_put_contents(ABSPATH.$file, JSON::stringify(array("id" => $this->getID(), "schema" => $this->schemaToJSON())));
 	}
 	
 	/*

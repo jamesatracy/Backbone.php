@@ -65,15 +65,19 @@ class Router
 				// url match
 				if(method_exists($this, $callback))
 				{
-					// call the callback method
-					if(count($matches) > 1)
+					if($this->onPreRouteHook($uri))
 					{
-						$params = array_slice($matches, 1);				
-						call_user_func_array(array($this, $callback), $params);
-					}
-					else
-					{
-						call_user_func(array($this, $callback));
+						// call the callback method
+						if(count($matches) > 1)
+						{
+							$params = array_slice($matches, 1);				
+							$return = call_user_func_array(array($this, $callback), $params);
+						}
+						else
+						{
+							$return = call_user_func(array($this, $callback));
+						}
+						$this->onPostRouteHook($return);
 					}
 					$success = true;
 				}
@@ -91,6 +95,27 @@ class Router
 	public function loadView($name)
 	{
 		$this->view->load($name);
+	}
+	
+	/*
+	Stub function for providing a hook before a route is dispatched.
+	You can prevent the route from being dispatched by returning false.
+	Useful for authentication logic.
+	*/
+	public function onPreRouteHook($url)
+	{
+		return true;
+	}
+	
+	/*
+	Stub function for providing a hook after a route is dispatched.
+	It is past the return value of the router method that was invoked.
+	
+	@param [mixed] $response The return value of the router method that was invoked.
+	*/
+	public function onPostRouteHook($response)
+	{
+		return true;
 	}
 };
 
