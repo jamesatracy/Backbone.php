@@ -179,7 +179,7 @@ class Request
 		}
 		else if($prop == "ssl")
 		{
-			return ($_SERVER['HTTPS'] != false);
+			return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != false);
 		}
 	}
 	
