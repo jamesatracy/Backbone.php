@@ -507,6 +507,22 @@ class MySQL extends DataSource
 	*/
 	public function format($name)
 	{
+		if(strpos($name, "(") !== false)
+        {
+            // handle functions
+            $first = strpos($name, "(");
+            $last = strpos($name, ")");
+            $var = substr($name, $first + 1, ($last - $first - 1));
+            if($var == "*")
+            {
+                return $name;
+            }
+            else
+            {
+                return substr($name, 0, $first + 1).$this->format($var).")";
+            }
+        }
+
 		if(strpos($name, ".") !== false)
 		{
 			$tmp = explode(".", $name);
@@ -554,9 +570,9 @@ class MySQL extends DataSource
 					// index 0 holds the operator
 					if($value[0] == "IN" || $value[0] == "NOT IN")
 					{
-						$op = $value[0];
+						$in = $value[0];
 						array_shift($value);
-						$tmp[] = $this->format($key)." ".$op." (".join(",", $value).")";
+						$tmp[] = $this->format($key)." ".$in." (".join(",", $value).")";
 					}
 					else
 					{

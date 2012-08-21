@@ -98,6 +98,7 @@ class Session
 			return;
 			
 		self::$_data->set($name, $value);
+		$_SESSION = self::$_data->get();
 	}
 	
 	/*

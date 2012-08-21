@@ -84,10 +84,10 @@ class DataSet
 	
 	@param [string] $name The name of the variable.
 	*/
-	public function get($name)
+	public function get($name = null)
 	{
 		if(empty($name))
-			return;
+			return $this->_set;
 			
 		if(strpos($name, ".") === FALSE)
 		{
