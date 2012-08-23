@@ -136,6 +136,8 @@ class Model extends Schema
 		$attributes = array();
 		if(!$attr || empty($attr))
 			return;
+		if(is_null($value))
+			$value = "NULL";
 		if(is_array($attr))
 		{
 			// hash map
@@ -235,6 +237,7 @@ class Model extends Schema
 				$this->_attributes[$this->getID()] = $this->_db->lastInsertID();
 			}
 			$this->_changed = array();
+			$this->_errors = array();
 			// Trigger a changed event on this model. 
 			// The ID of the model is available as the hash of the name of the ID, and the changed
 			// attributes as "data".
@@ -333,6 +336,16 @@ class Model extends Schema
 				$models[$key] = $model->toJSON($compact);
 		}
 		return (array("attributes" => ($compact ? array_values($this->_attributes) : $this->_attributes), "models" => $models));
+	}
+	
+	/*
+	Returns the raw attributes array.
+	
+	@return [array] The raw attributes array.
+	*/
+	public function getAttributes()
+	{
+		return $this->_attributes;
 	}
 	
 	/*

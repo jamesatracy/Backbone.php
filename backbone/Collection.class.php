@@ -80,6 +80,7 @@ class Collection
 		"where" => array()
 		"order_by" => array("field", ["ASC"/"DESC"])
 		"limit" => integer
+		"offset" => integer
 	@return [boolean] True if successful.	
 	*/
 	public function fetch($options = array())
@@ -101,10 +102,12 @@ class Collection
 		}
 		$this->_models = $result->fetchAll();
 		$this->length = $result->numRows();
+		return true;
 	}
 	
 	/*
-	Get a model by ID (primary key)
+	Get a model by ID (primary key).
+	Uses the results returned by a call to fetch().
 	
 	@param [string] $id The model's ID
 	@return [Model] The model, or null if not found
@@ -233,42 +236,25 @@ class Collection
 		}
 		return $attrs;
 	}
-	
+			
 	/*
 	Return the raw model data.
 	
-	@return [array] The raw model data as an array of attribute hash maps.
+	@param [boolean] $compact Whether or not to include the model keys in the representation.
+	@return [string] A JSON formatted string representation of the collection.
 	*/
-	public function models()
+	public function toJSON($compact = false)
 	{
+		if($compact)
+		{
+			$collection = array();
+			foreach($this->_models as $attributes)
+				$collection[] = array_values($attributes);
+			return $collection;
+		}
 		return $this->_models;
 	}
 		
-	/*
-	Return a JSON formatted string representation of the collection.
-	
-	@return [string] A JSON formatted string representation of the collection.
-	*/
-	public function toJSON()
-	{
-		Backbone::uses("JSON");
-		return JSON::encode($this->_models);
-	}
-	
-	/*
-	Return a JSON formatted string representation of the collection.
-	
-	@return [string] A JSON formatted string representation of the collection.
-	*/
-	public function toCompactJSON()
-	{
-		Backbone::uses("JSON");
-		$collection = array();
-		foreach($this->_models as $attributes)
-			$collection[] = array_values($attributes);
-		return JSON::encode($collection);
-	}
-	
 	/*
 	Reset the collection to an empty state
 	*/
@@ -277,6 +263,14 @@ class Collection
 		$this->_errors = array();
 		$this->_models = array();
 		$this->length = 0;
+	}
+	
+	/*
+	Retrieve the last errors
+	*/
+	public function getErrors()
+	{
+		return $this->_errors;
 	}
 };
 

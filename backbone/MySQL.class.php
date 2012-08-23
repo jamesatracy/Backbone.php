@@ -238,6 +238,11 @@ class MySQL extends DataSource
 		{
 			$sql .= " LIMIT ".$options['limit'];
 		}
+		// offset
+		if(isset($options['offset']))
+		{
+			$sql .= " OFFSET ".$options['offset'];
+		}
 		return $this->query($sql);
 	}
 	

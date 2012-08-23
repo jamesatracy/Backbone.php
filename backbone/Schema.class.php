@@ -271,7 +271,7 @@ class Schema
 		if(isset($field['primary']) && $field['primary'])
 			return;
 			
-		if(is_null($value))
+		if($value == "NULL")
 		{
 			// can this field be null?
 			if(!$field['acceptNULL'])
@@ -522,11 +522,11 @@ class Schema
 			// null
 			if($null == "NO")
 			{
-				$attrs["acceptNULL"] = false;
+				$attrs["acceptNULL"] = '0';
 			}
 			else
 			{
-				$attrs["acceptNULL"] = true;
+				$attrs["acceptNULL"] = '1';
 			}
 			
 			// default

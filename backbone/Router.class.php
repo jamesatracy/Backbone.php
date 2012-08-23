@@ -59,7 +59,7 @@ class Router
 		$uri = $request->here();
 		foreach($this->_routes as $pattern => $callback)
 		{
-			$pattern = str_replace(array(":alpha", ":alphanum", ":number"), array("([a-z_]+)", "([a-z0-9_]+)", "([0-9]+)"), $pattern);
+			$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_]+)", "([a-z_]+)", "([0-9]+)"), $pattern);
 			if(preg_match("{^".$pattern."$}", $uri, $matches))
 			{
 				// url match
