@@ -467,7 +467,7 @@ class Schema
 			}
 			
 			// format type
-			if(substr($type, 0, 3) == "int" || substr($type, 0, 7) == "tinyint" || substr($type, 0, 8) == "smallint" || substr($type, 0, 7) == "mediumint" || substr($type, 0, 7) == "bigint")
+			if(substr($type, 0, 3) == "int" || substr($type, 0, 7) == "tinyint" || substr($type, 0, 8) == "smallint" || substr($type, 0, 9) == "mediumint" || substr($type, 0, 6) == "bigint")
 			{
 				// get size
 				preg_match_all('/\((.*?)\)/', $type, $matches);
@@ -476,11 +476,11 @@ class Schema
 				$attrs["length"] = $matches[1][0];
 				if(stripos($type, "unsigned") !== false)
 				{
-					$attrs["unsigned"] = true;
+					$attrs["unsigned"] = "1";
 				}
 				else
 				{
-					$attrs["unsigned"] = false;
+					$attrs["unsigned"] = "0";
 				}
 				
 				if($default == null && $null == "NO")
