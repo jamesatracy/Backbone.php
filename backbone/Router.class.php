@@ -24,6 +24,16 @@ class Router
 	}
 	
 	/*
+	Get the list of routes for this Router
+	
+	@return [array] The array of routes
+	*/
+	public function getRoutes()
+	{
+		return $this->_routes;
+	}
+	
+	/*
 	Add a route or routes mapping to the Router
 	Ex: add("/about/", "about")
 	Ex: add(array("/about/" => "about", "/products/" => "products"
