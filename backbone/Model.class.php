@@ -243,7 +243,7 @@ class Model extends Schema
 			// attributes as "data".
 			//
 			// Ex: array("car_id => "12", "data" => array("make" => "honda", "model" => "accord"))
-			Events::trigger("model.changed.".$this->_table, array($this->getID() => $this->get($this->getID()), "data" => $attributes));
+			Events::trigger($this->_table."model.changed.", array($this->getID() => $this->get($this->getID()), "data" => $attributes));
 			return true;
 		}
 		return false;
@@ -274,7 +274,7 @@ class Model extends Schema
 			$this->_errors[] = $this->_db->getError();
 			return false;
 		}
-		Events.trigger("model.deleted.".$this->_table, array($this->getID() => $this->get($this->getID())));
+		Events.trigger($this->_table."model.deleted.", array($this->getID() => $this->get($this->getID())));
 		$this->clear();
 		return true;
 	}
