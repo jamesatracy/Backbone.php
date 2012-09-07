@@ -88,33 +88,33 @@ Check for a particular property of the request.
 	
 These include:
 
-	$requst->is("get"); // Is a HTTP GET request?
+	Backbone::$request->is("get"); // Is a HTTP GET request?
 
-	$requst->is("post"); // Is a HTTP POST request?
+	Backbone::$request->is("post"); // Is a HTTP POST request?
 
-	$requst->is("put"); // Is a HTTP PUT request?
+	Backbone::$request->is("put"); // Is a HTTP PUT request?
 
-	$requst->is("ajax"); // Was the request done through XMLHttpRequest?
+	Backbone::$request->is("ajax"); // Was the request done through XMLHttpRequest?
 
-	$requst->is("ssl"); // Is the request over SSL?
+	Backbone::$request->is("ssl"); // Is the request over SSL?
 
 ### get `Backbone::$request->get($key = null)`
 
 Get a specific GET parameter, or get the entire array of GET parameters. Checks if the key is set via isset().
 
-	$request->get();
-	$request->get('param');
+	Backbone::$request->get();
+	Backbone::$request->get('param');
 
 ### post `Backbone::$request->post($key = null)`
 
 Get a specific POST parameter, or get the entire array of POST parameters. Checks if the key is set via isset().
 
-	$request->post();
-	$request->post('param');
+	Backbone::$request->post();
+	Backbone::$request->post('param');
 
 ### files `Backbone::$request->files($key = null)`
 
 Get a specific FILES parameter, or get the entire array of FILES parameters. Checks if the key is set via isset().
 
-	$request->files();
-	$request->files('filename');
+	Backbone::$request->files();
+	Backbone::$request->files('filename');
