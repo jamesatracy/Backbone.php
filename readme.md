@@ -47,85 +47,10 @@ For example, you can acheive simple url routing in the following manner:
 	};
 	
 	Backbone::addRouter(new AppRouter());
+	
+The Backbone.php framework consists of the following 21 modules: Backbone, BackboneTest, Collection, Connections, DataSet, DataSource, DataType, Events, Html, JSON, Model, MySQL, MySQLResult, Request, Router, Sanitize, Schema, SchemaRules, Session, TestSuite, View
 		
+Documentation
+-------------
 
-File Structure
---------------
-
-Backbone.php consists of the core framework code in a `/backbone/` directory and five files that must be placed in your application's web root: 'htacces', 'backbone.php', 'config.php', 'boot.php', and 'index.php'
-
-* `htaccess` Uses Apache's mod_rewrite module to funnel all page requests to the index.php script, which allows for url fragments to be routed to mapped view code.
-
-* `backbone.php` Initializes the Backbone.php framework and sets up the request object. This file should not be modified.
-
-* `config.php` Sets up several directory constants required by Backbone.php to find the core framework, application, and view directories. By modifiying the FRAMEWORK constant you can place the core /backbone/ directory elsewhere than your web root.
-
-* `boot.php` Sets the web root relative path, loads routers, and performs other application specific bootstraping.
-
-* `index.php` Dispatches requests through routers registered by the application. Should not be modified.
-
-Modules
--------
-
-Backbone.php modules are classes. A module is referenced by its classname with a filename formatted as ClassName.class.php. Modules are loaded using the `Backbone::uses()` method. To load a Backbone .phpmodule, just pass in the module name. To load a module within your web root directory, pass in the relative path beginning with a forward slash '/'. If the name does not begin with a forward slash, then Backbone.php will assume that the path is relative to the framework's directory.
-
-	// load a backbone module
-	Backbone::uses("Model");
-	
-	// load multiple backbone modules
-	Backbone::uses(array("Model", "View", "Collection"));
-	
-	// load a backbone plugin
-	Backbone::uses("plugins/PluginModule");
-	
-	// load an application specific model located at ./models/Person.class.php
-	Backbone::uses("/models/Person");
-
-Modules are only loaded once and subsequent calls to `Backbone::uses()` will be ingored if the module was previously loaded.
-
-Backbone.php Framework
-----------------------
-
-The Backbone.php framework consists of the following 21 modules:
-
-* Backbone
-
-* BackboneTest
-
-* Collection
-
-* Connections
-
-* DataSet
-
-* DataSource
-
-* DataType
-
-* Events
-
-* Html
-
-* JSON
-
-* Model
-
-* MySQL
-
-* MySQLResult
-
-* Request
-
-* Router
-
-* Sanitize
-
-* Schema
-
-* SchemaRules
-
-* Session
-
-* TestSuite
-
-* View
+For all of the documentation, please go to the [documentation table of contents](https://github.com/jamesatracy/Backbone.php)
