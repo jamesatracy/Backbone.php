@@ -13,41 +13,9 @@ The framework is built with the following goals in mind:
 
 At its most simplest form, a Backbone.php application is nothing more than a series of url routes (such as "/about/") that are mapped to either views ("views/about-page.php") or callback methods ("public function about($args)") or both. That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a MySQL database in the form of Models and Collections.
 
-For example, you can acheive simple url routing in the following manner:
-	
-	class AppRouter extends Router
-	{
-		public function __construct()
-		{
-			parent::__construct();
-			
-			$this->add(array(
-				"/" => "index",
-				"/login/" => "login"
-				"/user/account/:number/" => "user"
-			));
+Classes
+-------
 
-		}
-		
-		public function index()
-		{
-			// load homepage view
-			$this->view->load("homepage");
-		}
-		
-		public function login()
-		{
-			// app specific logic...
-		}
-		
-		public function user($id)
-		{
-			// load user with ID $id...
-		}
-	};
-	
-	Backbone::addRouter(new AppRouter());
-	
 The Backbone.php framework consists of the following 21 modules: `Backbone`, `BackboneTest`, `Collection`, `Connections`, `DataSet`, `DataSource`, `DataType`, `Events`, `Html`, `JSON`, `Model`, `MySQL`, `MySQLResult`, `Request`, `Router`, `Sanitize`, `Schema`, `SchemaRules`, `Session`, `TestSuite`, and `View`
 		
 Documentation
