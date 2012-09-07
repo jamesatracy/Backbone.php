@@ -8,7 +8,7 @@ The Backbone class is the heart of a Backbone.php application. It is a static cl
 
 A public static string representing the web root relative to the domain name. If your web root is in the root of your domain name, then $root should be set to "/". If, say, your web root is in "www.example.com/app/" then $root should be set to "/app/". This is required for the Html class to properly format links.
 
-*$config* `Backbone::$config`
+### $config `Backbone::$config`
 
 A public static configuration object to hold all of your application's configuration settings. The $config variable is a DataSet object that exposes get() and set() methods that maniuplate key => value pairs. Keys can be namespaced using the "." operator. Values can be of any type. Some core Backbone.php classes (such as MySQL) may make use of the $config object (these will always be prefixed by the name of the class) so be sure that your key names are unique.
 
