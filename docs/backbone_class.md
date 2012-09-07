@@ -23,15 +23,15 @@ A public static configuration object to hold all of your application's configura
 	// returns "/tmp/"
 	Backbone::$config.get("mysql.logfile");
 	
-*initialize* `Backbone::initialize()`
+### initialize `Backbone::initialize()`
 
 Initializes the framework. This method is called by backbone.php and should not be called directly by the application.
 
-*version* `Backbone::version()`
+### version `Backbone::version()`
 
 Returns the version number of the Backbone.php installation.
 
-*uses* `Backbone::uses($modules)`
+### uses `Backbone::uses($modules)`
 
 Includes a class module. [Modules](modules.md) are referenced by their corresponding class name. For example, if you have a module named "Employee" then you must define a class named "Employee" and name the file "Employee.class.php" for backbone to find it. The parameter to uses() can be either a string or an arrray of strings to load multiple modules. For loading Backbone.php modules you simply pass in the class name - for application defined modules you prepend the classname with the path relative to the web root (or "/" if in the web root).
 
@@ -46,16 +46,16 @@ Modules that have already been loaded are ignored by uses(). Backbone.class keep
 
 	Backbone::$modules
 	
-*loadRouter* `Backbone::loadRouter($name)`
+### loadRouter `Backbone::loadRouter($name)`
 
 Includes a router. This is equivalent of calling Backbone::uses("/router/[Router]").
 
-*addRouter* `Backbone::addRouter($router)`
+### addRouter `Backbone::addRouter($router)`
 
 Registers a router instance with the framework. Routes are checked for matches in the order in which they are added.
 
 	Backbone::addRouter(new MyAppRouter());
 	
-*dispatch* `Backbone::dispatch($request);`
+### dispatch `Backbone::dispatch($request);`
 
 Dispatches the request by trying to find a matching route among the registered routers. This method is called by the framework in index.php and does not need to be called by the application.
