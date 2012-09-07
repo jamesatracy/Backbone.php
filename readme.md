@@ -48,9 +48,9 @@ For example, you can acheive simple url routing in the following manner:
 	
 	Backbone::addRouter(new AppRouter());
 	
-The Backbone.php framework consists of the following 21 modules: Backbone, BackboneTest, Collection, Connections, DataSet, DataSource, DataType, Events, Html, JSON, Model, MySQL, MySQLResult, Request, Router, Sanitize, Schema, SchemaRules, Session, TestSuite, View
+The Backbone.php framework consists of the following 21 modules: `Backbone`, `BackboneTest`, `Collection`, `Connections`, `DataSet`, `DataSource`, `DataType`, `Events`, `Html`, `JSON`, `Model`, `MySQL`, `MySQLResult`, `Request`, `Router`, `Sanitize`, `Schema`, `SchemaRules`, `Session`, `TestSuite`, and `View`
 		
 Documentation
 -------------
 
-For all of the documentation, please go to the [documentation table of contents](https://github.com/jamesatracy/Backbone.php)
+For all of the documentation, please go to the [documentation table of contents](https://github.com/jamesatracy/Backbone.php/blob/master/docs/toc.md)
