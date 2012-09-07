@@ -2,10 +2,9 @@
 
 ## Request.class
 
-RequestPHP provides a convenience object for working with HTTP requests in PHP. It wraps the $_SERVER, $_GET, $_POST, and $_FILES super globals.
+RequestPHP provides a convenience object for working with HTTP requests in PHP. It wraps the $_SERVER, $_GET, $_POST, and $_FILES super globals. It is accessed through Backbone::$request and is created automatically when Backbone.php is loaded.
 
-	require('Request.class.php');
-	$request = new Request();
+	Backbone::$request;
 
 ### Setting the web root
 
@@ -16,7 +15,7 @@ If the web root is not the document root but a subfolder in the document root th
 Get the base url
 
 	// Ex: http://www.example.com/path/to/here/?p=1
-	$base = $request->base();
+	$base = Backbone::$request->base();
 	echo $base; // "http://www.example.com"
 
 ### url()
@@ -24,7 +23,7 @@ Get the base url
 Get the full url of the request
 
 	// Ex: http://www.example.com/path/to/here/?p=1 
-	$url = $request->url();
+	$url = Backbone::$request->url();
 	echo $url; // "http://www.example.com/path/to/here/?p=1"
 
 ### path()
@@ -32,7 +31,7 @@ Get the full url of the request
 Get the url path (portion that follows the base, minus query strings)
 
 	// Ex: http://www.example.com/path/to/here/?p=1
-	$path = $request->path();
+	$path = Backbone::$request->path();
 	echo $path; // "/path/to/here/"
 
 ### here()
@@ -41,11 +40,11 @@ Get the current path of the request
 
 	// Ex: http://www.example.com/path/to/here/?p=1
 	Backbone::$root = "/";
-	$here = $requst->here();
+	$here = Backbone::$request->here();
 	echo $here; // "/path/to/here/" 
 	
 	Backbone::$root = "/path/";
-	$here = $requst->here();
+	$here = Backbone::$request->here();
 	echo $here; // "/to/here/" 
 
 ### queryString()
@@ -53,7 +52,7 @@ Get the current path of the request
 Get the query string
 
 	// Ex: http://www.example.com/path/to/here/?p=1
-	$qs = $request->queryString();
+	$qs = Backbone::$request->queryString();
 	echo $qs; // ?p=1
 
 ### query($arg)
@@ -62,26 +61,26 @@ Get a query string argument, if it exists, from $_SERVER['QUERY_STRING']
 
 	// Ex: http://www.example.com/path/to/here/?p=1&q=2
 
-	echo $request->query("p"); // 1
+	echo Backbone::$request->query("p"); // 1
 
-	echo $request->query("q"); // 2
+	echo Backbone::$request->query("q"); // 2
 
-	echo $request->query("r"); // null
+	echo Backbone::$request->query("r"); // null
 
 ### ipaddress()
 
 Get the IP address of the request
 
-	echo $requst->ipaddress();
+	echo Backbone::$request->ipaddress();
 
 ### link($subpath, $print = false, $ssl = false)
 
 Builds a link from the base and the given subpath (or relative path)
 
 	// Ex: http://www.example.com/
-	echo $requst->link("/about/team/"); // http://www.example.com/about/team/
+	echo Backbone::$request->link("/about/team/"); // http://www.example.com/about/team/
 
-	echo $requst->link("/about/team/", false, true); // https://www.example.com/about/team/
+	echo Backbone::$request->link("/about/team/", false, true); // https://www.example.com/about/team/
 
 ### is($prop)
 
