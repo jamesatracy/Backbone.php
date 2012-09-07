@@ -8,9 +8,9 @@ RequestPHP provides a convenience object for working with HTTP requests in PHP. 
 
 ### Setting the web root
 
-If the web root is not the document root but a subfolder in the document root then you can set this via the static `Backbone::$root` variable, which defaults to "/". For example, if your site's web root exists in www.example.com/path/to/here/ then you will want to set the `Backbone::$root` to "/path/to/here/". If you do not do that, then the link() and a few other methods will not work properly. 
+If the web root is not the document root but a subfolder in the document root then you can set this via the static `Backbone::$root` variable, which defaults to "/". For example, if your site's web root exists in `www.example.com/path/to/here/` then you will want to set the `Backbone::$root` to "/path/to/here/". If you do not do that, then the link() and a few other methods will not work properly. 
 
-### base()
+### base `Backbone::$request->base()`
 
 Get the base url
 
@@ -18,7 +18,7 @@ Get the base url
 	$base = Backbone::$request->base();
 	echo $base; // "http://www.example.com"
 
-### url()
+### url `Backbone::$request->url()`
 
 Get the full url of the request
 
@@ -26,7 +26,7 @@ Get the full url of the request
 	$url = Backbone::$request->url();
 	echo $url; // "http://www.example.com/path/to/here/?p=1"
 
-### path()
+### path `Backbone::$request->path()`
 
 Get the url path (portion that follows the base, minus query strings)
 
@@ -34,7 +34,7 @@ Get the url path (portion that follows the base, minus query strings)
 	$path = Backbone::$request->path();
 	echo $path; // "/path/to/here/"
 
-### here()
+### here `Backbone::$request->here()`
 
 Get the current path of the request
 
@@ -47,7 +47,7 @@ Get the current path of the request
 	$here = Backbone::$request->here();
 	echo $here; // "/to/here/" 
 
-### queryString()
+### queryString `Backbone::$request->queryString()`
 
 Get the query string
 
@@ -55,7 +55,7 @@ Get the query string
 	$qs = Backbone::$request->queryString();
 	echo $qs; // ?p=1
 
-### query($arg)
+### query `Backbone::$request->query($arg)`
 
 Get a query string argument, if it exists, from $_SERVER['QUERY_STRING']
 
@@ -67,13 +67,13 @@ Get a query string argument, if it exists, from $_SERVER['QUERY_STRING']
 
 	echo Backbone::$request->query("r"); // null
 
-### ipaddress()
+### ipaddress `Backbone::$request->ipaddress()`
 
 Get the IP address of the request
 
 	echo Backbone::$request->ipaddress();
 
-### link($subpath, $print = false, $ssl = false)
+### link `Backbone::$request->link($subpath, $print = false, $ssl = false)`
 
 Builds a link from the base and the given subpath (or relative path)
 
@@ -82,7 +82,7 @@ Builds a link from the base and the given subpath (or relative path)
 
 	echo Backbone::$request->link("/about/team/", false, true); // https://www.example.com/about/team/
 
-### is($prop)
+### is `Backbone::$request->is($prop)`
 
 Check for a particular property of the request.
 	
@@ -98,21 +98,21 @@ These include:
 
 	$requst->is("ssl"); // Is the request over SSL?
 
-### get($key = null)
+### get `Backbone::$request->get($key = null)`
 
 Get a specific GET parameter, or get the entire array of GET parameters. Checks if the key is set via isset().
 
 	$request->get();
 	$request->get('param');
 
-### post($key = null)
+### post `Backbone::$request->post($key = null)`
 
 Get a specific POST parameter, or get the entire array of POST parameters. Checks if the key is set via isset().
 
 	$request->post();
 	$request->post('param');
 
-### files($key = null)
+### files `Backbone::$request->files($key = null)`
 
 Get a specific FILES parameter, or get the entire array of FILES parameters. Checks if the key is set via isset().
 

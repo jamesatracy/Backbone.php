@@ -10,7 +10,7 @@
 
 * [Backbone](backbone_class.md)
 
-* [BackboneTest](request_class.md)
+* BackboneTest
 
 * Collection
 
@@ -34,9 +34,9 @@
 
 * MySQLResult
 
-* Request
+* [Request](request_class.md)
 
-* Router
+* [Router](router_class.md)
 
 * Sanitize
 
