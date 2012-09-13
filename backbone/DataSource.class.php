@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @fileoverview
 Abstract base class for data sources, like a database.
 A particular implementation of a data source, like a MySQL database, should extend this class.
+
+@since 0.1.0
 */
 abstract class DataSource 
 {	

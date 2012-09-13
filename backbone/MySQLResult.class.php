@@ -12,8 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 /* 
 @fileoverview
-Wraps a mysql server result
+Wraps a mysql server result.
+
+@since 0.1.0
 */
+
 class MySQLResult
 {
 	const FETCH_ASSOC	= MYSQL_ASSOC;

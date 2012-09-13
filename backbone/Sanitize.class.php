@@ -11,8 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 /*
-Class for sanitizing strings, including striping html and escpaing
-for database input.
+@fileoverview
+Class for sanitizing strings, including striping html and escpaing for database input.
+
+@since 0.1.0
 */
 
 Backbone::uses("ConnectionManager");

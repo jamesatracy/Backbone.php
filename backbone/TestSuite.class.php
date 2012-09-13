@@ -12,7 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 Backbone::uses(array("DataType", "DataSet"));
 
-/* Base class for Test Suites */
+/*
+@fileoverview
+Base class for Test Suites.
+
+@since 0.1.0
+*/
+
 class TestSuite
 {	
 	protected $messages;

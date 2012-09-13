@@ -18,7 +18,10 @@ For example, it allows you to get and set values that can be expressed as:
 	"products.shirts.polos" which translates to:
 	
 	array("products" => array("shirts" => array("polos" => $value)))
+	
+@since 0.1.0
 */
+
 class DataSet 
 {
 	/* The internal set */

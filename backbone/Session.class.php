@@ -16,7 +16,10 @@ Backbone::uses("DataSet");
 @fileoverview
 Generic class for Session management. 
 Wraps the $_SESSION super global.
+
+@since 0.1.0
 */
+
 class Session
 {
 	/* Time the session was started */

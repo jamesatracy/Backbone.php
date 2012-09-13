@@ -16,6 +16,8 @@ Class for working with MySQL schemas as model representations.
 Supports automatic validation against the schema.
 
 Schema is the base class for Model.
+
+@since 0.1.0
 */
 
 Backbone::uses(array("Connections", "DataType", "JSON", "SchemaRules"));

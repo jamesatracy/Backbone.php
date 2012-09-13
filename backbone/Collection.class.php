@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /*
 @fileoverview
 Base Collection class for representing an ordered list of model objects.
+
+@since 0.1.0
 */
 
 Backbone::uses("Model");

@@ -25,6 +25,8 @@ Built-in rules include:
 "maxlength" => value: require a maximum length for a (string)
 "enum" => array(): value must in the given array
 "binary" => true: value is either 0 or 1
+
+@since 0.1.0
 */
 
 Backbone::uses("DataType");

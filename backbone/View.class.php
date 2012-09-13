@@ -11,8 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 /*
-Base View class
+@fileoverview
+Base class for all Backbone.php views.
+
+@since 0.1.0
 */
+
 class View
 {
 	/* Array of view properties */

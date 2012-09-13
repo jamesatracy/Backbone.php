@@ -11,8 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 /*
-Class for managing connections to data sources
+@fileoverview
+Class for managing connections to data sources.
+
+@since 0.1.0
 */
+
 class Connections
 {
 	/* List of open connections */

@@ -11,8 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 /*
-Helper class for formattign html tags
+@fileoverview
+Helper class for formattign html tags.
+
+@since 0.1.0
 */
+
 class Html
 {
 	/*

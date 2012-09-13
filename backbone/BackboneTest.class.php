@@ -11,7 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 /*
+@fileoverview
 BackboneTest is the unit testing framework for Backbone.php
+
+@since 0.1.0
 */
 
 class BackboneTest

@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 Base Model class for database objects. 
 Provides basic methods for creating, updating, fetching, and validating model data.
 This class can be used on its own or extended to implement more specialized model functionality.
+
+@since 0.1.0
 */
 
 Backbone::uses("Schema");

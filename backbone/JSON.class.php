@@ -12,7 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 /*
 @fileoverview
-Class for working with JSON data types
+Class for working with JSON data types.
+
+@since 0.1.0
 */
 
 class JSON

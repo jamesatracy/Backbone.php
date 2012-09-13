@@ -11,8 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 */
 
 /*
+@fileoverview
 Class for triggering and delegating events and callbacks.
+
+@since 0.1.0
 */
+
 class Events
 {
 	/* List of registered events. Events are registered automatically by calls to bind() */

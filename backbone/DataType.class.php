@@ -13,7 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /*
 @fileoverview
 Helper class for working with data types.
+
+@since 0.1.0
 */
+
 class DataType
 {
 	/*
