@@ -1,4 +1,4 @@
-[Backbone.php Homepage](https://github.com/jamesatracy/Backbone.php) * [Table of Contents](toc.md)
+[Backbone.php Homepage](https://github.com/jamesatracy/Backbone.php) | [Table of Contents](toc.md)
 
 ## Request.class
 

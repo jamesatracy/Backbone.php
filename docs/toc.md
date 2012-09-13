@@ -48,4 +48,4 @@
 
 * TestSuite
 
-* View
+* [View](view_class.md)
