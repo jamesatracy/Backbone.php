@@ -26,7 +26,7 @@
 * [Request](request_class.md)
 * [Router](router_class.md)
 * Sanitize
-* Schema
+* [Schema](schema_class.md)
 * SchemaRules
 * [Session](session_class.md)
 * TestSuite
