@@ -5,6 +5,7 @@
 ## Getting started
 
 * [File Structure](file_structure.md)
+* [Getting Started](getting_started.md)
 * [Modules](modules.md)
 
 ## Framework
@@ -12,7 +13,7 @@
 * [Backbone](backbone_class.md)
 * BackboneTest
 * Collection
-* Connections
+* [Connections](connections_class.md)
 * DataSet
 * DataSource
 * DataType
@@ -27,6 +28,6 @@
 * Sanitize
 * Schema
 * SchemaRules
-* Session
+* [Session](session_class.md)
 * TestSuite
 * [View](view_class.md)
