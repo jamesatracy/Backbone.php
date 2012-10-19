@@ -203,7 +203,7 @@ class MySQL extends DataSource
 				if(isset($value['type']))
 					$type = $value['type'];
 				if(!isset($value['fields']))
-					return false;
+					return new MySQLResult(null);
 				$joins .= $type." JOIN ".$this->formatTable($key)." ON ".$this->format($value['fields'][0])." = ".$this->format($value['fields'][1])." ";
 			}
 			$sql .= " ".$joins;
@@ -223,6 +223,11 @@ class MySQL extends DataSource
 				$where = $options['where'];
 			}
 			$sql .= " WHERE ".$where;
+		}
+		// group by
+		if(isset($options['group_by']))
+		{
+			$sql .= " GROUP BY ".$this->format($options['group_by']);
 		}
 		// order by
 		if(isset($options['order_by']))
@@ -531,7 +536,12 @@ class MySQL extends DataSource
             }
             else
             {
-                return substr($name, 0, $first + 1).$this->format($var).")";
+				$str = array();
+				$tmp = explode(",", $var);
+				$str[] = $this->format(trim($tmp[0]));
+				if(isset($tmp[1]))
+					$str[] = $tmp[1];
+                return substr($name, 0, $first + 1).join(",",$str).")";
             }
         }
 
@@ -584,6 +594,8 @@ class MySQL extends DataSource
 					{
 						$in = $value[0];
 						array_shift($value);
+						if(is_array($value[0]))
+							$value = $value[0];
 						$tmp[] = $this->format($key)." ".$in." (".join(",", $value).")";
 					}
 					else

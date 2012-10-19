@@ -104,6 +104,7 @@ class Collection
 		}
 		$this->_models = $result->fetchAll();
 		$this->length = $result->numRows();
+		$this->rewind();
 		return true;
 	}
 	
@@ -256,7 +257,27 @@ class Collection
 		}
 		return $this->_models;
 	}
-		
+	
+	/*
+	Get the associated model classname
+	
+	@return [string] The associated model's classname.
+	*/
+	public function getModelName()
+	{
+		return $this->_model;
+	}
+	
+	/*
+	Get the associated model table
+	
+	@return [string] The associated model's table name.
+	*/
+	public function getTableName()
+	{
+		return $this->_table;
+	}
+			
 	/*
 	Reset the collection to an empty state
 	*/
