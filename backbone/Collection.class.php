@@ -47,10 +47,10 @@ class Collection
 	{
 		if(!$table || empty($table))
 			return; // bad
-		$options = array_merge($options, array(
+		$options = array_merge(array(
 			"model" => "Model",
 			"db" => "default"
-		));
+		), $options);
 		$this->_table = $table;
 		$this->_model = $options['model'];
 		$this->_db = Connections::get($options['db']);
@@ -167,7 +167,15 @@ class Collection
 	*/
 	public function remove($id)
 	{
-		$model = new $this->_model($this->_table, $this->_db);
+		if($this->_model != "Model")
+		{
+			Backbone::uses("/models/".$this->_model);
+			$model = new $this->_model($this->_db);
+		}
+		else
+		{
+			$model = new $this->_model($this->_table, $this->_db);
+		}
 		if($model->fetch($id))
 		{
 			if($model->delete())
@@ -190,8 +198,17 @@ class Collection
 	{
 		if(isset($this->_models[$this->_position]))
 		{
-			$model = new $this->_model($this->_table, $this->_db);
+			if($this->_model != "Model")
+			{
+				Backbone::uses("/models/".$this->_model);
+				$model = new $this->_model($this->_db);
+			}
+			else
+			{
+				$model = new $this->_model($this->_table, $this->_db);
+			}
 			$model->set($this->_models[$this->_position]);
+			$model->clearChanged();
 			return $model;
 		}
 		return null;

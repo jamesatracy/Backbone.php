@@ -393,6 +393,12 @@ class Model extends Schema
 		$this->_changed = array();
 	}
 	
+	/* Clear the changed array */
+	public function clearChanged()
+	{
+		$this->_changed = array();
+	}
+	
 	/*
 	Has the model changed since the last update?
 	In other words, are there any unsaved changes?
