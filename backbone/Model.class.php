@@ -38,9 +38,14 @@ class Model extends Schema
 	/* Hash map of model associations */
 	protected $_models = array();
 	
+	/* Hash map of collection associations */
+	protected $_collections = array();
 	
 	/* Array of has one model association definitions */
 	public $hasModels = array();
+		
+	/* Array of has one collection association definitions */
+	public $hasCollections = array();
 	
 	/* Array of additional where conditions to be applied to every model db action */
 	public $where = array();
@@ -319,6 +324,31 @@ class Model extends Schema
 		return null;
 	}
 	
+	/* 
+	Get a reference to an associated collection, if it exists.
+	The collection must have been fetched via the "with" option or $fetch
+		must be set to true.
+	
+	@param [string] $key This collection's table name.
+	@param [boolean] $fetch Whether or not to force a fetch of the collection
+	@return [object,null] Returns the collection object, or null
+	*/
+	public function collection($key, $fetch = false)
+	{
+		if($fetch)
+		{
+			if(isset($this->hasCollections[$key]))
+			{
+				$this->_collections[$key] = $this->_fetchCollection($key);
+				return $this->_collections[$key];
+			}
+			return null;
+		}
+		if(isset($this->_collections[$key]))
+			return $this->_collections[$key];
+		return null;
+	}
+	
 	/*
 	Return a JSON representation of the model.
 	This is not a string, but an associative array that you can pass to JSON::stringify().
@@ -337,7 +367,13 @@ class Model extends Schema
 			if($model)
 				$models[$key] = $model->toJSON($compact);
 		}
-		return (array("attributes" => ($compact ? array_values($this->_attributes) : $this->_attributes), "models" => $models));
+		$collections = array();
+		foreach($this->_collections as $key => $collection)
+		{
+			if($collection)
+				$collections[$key] = $collection->toJSON($compact);
+		}
+		return (array("attributes" => ($compact ? array_values($this->_attributes) : $this->_attributes), "models" => $models, "collections" => $collections));
 	}
 	
 	/*
@@ -463,13 +499,22 @@ class Model extends Schema
 	protected function _with($with)
 	{
 		$this->_models = array();
+		$this->_collections = array();
 		if(is_string($with))
 			$with = array($with);
 
 		foreach($with as $index => $foreign_key)
 		{
-			// get the model
-			$this->_models[$foreign_key] = $this->_fetchModel($foreign_key);
+			if(isset($this->hasModels[$foreign_key]))
+			{
+				// get the model
+				$this->_models[$foreign_key] = $this->_fetchModel($foreign_key);
+			}
+			else if (isset($this->hasCollections[$foreign_key]))
+			{
+				// get the collection
+				$this->_collections[$foreign_key] = $this->_fetchCollection($foreign_key);
+			}
 		}
 	}
 	
@@ -497,6 +542,32 @@ class Model extends Schema
 					if($instance->fetch($this->get($key)))
 						return $instance;
 				}
+			}
+		}
+		return null;
+	}
+	
+	/*
+	Internal function to fetch an associated collection
+	*/
+	protected function _fetchCollection($key)
+	{
+		if(isset($this->hasCollections[$key]))
+		{
+			$options = $this->hasCollections[$key];
+			if(!isset($options['collection']))
+				continue;
+			$classname = $options['collection'];
+			// model association exists
+			$module = $classname;
+			if(substr($module, 0, 1) != "/")
+				$module = "/models/".$module;
+			Backbone::uses($module);
+			if(class_exists($classname))
+			{
+				$instance = new $classname;
+				if($instance->fetch(array("where" => array($options['key'] => $this->get($this->_id)))))
+					return $instance;
 			}
 		}
 		return null;
