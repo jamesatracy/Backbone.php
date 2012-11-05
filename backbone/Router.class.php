@@ -25,6 +25,9 @@ class Router
 	/* The active view class for the request */
 	protected $view;
 	
+	/* The root of the router's url maps, if any */
+	public $root = "";
+	
 	public function __construct()
 	{
 		$this->view = new View();
@@ -74,9 +77,14 @@ class Router
 		$request = Backbone::$request;
 		$success = false;
 		$uri = $request->here();
+		if($this->root != "")
+		{
+			if(strpos($uri, $this->root) != 0)
+				return false; // skip these routes
+		}
 		foreach($this->_routes as $pattern => $callback)
 		{
-			$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_]+)", "([a-z_]+)", "([0-9]+)"), $pattern);
+			$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
 			if(preg_match("{^".$pattern."$}", $uri, $matches))
 			{
 				// url match
