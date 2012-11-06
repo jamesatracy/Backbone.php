@@ -27,6 +27,7 @@ class TestSuite
 	public $count;
 	public $passed;
 	public $failed;
+	public $aborted;
 	public $output = array(); // for buffering output
 	public $error_output = array(); // for buffering erros output
 	
@@ -42,6 +43,7 @@ class TestSuite
 		$this->count = 0;
 		$this->passed = 0;
 		$this->failed = 0;
+		$this->aborted = false;
 		$this->output = array();
 		$this->error_output = array();
 	}
@@ -54,6 +56,12 @@ class TestSuite
 	public function tearDown()
 	{
 		return; // stub function
+	}
+	
+	/* Abort this suite */
+	public function abort()
+	{
+		$this->aborted = true;
 	}
 	
 	/* Output a caption */

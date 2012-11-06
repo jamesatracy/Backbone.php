@@ -195,6 +195,19 @@ class BackboneTest
 			self::$total_passed += $instance->passed;
 			self::$total_failed += $instance->failed;
 			
+			if($instance->aborted)
+			{
+				if(self::$command_line)
+				{
+					echo 'TEST SUITE ABORTED!'.PHP_EOL;
+				}
+				else
+				{
+					echo '<div><span style="color:red">TEST SUITE ABORTED!</span></div><br/>';
+				}
+				return; // abort
+			}
+			
 			if(self::$command_line)
 				echo PHP_EOL;
 			else
