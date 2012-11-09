@@ -28,6 +28,9 @@ class BackboneTest
 	/* Whether or not to run on the command line */
 	public static $command_line = false;
 	
+	/* Optional file to output the results to */
+	public static $output_file = false;
+	
 	/* Totals */
 	public static $total_passed = 0;
 	public static $total_failed = 0;
@@ -99,6 +102,9 @@ class BackboneTest
 		
 		$suites = self::$suites;
 		
+		if(self::$output_file)
+			file_put_contents(self::$output_file, "");
+		
 		if($classname == null)
 		{
 			// loop over suites
@@ -110,7 +116,11 @@ class BackboneTest
 				}
 			}
 			if(self::$command_line)
+			{
+				self::startOutput();
 				echo "-----------------------------------------------------".PHP_EOL;
+				self::endOutput();
+			}
 			else
 				echo "<hr/>";
 		}
@@ -132,14 +142,20 @@ class BackboneTest
 					self::_runSuite($suites[$classname][$id], $classname);
 				}
 				if(self::$command_line)
+				{
+					self::startOutput();
 					echo "-----------------------------------------------------".PHP_EOL;
+					self::endOutput();
+				}
 				else
 					echo "<hr/>";
 			}
 		}
 		if(self::$command_line)
 		{
+			self::startOutput();
 			echo "TOTAL PASSED: ".number_format(self::$total_passed).", TOTAL FAILED: ".number_format(self::$total_failed).PHP_EOL;
+			self::endOutput();
 		}
 	}
 	
@@ -156,10 +172,17 @@ class BackboneTest
 		//$tests = $suite['tests'];
 		$tests = $object::getTests();
 		$count = count($tests);
+		
 		if(self::$command_line)
+		{
+			self::startOutput();
 			echo "-----------------------------------------------------".PHP_EOL.$name." (".$count.")\n";
+			self::endOutput();
+		}
 		else
+		{
 			echo "<hr/><h3>".$name." (".$count.")</h3>";
+		}
 
 		// loops over specs
 		$index = 1;
@@ -175,9 +198,11 @@ class BackboneTest
 				$time = time().$index;
 				if(self::$command_line)
 				{
+					self::startOutput();
 					echo '('.$index.') '.$title.' ['.$instance->count.' tests. '.$instance->passed.' passed. '.$instance->failed.' failed].'.PHP_EOL;
 					if($instance->failed > 0)
 						echo join("", $instance->error_output);
+					self::endOutput();
 				}
 				else
 				{
@@ -199,7 +224,9 @@ class BackboneTest
 			{
 				if(self::$command_line)
 				{
+					self::startOutput();
 					echo 'TEST SUITE ABORTED!'.PHP_EOL;
+					self::endOutput();
 				}
 				else
 				{
@@ -209,11 +236,28 @@ class BackboneTest
 			}
 			
 			if(self::$command_line)
+			{
+				self::startOutput();
 				echo PHP_EOL;
+				self::endOutput();
+			}
 			else
 				echo "<br/>";
 		}
 		//echo "<br/>";
+	}
+	
+	protected function startOutput()
+	{
+		ob_start();
+	}
+	
+	protected function endOutput()
+	{
+		$output = ob_get_clean();
+		if(self::$output_file)
+			file_put_contents(self::$output_file, $output, FILE_APPEND);
+		echo $output;
 	}
 };
 
