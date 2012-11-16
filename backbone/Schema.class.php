@@ -273,12 +273,12 @@ class Schema
 		if(isset($field['primary']) && $field['primary'])
 			return;
 			
-		if($value == "NULL")
+		if($value === "NULL")
 		{
 			// can this field be null?
 			if(!$field['acceptNULL'])
 			{
-				$this->_errors[] = "Field `".$name."` cannot be set to NULL.";
+				$this->_errors[] = "Field `".$name."` cannot be set to NULL. ".$value;
 				return;
 			}
 		}

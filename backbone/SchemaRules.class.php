@@ -91,7 +91,7 @@ class SchemaRules
 	*/
 	public static function required($name, $value, $args)
 	{
-		if(empty($value))
+		if($value !== 0 && empty($value))
 		{
 			self::$last_error = "Required field: `".$name."`";
 			return false;

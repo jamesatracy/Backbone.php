@@ -113,5 +113,37 @@ class DataSet
 		}
 		return $current;
 	}
+	
+	/*
+	Whether a value for a given variable name exists
+	
+	@param [string] $name The name of the variable.
+	*/
+	public function has($name = null)
+	{
+		if(empty($name))
+			return false;
+			
+		if(strpos($name, ".") === FALSE)
+		{
+			// single
+			$write = array($name);
+		}
+		else
+		{
+			// namespaced
+			$write = explode(".", $name);
+		}
+
+		$current = &$this->_set;
+		foreach($write as $val)
+		{
+			if(!isset($current[$val]))
+				// value does not exist
+				return false;
+			$current = &$current[$val];
+		}
+		return true;
+	}
 };
 ?>
