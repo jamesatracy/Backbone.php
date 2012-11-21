@@ -84,10 +84,12 @@ class Router
 		}
 		foreach($this->_routes as $pattern => $callback)
 		{
+			$original = $pattern;
 			$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
 			if(preg_match("{^".$pattern."$}", $uri, $matches))
 			{
 				// url match
+				$this->pattern = $original;
 				if(method_exists($this, $callback))
 				{
 					if($this->onPreRouteHook($uri))

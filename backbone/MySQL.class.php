@@ -411,14 +411,14 @@ class MySQL extends DataSource
 		
 		$t = microtime(true);
 		$this->_result = new MySQLResult(mysql_query($query, $this->_connection));
-		$this->_result->setFetchMode($this->_fetch_mode);
-		
+				
 		if(Backbone::$config->get("mysql.log"))
 		{
 			$this->_duration = round((microtime(true) - $t), 4);
 			$this->_num_rows = $this->_result->numRows();
 			$this->logQuery($query);
 		}
+		$this->_result->setFetchMode($this->_fetch_mode);
 		return $this->_result;
 	}
 	
