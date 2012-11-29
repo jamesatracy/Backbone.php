@@ -91,7 +91,9 @@ class SchemaRules
 	*/
 	public static function required($name, $value, $args)
 	{
-		if($value !== 0 && empty($value))
+		if(is_numeric($value) && $value !== "")
+			return true; // accept 0 and 0.00 as valid values
+		if(empty($value))
 		{
 			self::$last_error = "Required field: `".$name."`";
 			return false;
