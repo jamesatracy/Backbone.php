@@ -37,7 +37,7 @@ class Connections
 		if(isset(self::$_connections[$name]))
 			self::$_connections[$name]->disconnect();
 		$source = new $type;
-		$result = $source->connect($config);
+		$result = $source->connect($config, $name);
 		self::$_connections[$name] = $source;
 		return $source;
 	}
@@ -63,7 +63,30 @@ class Connections
 	public static function remove($name)
 	{
 		if(isset(self::$_connections[$name]))
-			self::$_connections[$name]->disconnect();		
+		{
+			self::$_connections[$name]->disconnect();
+			unset(self::$_connections[$name]);
+		}
+	}
+	
+	/* 
+	Close all active connections
+	*/
+	public static function closeAll()
+	{
+		foreach(self::$_connections as $name => $db)
+		{
+			$db->disconnect();
+			unset(self::$_connections[$name]);
+		}
+	}
+	
+	/*
+	Get a list of all active connections
+	*/
+	public static function enumerateConnections()
+	{
+		return array_keys(self::$_connections);
 	}
 };
 

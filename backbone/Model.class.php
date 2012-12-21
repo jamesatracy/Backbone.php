@@ -84,7 +84,10 @@ class Model extends Schema
 		$this->_errors = array();
 		$attributes = array();
 		if(!$this->_db || !$this->_db->isConnected())
+		{
+			$this->_errors[] = get_class($this).": No database connection.";
 			return false;
+		}
 			
 		// select
 		$where = $this->where;
@@ -110,7 +113,7 @@ class Model extends Schema
 				}
 				return true;
 			}
-			$this->_errors = "No results returned";
+			$this->_errors[] = get_class($this).": No results returned";
 		}
 		else
 		{
@@ -191,7 +194,10 @@ class Model extends Schema
 	public function save()
 	{
 		if(!$this->_db || !$this->_db->isConnected())
+		{
+			$this->_errors[] = get_class($this).": No database connection.";
 			return false;
+		}
 		$attributes = array();
 		foreach($this->_changed as $key => $value)
 		{
@@ -263,7 +269,10 @@ class Model extends Schema
 	public function delete()
 	{
 		if(!$this->_db || !$this->_db->isConnected())
+		{
+			$this->_errors[] = get_class($this).": No database connection.";
 			return false;
+		}
 			
 		$where = $this->where;
 		$where[$this->getID()] = $id;
@@ -538,7 +547,7 @@ class Model extends Schema
 				Backbone::uses($module);
 				if(class_exists($classname))
 				{
-					$instance = new $classname;
+					$instance = new $classname($this->_db);
 					if($instance->fetch($this->get($key)))
 						return $instance;
 				}
@@ -565,7 +574,7 @@ class Model extends Schema
 			Backbone::uses($module);
 			if(class_exists($classname))
 			{
-				$instance = new $classname;
+				$instance = new $classname($this->_db);
 				if($instance->fetch(array("where" => array($options['key'] => $this->get($this->_id)))))
 					return $instance;
 			}

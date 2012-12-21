@@ -53,7 +53,7 @@ class Collection
 		), $options);
 		$this->_table = $table;
 		$this->_model = $options['model'];
-		$this->_db = Connections::get($options['db']);
+		$this->_db = (is_string($options['db']) ? Connections::get($options['db']) : $options['db']);
 	}
 	
 	/*

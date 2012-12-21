@@ -28,9 +28,6 @@ class Session
 	/* The name of the current session */
 	public static $name = "";
 	
-	/* The DataSet object used for getting and setting session variables */
-	protected static $_data;
-	
 	/* Starts a session if it has not already been started */
 	public static function start()
 	{
@@ -39,7 +36,6 @@ class Session
 		session_start();
 		self::$name = session_name();
 		self::$time = time();
-		self::$_data = new DataSet($_SESSION);
 	}
 	
 	/* 
@@ -69,9 +65,7 @@ class Session
 	*/
 	public static function clear()
 	{
-		if(!self::$_data)
-			return;
-		self::$_data->clear();
+		$_SESSION = array();
 	}
 	
 	/* Destroy a session */
@@ -81,7 +75,6 @@ class Session
 			session_destroy();
 		self::$name = "";
 		self::$time = 0;
-		self::$_data = null;
 	}
 	
 	/*
@@ -100,8 +93,9 @@ class Session
 		if(!self::started())
 			return;
 			
-		self::$_data->set($name, $value);
-		$_SESSION = self::$_data->get();
+		$data = new DataSet($_SESSION);
+		$data->set($name, $value);
+		$_SESSION = $data->get();
 	}
 	
 	/*
@@ -114,7 +108,8 @@ class Session
 		if(!self::started())
 			return;
 			
-		return self::$_data->get($name);
+		$data = new DataSet($_SESSION);
+		return $data->get($name);
 	}
 };
 ?>

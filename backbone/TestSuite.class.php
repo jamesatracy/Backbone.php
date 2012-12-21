@@ -92,6 +92,34 @@ class TestSuite
 		}
 	}
 	
+	/* Trigger other error (not from a test case) */
+	public function triggerError($message)
+	{
+		$this->count++;
+		$this->failed++;
+		if($this->command_line)
+		{
+			$this->output[] = 'Error Triggered: '.$message.PHP_EOL;
+			$this->error_output[] = 'Error Triggered: '.$message.PHP_EOL;
+		}
+		else
+		{
+			$this->output[] = '<div style="color: red;">Error Triggered: '.$message.'</div>';
+			$this->error_output[] = '<div style="color: red;">Error Triggered: '.$message.'</div>';
+		}
+		$backtrace = debug_backtrace();
+		if($this->command_line)
+		{
+			$this->output[] = '====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'].PHP_EOL;
+			$this->error_output[] = '====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'].PHP_EOL;
+		}
+		else
+		{
+			$this->output[] = '<div>====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'].'</div>';
+			$this->error_output[] = '<div>====> '.$backtrace[1]['file'].' : '.$backtrace[1]['line'].'</div>';
+		}
+	}
+	
 	/* Check for a true condition */
 	public function is($conditional)
 	{
