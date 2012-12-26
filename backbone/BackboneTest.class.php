@@ -247,12 +247,12 @@ class BackboneTest
 		//echo "<br/>";
 	}
 	
-	protected function startOutput()
+	protected static function startOutput()
 	{
 		ob_start();
 	}
 	
-	protected function endOutput()
+	protected static function endOutput()
 	{
 		$output = ob_get_clean();
 		if(self::$output_file)
