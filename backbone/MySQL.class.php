@@ -51,6 +51,12 @@ class MySQL extends DataSource
 	public function connect($options, $name = "")
 	{
 		parent::connect($options);
+
+		if(!isset($options['new_link']))
+			$options['new_link'] = false;
+		if(!isset($options['compress']))
+			$options['compress'] = MYSQL_CLIENT_COMPRESS;
+		
 		$this->_options = $options;
 		$this->_name = $name;
 		$this->_connection = mysql_connect($options['server'], $options['user'], $options['pass']) or die(mysql_error());

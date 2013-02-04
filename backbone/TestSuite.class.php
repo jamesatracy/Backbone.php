@@ -30,7 +30,7 @@ class TestSuite
 	public $aborted;
 	public $output = array(); // for buffering output
 	public $error_output = array(); // for buffering erros output
-	
+	public $last_caption = "";
 	public $command_line = false;
 	
 	public function __construct()
@@ -68,9 +68,17 @@ class TestSuite
 	public function caption($text)
 	{
 		if($this->command_line)
-			$this->output[] = $text.':\n';
+		{
+			$this->output[] = "* ".$text.PHP_EOL;
+			$this->last_caption = "* ".$text.PHP_EOL;
+			//$this->error_output[] = "* ".$text.PHP_EOL;
+		}
 		else
-			$this->output[] = '<div style="font-style: italic; margin-top:5px;">'.$text.':</div>';
+		{
+			$this->output[] = '<div style="font-style: italic; margin-top:5px;">*'.$text.'</div>';
+			//$this->last_caption = '<div>* '.$text.'</div>';
+			$this->error_output[] = '<div>* '.$text.'</div>';
+		}
 	}
 	
 	/* Output error messages */
@@ -450,11 +458,13 @@ class TestSuite
 		if($this->command_line)
 		{
 			$this->output[] = 'Assertion Failed: '.$message.PHP_EOL;
+			$this->error_output[] = $this->last_caption;
 			$this->error_output[] = 'Assertion Failed: '.$message.PHP_EOL;
 		}
 		else
 		{
 			$this->output[] = '<div style="color: red;">Assertion Failed: '.$message.'</div>';
+			$this->error_output[] = $this->last_caption;
 			$this->error_output[] = '<div style="color: red;">Assertion Failed: '.$message.'</div>';
 		}
 		$backtrace = debug_backtrace();

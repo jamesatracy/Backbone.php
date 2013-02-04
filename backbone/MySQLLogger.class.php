@@ -33,6 +33,7 @@ class MySQLLogger
 	/* Query logging */
 	protected static $_queries_count = 0;
 	protected static $_queries_time = 0;
+	protected static $_paused = false;
 	
 	/*
 	Log a mysql query
@@ -48,6 +49,9 @@ class MySQLLogger
 	*/
 	public static function logQuery($server, $sql, $duration, $num_rows, $name = "")
 	{
+		if(self::$_paused)
+			return;
+			
 		self::$_queries_count++;
 		self::$_queries_time += $duration;
 
@@ -108,6 +112,18 @@ class MySQLLogger
 	public static function getQueryTime()
 	{
 		return self::$_queries_time;
+	}
+	
+	/* Pause the query logging. Call resume() to recommence */
+	public static function pause()
+	{
+		self::$_paused = true;
+	}
+	
+	/* Resume query logging */
+	public static function resume()
+	{
+		self::$_paused = false;
 	}
 }
 ?>

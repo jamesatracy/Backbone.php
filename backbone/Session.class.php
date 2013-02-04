@@ -14,7 +14,7 @@ Backbone::uses("DataSet");
 
 /*
 @fileoverview
-Generic class for Session management. 
+Generic class for Session management.
 Wraps the $_SESSION super global.
 
 @since 0.1.0
@@ -24,10 +24,10 @@ class Session
 {
 	/* Time the session was started */
 	public static $time = 0;
-	
+
 	/* The name of the current session */
 	public static $name = "";
-	
+
 	/* Starts a session if it has not already been started */
 	public static function start()
 	{
@@ -37,20 +37,20 @@ class Session
 		self::$name = session_name();
 		self::$time = time();
 	}
-	
-	/* 
+
+	/*
 	Check if the session has been started
-	
+
 	@return [boolean] True if the session is started, otherwise false.
 	*/
-	public static function started() 
+	public static function started()
 	{
 		return isset($_SESSION) && session_id();
     }
-	
+
 	/*
 	Loads a session by the session name
-	
+
 	@param [string] $name The session name
 	*/
 	public static function load($name)
@@ -59,15 +59,15 @@ class Session
 		session_name($name);
 		self::start();
 	}
-	
-	/* 
+
+	/*
 	Clear the session.
 	*/
 	public static function clear()
 	{
 		$_SESSION = array();
 	}
-	
+
 	/* Destroy a session */
 	public static function destroy()
 	{
@@ -76,15 +76,15 @@ class Session
 		self::$name = "";
 		self::$time = 0;
 	}
-	
+
 	/*
 	Set a value for the given key.
-	Name can be array namespaced using the dot operator. 
+	Name can be array namespaced using the dot operator.
 	If the namespace does not exist, it will be initialized as an empty array.
-	
+
 	Ex: "user.name" is equivalent to
 		array("user" => array("name" => "John"))
-	
+
 	@param [string] $name The name of the variable.
 	@param [string] $value The value for the given key.
 	*/
@@ -92,22 +92,22 @@ class Session
 	{
 		if(!self::started())
 			return;
-			
+
 		$data = new DataSet($_SESSION);
 		$data->set($name, $value);
 		$_SESSION = $data->get();
 	}
-	
+
 	/*
 	Get a value for a given variable name
-	
+
 	@param [string] $name The name of the variable.
 	*/
 	public static function get($name)
 	{
 		if(!self::started())
 			return;
-			
+
 		$data = new DataSet($_SESSION);
 		return $data->get($name);
 	}

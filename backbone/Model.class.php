@@ -483,6 +483,15 @@ class Model extends Schema
 		$this->_sanitations = $sanitations;
 	}
 	
+	/*
+	Get the table name used for this model
+	@return [string] The table name
+	*/
+	public function getTable()
+	{
+		return $this->_table;
+	}
+	
 	/* Magic __get method that internally calls get() */
 	public function __get($attr)
 	{
