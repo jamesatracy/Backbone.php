@@ -59,8 +59,10 @@ class TestSuite
 	}
 	
 	/* Abort this suite */
-	public function abort()
+	public function abort($errors = "")
 	{
+		if($errors)
+			$this->errors($errors);
 		$this->aborted = true;
 	}
 	
