@@ -88,7 +88,7 @@ class Model extends Schema
 			$this->_errors[] = get_class($this).": No database connection.";
 			return false;
 		}
-			
+		
 		// select
 		$where = $this->where;
 		$where[$this->getID()] = $id;
@@ -388,11 +388,18 @@ class Model extends Schema
 	/*
 	Returns the raw attributes array.
 	
+	@param [array] $include. Include only the attributes in this list. Optional.
 	@return [array] The raw attributes array.
 	*/
-	public function getAttributes()
+	public function getAttributes($include = null)
 	{
-		return $this->_attributes;
+		if(!$include)
+			return $this->_attributes;
+			
+		$attributes = array();
+		foreach($include as $i => $key)
+			$attributes[$key] = $this->_attributes[$key];
+		return $attributes;
 	}
 	
 	/*
