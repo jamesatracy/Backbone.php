@@ -266,6 +266,9 @@ class MySQL extends DataSource
 	*/
 	public function count($table, $options)
 	{
+		$options['limit'] = null;
+		$options['order_by'] = null;
+		
 		$result = $this->select($table, "COUNT(*)", $options);
 		if($this->getError())
 			return false;
