@@ -275,7 +275,7 @@ class Model extends Schema
 		}
 			
 		$where = $this->where;
-		$where[$this->getID()] = $id;
+		$where[$this->getID()] = $this->get($this->getID());
 				
 		$result = $this->_db->delete(
 			$this->_table, 
@@ -290,7 +290,7 @@ class Model extends Schema
 			$this->_errors[] = $this->_db->getError();
 			return false;
 		}
-		Events.trigger($this->_table.".model.deleted", array($this->getID() => $this->get($this->getID())));
+		Events::trigger($this->_table.".model.deleted", array($this->getID() => $this->get($this->getID())));
 		$this->clear();
 		return true;
 	}
