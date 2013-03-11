@@ -29,5 +29,5 @@
 * [Schema](schema_class.md)
 * SchemaRules
 * [Session](session_class.md)
-* TestSuite
+* [TestSuite](test_suite_class.md)
 * [View](view_class.md)
