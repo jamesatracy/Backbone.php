@@ -190,11 +190,11 @@ class Collection implements Iterator
 	/* Rewind the Iterator to the first element */
 	public function rewind() 
 	{
-        $this->_position = 0;
-    }
+        	$this->_position = 0;
+	}
 
 	/* Return the current model element */
-    public function current() 
+   	public function current() 
 	{
 		if(isset($this->_models[$this->_position]))
 		{
@@ -212,7 +212,7 @@ class Collection implements Iterator
 			return $model;
 		}
 		return null;
-    }
+    	}
 	
 	/* Returns the current element's raw attributes */
 	public function currentAttributes()
@@ -223,38 +223,48 @@ class Collection implements Iterator
 	}
 
 	/* Return the position of the current element */
-    public function position() 
+    	public function position() 
 	{
-        return $this->_position;
-    }
+        	return $this->_position;
+    	}
     
-    public function key()
-    {
-    	return $this->position();
-    }
+    	/* Alias for position() */
+	public function key()
+	{
+		return $this->position();
+	}
 
-	/* Move forward to next element */
-    public function next() 
-    {
-    	$cur = $this->current();
-        ++$this->_position;
-        return $cur;
-    }
+	/* 
+	Return the current element and move forward to next element 
+	@return [Object] The current element before the position is incremented
+	*/
+    	public function next() 
+    	{
+    		$cur = $this->current();
+        	++$this->_position;
+        	return $cur;
+    	}
 	
-	/* Checks if current position is valid */
-    public function items()
-    {
-        return isset($this->_models[$this->_position]);
-    }
+	/* 
+	Checks if current position is valid 
+	@return [boolean] True if the positino is valid, false otherwise
+	*/
+	public function items()
+	{
+	    return isset($this->_models[$this->_position]);
+	}
     
-    public function hasNext()
-    {
-    	return $this->items();
-    }
-    public function valid()
-    {
-    	return $this->items();
-    }
+    	/* Alias for items() */
+	public function hasNext()
+	{
+		return $this->items();
+	}
+	
+	/* Alias for items() */
+	public function valid()
+	{
+	return $this->items();
+	}
 	
 	/*
 	Pluck an attribute from each model in the collection.
