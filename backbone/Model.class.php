@@ -92,6 +92,8 @@ class Model extends Schema
 		// select
 		$where = $this->where;
 		$where[$this->getID()] = $id;
+		if(isset($options['where']))
+			$where = array_merge($where, $options['where']);
 		
 		$result = $this->_db->selectAll(
 			$this->_table, 
