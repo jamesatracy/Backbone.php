@@ -19,7 +19,7 @@ Base Collection class for representing an ordered list of model objects.
 
 Backbone::uses("Model");
 
-class Collection
+class Collection implements Iterator
 {
 	/* The database connection */
 	protected $_db = null;
@@ -227,17 +227,33 @@ class Collection
 	{
         return $this->_position;
     }
+    
+    public function key()
+    {
+    	return $this->position();
+    }
 
 	/* Move forward to next element */
     public function next() 
-	{
+    {
+    	$cur = $this->current();
         ++$this->_position;
+        return $cur;
     }
 	
 	/* Checks if current position is valid */
     public function items()
-	{
+    {
         return isset($this->_models[$this->_position]);
+    }
+    
+    public function hasNext()
+    {
+    	return $this->items();
+    }
+    public function valid()
+    {
+    	return $this->items();
     }
 	
 	/*
