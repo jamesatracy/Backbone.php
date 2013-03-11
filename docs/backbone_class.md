@@ -2,15 +2,15 @@
 
 ## Backbone.class
 
-The Backbone class is the heart of a Backbone.php application. It is a static class that handles routes and module loading as well as servers as a namespace for global objects and variables.
+The Backbone class is the heart of a Backbone.php application. It is a static class that handles routes and module loading as well as serves as a namespace for global objects and variables.
 
-`$rootBackbone::$root`
+### $root `Backbone::$root`
 
-A public static string representing the web root relative to the domain name. If your web root is in the root of your domain name, then $root should be set to "/". If, say, your web root is in "www.example.com/app/" then $root should be set to "/app/". This is required for the Html class to properly format links.
+A public static string representing the web root relative to the domain name. If your web root is in the root of your domain name, then $root should be set to "/". If, say, your web root is in "www.example.com/app/" then $root should be set to "/app/". This is required for the Router to match urls and for the Html class to properly format links.
 
 ### $config `Backbone::$config`
 
-A public static configuration object to hold all of your application's configuration settings. The $config variable is a DataSet object that exposes get() and set() methods that maniuplate key => value pairs. Keys can be namespaced using the "." operator. Values can be of any type. Some core Backbone.php classes (such as MySQL) may make use of the $config object (these will always be prefixed by the name of the class) so be sure that your key names are unique.
+A public static configuration object to hold all of your application's configuration settings. The $config variable is a `DataSet` object that exposes get() and set() methods that maniuplate key => value pairs. Keys can be namespaced using the "." operator. Values can be of any type. Some core Backbone.php classes (such as MySQL) may make use of the $config object (these will always be prefixed by the name of the class) so be sure that your key names are unique.
 
 	Backbone::$config.set("app.debugging", false);
 	Backbone::$config.set("mysql.log", true);
