@@ -77,6 +77,8 @@ class Router
 		$request = Backbone::$request;
 		$success = false;
 		$uri = $request->here();
+		if(!$this->onPreMatchHook($uri))
+			return true;
 		if($this->root != "")
 		{
 			if(strpos($uri, $this->root) != 0)
@@ -122,6 +124,16 @@ class Router
 	public function loadView($name)
 	{
 		$this->view->load($name);
+	}
+	
+	/*
+	Stub function for providing a hook before a route is matched.
+	You can prevent the route from being matched by returning false.
+	This allows you to bypass the default route matching mechanism.
+	*/
+	public function onPreMatchHook($url)
+	{
+		return true;
 	}
 	
 	/*
