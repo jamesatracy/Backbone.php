@@ -43,7 +43,7 @@ class Backbone
 	public static $request = null;
 	
 	/* Version info */
-	protected static $version = "0.0.1";
+	protected static $version = "0.1.0";
 	
 	/* Initialize Backbone.php */
 	public static function initialize()
@@ -100,7 +100,53 @@ class Backbone
 	*/
 	public static function loadRouter($name)
 	{
-		require_once(APPPATH."routers/".$name.".class.php");
+		$fullpath = self::resolvePath(ROUTERPATH, $name.".class.php");
+		if($fullpath)
+			require_once($fullpath);
+	}
+	
+	/*
+	Resolves a path variable and a file name into a full path,
+		if the file exists.
+	The path string may contain multiple paths relative to the application's
+		root directory, separated by a semicolon (;)
+		
+	Example:
+	
+	Backbone::resolvePath("/abc/views/;/def/views/", "home.php");
+	
+	Might resolve to one of the following:
+		/abc/views/home.php
+		/def/views/home.php
+		
+	resolvePath() returns the first file that it finds, determined by the
+		ordering in the path variable.
+	
+	@since 0.1.0
+	@param [string] $path One or more paths to search relative to the application root
+		and separated by a semicolon
+	@param [string] $filename The name of the file to search for.
+	@return [string, null] Returns the full absolute path of the file, or null
+	*/
+	public function resolvePath($path, $filename)
+	{
+		if(empty($path))
+			return null;
+		$path = str_replace(ABSPATH, "", $path); // backward combat with old path constants
+		$paths = explode(";", $path);
+		$fullpath = null;
+		foreach($paths as $current)
+		{
+			if(substr($current, 0, 1) == "/")
+				$current = substr($current, 1);
+			if(file_exists(ABSPATH.$current.$filename))
+			{
+				$fullpath = ABSPATH.$current.$filename;
+				break;
+			}
+		}
+		
+		return $fullpath;
 	}
 	
 	/* 

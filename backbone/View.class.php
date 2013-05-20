@@ -57,16 +57,18 @@ class View
 	{
 		if(substr($name, 0, 1) == "/")
 			$name = substr($name, 1);
-		if(file_exists(VIEWPATH.$name.".php"))
-		{
-			require(VIEWPATH.$name.".php");
-		}
+		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		if($fullpath)
+			require($fullpath);
+		
 		// load extensions
 		$count = count($this->_extensions);
 		for($i = $count - 1; $i >= 0; $i--)
 		{
 			$name = $this->_extensions[$i];
-			require(VIEWPATH.$name.".php");
+			$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+			if($fullpath)
+				require($fullpath);
 		}
 	}
 	
@@ -86,10 +88,9 @@ class View
 	{
 		if(substr($name, 0, 1) == "/")
 			$name = substr($name, 1);
-		if(file_exists(VIEWPATH.$name.".php"))
-		{
-			require(VIEWPATH.$name.".php");
-		}
+		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		if($fullpath)
+			require($fullpath);
 	}
 	
 	/* 
@@ -106,10 +107,9 @@ class View
 	{
 		if(substr($name, 0, 1) == "/")
 			$name = substr($name, 1);
-		if(file_exists(VIEWPATH.$name.".php"))
-		{
+		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		if($fullpath)
 			$this->_extensions[] = $name;
-		}
 	}
 	
 	/*
