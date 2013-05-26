@@ -19,7 +19,7 @@ class BlogRouter extends Router
 	public function index()
 	{
 		Backbone::uses("Collection");
-		$posts = new Collection("blog.posts", array("model" => "Posts"));
+		$posts = new Collection("blog.posts", array("model" => "Post"));
 		$posts->fetch(array("order_by" => array("post_created", "DESC"), "limit" => "10"));
 		$this->view->set("title", "Blog Example");
 		$this->view->set("posts", $posts);
@@ -38,12 +38,9 @@ class BlogRouter extends Router
 				$errors[] = "*** Post Author is a Required Field.";
 			if(!Backbone::$request->post("post_body"))
 				$errors[] = "*** Post Body is a Required Field.";
-			if(!empty($errors))
-			{
+			if(!empty($errors)) {
 				$this->view->set("errors", join("<br/>", $errors));
-			}
-			else
-			{
+			} else {
 				// save the post
 				Backbone::uses("/models/Post");
 				$post = new Post();
