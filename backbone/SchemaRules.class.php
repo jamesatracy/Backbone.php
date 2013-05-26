@@ -1,36 +1,31 @@
 <?php
-/*
-SchemaRules.class.php
-Copyright (C) 2012 James Tracy
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-/*
-@fileoverview
-Extend Schema.class by adding custom validation rules.
-
-Built-in rules include:
-"required" => true: field is required (cannot be empty)
-"numeric" => true: field must be numeric (0-9 chars only)
-"email" => true: validate email address
-"url" => true: validate url (with path)
-"min" => value: require a minium value for a field
-"max" => value: require a maximum value for a field
-"minlength" => value: require a minimum length for a (string)
-"maxlength" => value: require a maximum length for a (string)
-"enum" => array(): value must in the given array
-"binary" => true: value is either 0 or 1
-
-@since 0.1.0
-*/
+/**
+ * Backbone.php
+ * 
+ * @author	James Tracy <james.a.tracy@gmail.com>
+ * @copyright	2012-2013
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ */
 
 Backbone::uses("DataType");
 
+/**
+ * Extend Schema.class by adding custom validation rules.
+ *
+ * Built-in rules include:
+ * "required" => true: field is required (cannot be empty)
+ * "numeric" => true: field must be numeric (0-9 chars only)
+ * "email" => true: validate email address
+ * "url" => true: validate url (with path)
+ * "min" => value: require a minium value for a field
+ * "max" => value: require a maximum value for a field
+ * "minlength" => value: require a minimum length for a (string)
+ * "maxlength" => value: require a maximum length for a (string)
+ * "enum" => array(): value must in the given array
+ * "binary" => true: value is either 0 or 1
+ *
+ * @since 0.1.0
+ */
 class SchemaRules
 {
 	/* An array of rules and function callbacks to invoke for that rule */
