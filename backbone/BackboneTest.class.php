@@ -21,7 +21,7 @@ class BackboneTest
 	/** @var mixed Current suite */
 	protected static $current = null;
 	
-	/** @var boolean Whether or not to run on the command line */
+	/** @var bool Whether or not to run on the command line */
 	public static $command_line = false;
 	
 	/** @var string Optional file to output the results to */

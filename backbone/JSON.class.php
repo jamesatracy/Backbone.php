@@ -48,7 +48,7 @@ class JSON
 	 * 
 	 * @since 0.1.0
 	 * @param string $json A JSON formatted string
-	 * @param boolean $assoc Convert objects into associated arrays. Defaults to true.
+	 * @param bool $assoc Convert objects into associated arrays. Defaults to true.
 	 * @return array The php equivalent array
 	 */
 	public static function decode($json, $assoc = true)
@@ -60,7 +60,7 @@ class JSON
 	 * Wrapper for JSON::decode() 
 	 * @since 0.1.0
 	 * @param string $json A JSON formatted string
-	 * @param boolean $assoc Convert objects into associated arrays. Defaults to true.
+	 * @param bool $assoc Convert objects into associated arrays. Defaults to true.
 	 * @return array The php equivalent array
 	 */
 	public static function parse($obj)

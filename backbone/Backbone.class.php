@@ -159,7 +159,7 @@ class Backbone
 	 * 
 	 * @since 0.1.0
 	 * @param Request $request The active request object
-	 * @return boolean Returns true if the request was successfully routed, false otherwise
+	 * @return bool Returns true if the request was successfully routed, false otherwise
 	*/
 	public static function dispatch($request)
 	{
