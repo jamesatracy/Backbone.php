@@ -141,6 +141,7 @@ class Html
 	 * Internal functinon for building a string of attributes from an associated array
 	 *
 	 * @since 0.1.0
+	 * @internal
 	 * @param array $attributes Associated array of key => value pairs
 	 * @return string The string of attributes
 	 */
