@@ -99,7 +99,7 @@ class Backbone
 	 * Router must be located at [root]/routers/{name}.class.php
 	 * 
 	 * @since 0.1.0
-	 * @param [string] $name The name of the router
+	 * @param string $name The name of the router
 	 */
 	public static function loadRouter($name)
 	{
