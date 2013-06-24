@@ -17,68 +17,74 @@ class Connections
 	/* List of open connections */
 	protected static $_connections = array();
 	
-	/*
-	Open a new connection.
-	
-	@param [string] $name The name of the connection
-	@param [string] $type The class name of the DataSource
-	@param [array] $config The DataSource configuration
-	@return [boolean] True if successful
-	*/
+	/**
+	 * Open a new connection.
+	 * 
+	 * @since 0.1.0
+	 * @param string $name The name of the connection
+	 * @param string $type The class name of the DataSource
+	 * @param array $config The DataSource configuration
+	 * @return bool True if successful
+	 */
 	public static function create($name, $type, $config)
 	{
-		if(!$name || empty($name))
+		if(!$name || empty($name)) {
 			$name = "default";
-		if(isset(self::$_connections[$name]))
+		}
+		if(isset(self::$_connections[$name])) {
 			self::$_connections[$name]->disconnect();
+		}
 		$source = new $type;
 		$result = $source->connect($config, $name);
 		self::$_connections[$name] = $source;
 		return $source;
 	}
 	
-	/*
-	Get a connection.
-	
-	@param [string] $name The name of the connection
-	@return [DataSource,null] The DataSource object or null
-	*/
+	/**
+	 * Get a connection.
+	 * 
+	 * @since 0.1.0
+	 * @param string $name The name of the connection
+	 * @return DataSource|null The DataSource object or null
+	 */
 	public static function get($name)
 	{
-		if(isset(self::$_connections[$name]))
+		if(isset(self::$_connections[$name])) {
 			return self::$_connections[$name];
+		}
 		return null;
 	}
 	
-	/*
-	Remove a connection.
-	
-	@param [string] $name The name of the connection
-	*/
+	/**
+	 * Remove a connection.
+	 * 
+	 * @since 0.1.0
+	 * @param string $name The name of the connection
+	 */
 	public static function remove($name)
 	{
-		if(isset(self::$_connections[$name]))
-		{
+		if(isset(self::$_connections[$name])) {
 			self::$_connections[$name]->disconnect();
 			unset(self::$_connections[$name]);
 		}
 	}
 	
-	/* 
-	Close all active connections
+	/**
+	 * Close all active connections
+	 * 
+	 * @since 0.1.0
 	*/
 	public static function closeAll()
 	{
-		foreach(self::$_connections as $name => $db)
-		{
+		foreach(self::$_connections as $name => $db) {
 			$db->disconnect();
 			unset(self::$_connections[$name]);
 		}
 	}
 	
-	/*
-	Get a list of all active connections
-	*/
+	/**
+	 * Get a list of all active connections
+	 */
 	public static function enumerateConnections()
 	{
 		return array_keys(self::$_connections);
