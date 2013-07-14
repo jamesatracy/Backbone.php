@@ -5,6 +5,7 @@
  * @author	James Tracy <james.a.tracy@gmail.com>
  * @copyright	2012-2013
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
 /**
@@ -14,7 +15,7 @@
  */
 class Connections
 {
-	/* List of open connections */
+	/* @var List of open connections */
 	protected static $_connections = array();
 	
 	/**
