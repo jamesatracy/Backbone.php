@@ -180,17 +180,35 @@ class Request
 	 */
 	public function is($prop)
 	{
-		if($prop == "get") {
-			return (strtolower($_SERVER['REQUEST_METHOD']) == "get");
-		} else if($prop == "post") {
-			return (strtolower($_SERVER['REQUEST_METHOD']) == "post");
-		} else if($prop == "put") {
-			return (strtolower($_SERVER['REQUEST_METHOD']) == "put");
-		} else if($prop == "ajax") {
+		if($prop == strtolower($this->method())) {
+			return true;
+		}
+		if($prop == "ajax") {
+			if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+				return false;
+			}
 			return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-		} else if($prop == "ssl") {
+		} 
+		if($prop == "ssl") {
+			if(!isset($_SERVER['HTTPS'])) {
+				return false;
+			}
 			return ($_SERVER['HTTPS'] != false);
 		}
+	}
+	
+	/**
+	 * Get the HTTP method type
+	 * 
+	 * @since 0.1.1
+	 * @return string The HTTP request method.
+	 */
+	public function method()
+	{
+		if (isset($_SERVER['HTTP_METHOD'])) {
+  			return $_SERVER['HTTP_METHOD'];
+		}
+		return "";
 	}
 	
 	/**
