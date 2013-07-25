@@ -212,6 +212,25 @@ class Request
 	}
 	
 	/**
+	 * Gets the request data as an argument array.
+	 *
+	 * @return array An array of key value pairs.
+	 */
+	public function getData()
+	{
+		$arguments = array();
+		if($this->is("GET")) {
+			$arguments = $_GET;
+		} else if($this->is("POST")) {
+			$arguments = $_POST;
+		} else if($this->is("PUT") || Backbone::$request->is("DELETE")) {
+			parse_str(file_get_contents('php://input'), $arguments);
+		}
+		
+		return $arguments;
+	}
+	
+	/**
 	 * Get a specific GET parameter, or get the entire array of GET parameters
 	 * 
 	 * @since 0.1.0
