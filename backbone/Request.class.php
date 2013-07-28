@@ -180,7 +180,7 @@ class Request
 	 */
 	public function is($prop)
 	{
-		if($prop == strtolower($this->method())) {
+		if(strtolower($prop) == strtolower($this->method())) {
 			return true;
 		}
 		if($prop == "ajax") {
