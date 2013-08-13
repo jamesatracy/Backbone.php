@@ -17,18 +17,15 @@ define('ABSPATH', dirname(__FILE__).'/');
 require_once(ABSPATH."config.php");
 
 // sanity checks
-if(!defined('FRAMEWORK'))
-{
+if(!defined('FRAMEWORK')) {
 	echo "Backbone.php configuration error: FRAMEWORK not defined.";
 	exit(1);
 }
-if(!defined('APPPATH'))
-{
+if(!defined('APPPATH')) {
 	echo "Backbone.php configuration error: APPPATH not defined.";
 	exit(1);
 }
-if(!defined('VIEWPATH'))
-{
+if(!defined('VIEWPATH')) {
 	echo "Backbone.php configuration error: VIEWPATH not defined.";
 	exit(1);
 }
