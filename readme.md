@@ -29,3 +29,7 @@ Versions
 *0.2.0*
 * Converted unit tests to phpunit.
 * Removed the modules that supported the custom testing framework: BackboneTest and TestSuite.
+
+*0.1.1*
+* Added methods method() and getData() to Request.
+* Bug fixes.
