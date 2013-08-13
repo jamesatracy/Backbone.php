@@ -8,12 +8,12 @@
 <table width="980px">
 	<tr>
 		<td align="left" valign="top">
-			<div id="content">
+			<section id="content">
 				<?php $this->render("content"); ?>
-			</div>
+			</section>
 		</td>
 		<td width="300px" align="left" valign="top" style="padding-left: 10px">
-			<input type="button" id="create_post" name="create_post" onclick="window.location = '<?php echo Backbone::$request->link("/create/"); ?>'" value="Create Post" />
+			<button id="create_post" onclick="window.location = '<?php echo Backbone::$request->link("/create/"); ?>'">Create Post</button>
 		</td>
 	</tr>
 </table>
