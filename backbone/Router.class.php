@@ -21,6 +21,12 @@ class Router
 	/** @var View The active view class for the request */
 	protected $view;
 	
+	/** 
+	 * @var string The currently matched pattern, or empty string.
+	 * @since 0.1.1
+	 */
+	protected $pattern = "";
+	
 	/** @var string The root of the router's url maps, if any */
 	public $root = "";
 	
@@ -76,6 +82,10 @@ class Router
 		$request = Backbone::$request;
 		$success = false;
 		$uri = $request->here();
+		
+		// reset the last matched pattern
+		$this->pattern = "";
+		
 		if(!$this->onPreMatchHook($uri)) {
 			return true;
 		}
@@ -83,6 +93,7 @@ class Router
 			if(strpos($uri, $this->root) != 0)
 				return false; // skip these routes
 		}
+		
 		foreach($this->_routes as $pattern => $callback) {
 			$original = $pattern;
 			$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
@@ -117,6 +128,17 @@ class Router
 	public function loadView($name)
 	{
 		$this->view->load($name);
+	}
+	
+	/**
+	 * Get the matched pattern string
+	 * 
+	 * @since 0.1.1
+	 * @return string The last matched pattern or an empty string if none.
+	 */
+	public function getMatchedPattern()
+	{
+		return $this->pattern;
 	}
 	
 	/**
