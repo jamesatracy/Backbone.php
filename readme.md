@@ -16,9 +16,16 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 Classes
 -------
 
-The Backbone.php framework consists of the following 20 modules: `Backbone`, `Collection`, `Connections`, `DataSet`, `DataSource`, `DataType`, `Events`, `Html`, `JSON`, `Model`, `MySQL`, `MySQLLogger`, `MySQLResult`, `Request`, `Router`, `Sanitize`, `Schema`, `SchemaRules`, `Session`, and `View`
+The Backbone.php core framework consists of the following 20 modules: `Backbone`, `Collection`, `Connections`, `DataSet`, `DataSource`, `DataType`, `Events`, `Html`, `JSON`, `Model`, `MySQL`, `MySQLLogger`, `MySQLResult`, `Request`, `Router`, `Sanitize`, `Schema`, `SchemaRules`, `Session`, and `View`
 		
 Documentation
 -------------
 
 For all of the documentation, please go to the [documentation table of contents](https://github.com/jamesatracy/Backbone.php/blob/master/docs/toc.md)
+
+Versions
+--------
+
+*0.2.0*
+* Converted unit tests to phpunit.
+* Removed the modules that supported the custom testing framework: BackboneTest and TestSuite.
