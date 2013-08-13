@@ -40,7 +40,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.1.0";
+	protected static $version = "0.1.1";
 	
 	/**
 	 * Initialize Backbone.php 
