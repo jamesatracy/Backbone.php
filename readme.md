@@ -27,8 +27,9 @@ Versions
 --------
 
 *0.2.0*
-* Converted unit tests to phpunit.
-* Removed the modules that supported the custom testing framework: BackboneTest and TestSuite.
+* Converted existing unit tests to phpunit.
+* Removed modules: BackboneTest and TestSuite.
+* Updated and improved the blog example application.
 
 *0.1.1*
 * Added methods method() and getData() to Request.
