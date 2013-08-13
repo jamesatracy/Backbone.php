@@ -15,9 +15,9 @@ if($posts->length == 0): ?>
 	<h2 class="post_title"><?php echo $post->post_title; ?></h2>
 	<div class="post_author">By: <?php echo $post->post_author; ?></div>
 	<br/>
-	<div class="post_body">
+	<article class="post_body">
 		<pre><?php echo $post->post_body; ?></pre>
-	</div>
+	</article>
 	<hr/>
 	<?php $posts->next(); ?>
 	<?php endwhile; ?>
