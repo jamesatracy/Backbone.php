@@ -180,17 +180,55 @@ class Request
 	 */
 	public function is($prop)
 	{
-		if($prop == "get") {
-			return (strtolower($_SERVER['REQUEST_METHOD']) == "get");
-		} else if($prop == "post") {
-			return (strtolower($_SERVER['REQUEST_METHOD']) == "post");
-		} else if($prop == "put") {
-			return (strtolower($_SERVER['REQUEST_METHOD']) == "put");
-		} else if($prop == "ajax") {
+		if(strtolower($prop) == strtolower($this->method())) {
+			return true;
+		}
+		if($prop == "ajax") {
+			if(!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+				return false;
+			}
 			return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
-		} else if($prop == "ssl") {
+		} 
+		if($prop == "ssl") {
+			if(!isset($_SERVER['HTTPS'])) {
+				return false;
+			}
 			return ($_SERVER['HTTPS'] != false);
 		}
+	}
+	
+	/**
+	 * Get the HTTP method type
+	 * 
+	 * @since 0.1.1
+	 * @return string The HTTP request method.
+	 */
+	public function method()
+	{
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+  			return $_SERVER['REQUEST_METHOD'];
+		}
+		return "";
+	}
+	
+	/**
+	 * Gets the request data as an argument array.
+	 *
+	 * @since 0.1.1
+	 * @return array An array of key value pairs.
+	 */
+	public function getData()
+	{
+		$arguments = array();
+		if($this->is("GET")) {
+			$arguments = $_GET;
+		} else if($this->is("POST")) {
+			$arguments = $_POST;
+		} else if($this->is("PUT") || Backbone::$request->is("DELETE")) {
+			parse_str(file_get_contents('php://input'), $arguments);
+		}
+		
+		return $arguments;
 	}
 	
 	/**

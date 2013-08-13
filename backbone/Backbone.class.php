@@ -40,7 +40,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.1.0";
+	protected static $version = "0.1.1";
 	
 	/**
 	 * Initialize Backbone.php 
@@ -97,7 +97,8 @@ class Backbone
 	/**
 	 * Loads a Router class.
 	 * 
-	 * Router must be located at [root]/routers/{name}.class.php
+	 * Router must be located in one of the paths defined by the 
+	 * ROUTERPATH global system constant.
 	 * 
 	 * @since 0.1.0
 	 * @param string $name The name of the router
