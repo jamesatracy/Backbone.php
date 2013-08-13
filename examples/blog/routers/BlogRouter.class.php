@@ -16,38 +16,50 @@ class BlogRouter extends Router
 		Events::bind("request.invalid-url", array($this, "error404"));
 	}
 	
+	/**
+	 * Home page implementation.
+	 * Maps to: /
+	 */
 	public function index()
 	{
 		Backbone::uses("Collection");
-		$posts = new Collection("blog.posts", array("model" => "Post"));
+		$posts = new Collection(DATABASE_NAME.".posts", array("model" => "Post"));
 		$posts->fetch(array("order_by" => array("post_created", "DESC"), "limit" => "10"));
 		$this->view->set("title", "Blog Example");
 		$this->view->set("posts", $posts);
 		$this->view->load("home");
 	}
 	
+	/*
+	 * Create post page impementation.
+	 * Maps to: /create/
+	 */
 	public function create()
 	{
-		if(Backbone::$request->post())
-		{
-			// do the submit
-			$errors = array();
-			if(!Backbone::$request->post("post_title"))
-				$errors[] = "*** Post Title is a Required Field.";
-			if(!Backbone::$request->post("post_author"))
-				$errors[] = "*** Post Author is a Required Field.";
-			if(!Backbone::$request->post("post_body"))
-				$errors[] = "*** Post Body is a Required Field.";
-			if(!empty($errors)) {
-				$this->view->set("errors", join("<br/>", $errors));
-			} else {
-				// save the post
-				Backbone::uses("/models/Post");
-				$post = new Post();
-				$post->set(Backbone::$request->post());
-				$post->save();
+		if(Backbone::$request->post()) {
+			if(Backbone::$request->post("cancel")) {
+				// cancelled, redirect back to home page
 				header("Location: ".Backbone::$request->link("/"));
-				return;
+			} else {
+				// do the submit
+				$errors = array();
+				if(!Backbone::$request->post("post_title"))
+					$errors[] = "*** Post Title is a Required Field.";
+				if(!Backbone::$request->post("post_author"))
+					$errors[] = "*** Post Author is a Required Field.";
+				if(!Backbone::$request->post("post_body"))
+					$errors[] = "*** Post Body is a Required Field.";
+				if(!empty($errors)) {
+					$this->view->set("errors", join("<br/>", $errors));
+				} else {
+					// save the post
+					Backbone::uses("/models/Post");
+					$post = new Post();
+					$post->set(Backbone::$request->post());
+					$post->save();
+					header("Location: ".Backbone::$request->link("/"));
+					return;
+				}
 			}
 		}
 		

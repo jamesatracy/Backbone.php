@@ -17,6 +17,7 @@ $this->extend("master-template");
 	<?php if($this->get("errors")): ?>
 		<div style="color:red;font-weight:bold"><?php echo $this->get("errors"); ?></div>
 	<?php endif; ?>
+	<input type="submit" id="cancel" name="cancel" value="Cancel" style="float:right" />
 	<input type="submit" id="submit" name="submit" value="Submit" style="float:right" />	
 </form>
 <?php $this->end(); ?>
