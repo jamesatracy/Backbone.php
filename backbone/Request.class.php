@@ -214,6 +214,7 @@ class Request
 	/**
 	 * Gets the request data as an argument array.
 	 *
+	 * @since 0.1.1
 	 * @return array An array of key value pairs.
 	 */
 	public function getData()
