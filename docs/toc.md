@@ -11,7 +11,6 @@
 ## Framework
 
 * [Backbone](backbone_class.md)
-* [BackboneTest](backbone_test_class.md)
 * Collection
 * [Connections](connections_class.md)
 * DataSet
@@ -29,5 +28,4 @@
 * [Schema](schema_class.md)
 * SchemaRules
 * [Session](session_class.md)
-* [TestSuite](test_suite_class.md)
 * [View](view_class.md)
