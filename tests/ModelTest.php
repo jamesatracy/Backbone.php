@@ -86,10 +86,6 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$model->set("first", "Tom");
 		$this->assertTrue($model->changed("first"));
 		$this->assertTrue($model->changed("last"));
-		$this->assertTrue($model->changed("age"));
-		$this->assertTrue($model->changed("gender"));
-		
-		// Clear the changed values
 		$model->clearChanged();
 		$model->set("first", "Tom");
 		$this->assertFalse($model->changed("first"));	// was previously Tom
