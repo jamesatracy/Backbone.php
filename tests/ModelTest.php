@@ -24,7 +24,7 @@ class MockModel extends Model
 		// automatically stamp created field
 		$this->created = "created";
 		// load a mock schema for testing
-		$this->schemaFile = "tests/fixtures/model_test_fixture1.json";
+		$this->schemaFile = "tests/fixtures/model_test_fixture.json";
 		parent::__construct("table");
 	}
 }
@@ -44,8 +44,8 @@ class ModelTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
-		Backbone::uses("/tests/helpers/MockDB");
-		Connections::create("default", "MockDB", array("server" => "localhost", "user" => "root", "pass" => ""));
+		Backbone::uses("/tests/helpers/MockDatabase");
+		Connections::create("default", "MockDatabase", array("server" => "localhost", "user" => "root", "pass" => ""));
 	}
 	
 	public function testBehavior_DefaultValues()
@@ -79,6 +79,26 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		
 		// invalid field
 		$this->assertNull($model->get("xyz"));
+	}
+	
+	public function testMethod_getAttributes()
+	{
+		$model = new MockModel();
+		
+		$attrs = $model->getAttributes();
+		$this->assertArrayHasKey("ID", $attrs);
+		$this->assertArrayHasKey("first", $attrs);
+		$this->assertArrayHasKey("last", $attrs);
+		$this->assertArrayHasKey("age", $attrs);
+		$this->assertArrayHasKey("gender", $attrs);
+		$this->assertArrayHasKey("modified", $attrs);
+		$this->assertArrayHasKey("created", $attrs);
+		
+		// test includes param
+		$attrs = $model->getAttributes(array("first", "last"));
+		$this->assertArrayHasKey("first", $attrs);
+		$this->assertArrayHasKey("last", $attrs);
+		$this->assertFalse(isset($attrs['ID']));
 	}
 	
 	public function testMethod_set()
@@ -118,7 +138,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$model->clearChanged();
 		$this->assertEquals(count($model->changedAttributes()), 0);
 		$model->set("first", "Tom");
-		$this->assertEquals(count($model->changedAttributes), 1);
+		$this->assertEquals(count($model->changedAttributes()), 1);
 		$model->clearChanged();
 		$this->assertEquals(count($model->changedAttributes()), 0);
 	}
