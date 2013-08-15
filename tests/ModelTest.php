@@ -31,16 +31,24 @@ class MockModel extends Model
 
 /**
  * PHPUnit Test suite for Model class
+ *
+ * Tests for individual class methods following this naming
+ * convention:
+ *		public function testMethod_${name}
+ *
+ * Tests for general behavior following this naming 
+ * conventions:
+ * 		public function testBehavior_${description}
  */
 class ModelTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
-		Backbone::uses("/tests/MockDB");
+		Backbone::uses("/tests/helpers/MockDB");
 		Connections::create("default", "MockDB", array("server" => "localhost", "user" => "root", "pass" => ""));
 	}
 	
-	public function testDefaults()
+	public function testBehavior_DefaultValues()
 	{
 		$model = new MockModel();
 		
@@ -51,7 +59,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 	
 	// Test the has() attributes method
-	public function testHasAttribute()
+	public function testMethod_has()
 	{
 		$model = new MockModel();
 		
@@ -62,7 +70,18 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($model->has("xyz"));
 	}
 	
-	public function testSetters()
+	public function testMethod_get()
+	{
+		$model = new MockModel();
+		
+		$model->first = "Tom";
+		$this->assertEquals($model->get("first"), "Tom");
+		
+		// invalid field
+		$this->assertNull($model->get("xyz"));
+	}
+	
+	public function testMethod_set()
 	{
 		$model = new MockModel();
 		
@@ -75,10 +94,49 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// Invalid field name
 		$model->set("xyz", "foo");
 		$this->assertNull($model->get("xyz"));
+		
+		// NULL case
+		$model->set("gender", null);
+		$this->assertEquals($model->get("gender"), "NULL");
+	}
+	
+	// Test the isNew() method
+	public function testMethod_isNew()
+	{
+		$model = new MockModel();
+		
+		$this->assertTrue($model->isNew());
+		$model->set("ID", 1);
+		$this->assertFalse($model->isNew());
+	}
+	
+	// Test the clearChanged() method
+	public function testMethod_clearChanged()
+	{
+		$model = new MockModel();
+		
+		$model->clearChanged();
+		$this->assertEquals(count($model->changedAttributes()), 0);
+		$model->set("first", "Tom");
+		$this->assertEquals(count($model->changedAttributes), 1);
+		$model->clearChanged();
+		$this->assertEquals(count($model->changedAttributes()), 0);
+	}
+	
+	// Test the changedAttributes() method
+	public function testMethod_changedAttributes()
+	{
+		$model = new MockModel();
+		
+		$model->clearChanged();
+		$this->assertEquals(count($model->changedAttributes()), 0);
+		$model->set("first", "Tom");
+		$changed = $model->changedAttributes();
+		$this->assertTrue(isset($changed['first']));
 	}
 	
 	// Test the change() attributes method
-	public function testChangedAttributes()
+	public function testMethod_changed()
 	{
 		$model = new MockModel();
 		
@@ -87,10 +145,13 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($model->changed("first"));
 		$this->assertTrue($model->changed("last"));
 		$model->clearChanged();
+		// set the first name to the same value, no changed
 		$model->set("first", "Tom");
-		$this->assertFalse($model->changed("first"));	// was previously Tom
+		$this->assertFalse($model->changed("first"));
+		// set the first name to a new value, triggers changed
 		$model->set("first", "John");
 		$this->assertTrue($model->changed("first"));
+		// test an attribute that has not changed
 		$this->assertFalse($model->changed("last"));
 		
 		// Invalid field name
@@ -98,7 +159,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	}
 	
 	// Test the hasChanged() method
-	public function testHasChanged()
+	public function testMethod_hasChanged()
 	{
 		$model = new MockModel();
 		$model->clearChanged();

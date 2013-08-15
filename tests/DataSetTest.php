@@ -16,10 +16,18 @@ Backbone::uses("DataSet");
 
 /**
  * PHPUnit Test suite for DataSet class
+ *
+ * Tests for individual class methods following this naming
+ * convention:
+ *		public function testMethod_${name}
+ *
+ * Tests for general behavior following this naming 
+ * conventions:
+ * 		public function testBehavior_${description}
  */
 class DataSetTest extends PHPUnit_Framework_TestCase
 {
-	public function testSimple()
+	public function testBehavior_SimpleKeys()
 	{
 		$set = new DataSet();
 		
@@ -34,7 +42,7 @@ class DataSetTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($set->get("foo"));
 	}
 	
-	public function testNested()
+	public function testBehavior_NestedKeys()
 	{
 		$set = new DataSet();
 		

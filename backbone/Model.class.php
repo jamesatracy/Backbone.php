@@ -182,7 +182,10 @@ class Model extends Schema
 	}
 	
 	/**
-	 * Save a model back to the server. Only changed fields are actually updated.
+	 * Save a model back to the server. 
+	 *
+	 * Only valid changed fields are actually sent to the database to be
+	 * updated. All else is ignored.
 	 *
 	 * @since 0.1.0
 	 * @return bool True on success

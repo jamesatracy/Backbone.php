@@ -16,6 +16,14 @@ Backbone::uses("Request");
 
 /**
  * PHPUnit Test suite for Request class
+ *
+ * Tests for individual class methods following this naming
+ * convention:
+ *		public function testMethod_${name}
+ *
+ * Tests for general behavior following this naming 
+ * conventions:
+ * 		public function testBehavior_${description}
  */
 class RequestTest extends PHPUnit_Framework_TestCase
 {
@@ -24,7 +32,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->request = new Request();
 	}
 	
-	public function testBase()
+	public function testMethod_base()
 	{
 		$_SERVER['HTTPS'] = null;
 		$_SERVER['HTTP_HOST'] = "www.example.com";
@@ -35,7 +43,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->base(), "https://www.example.com");
 	}
 	
-	public function testUrl()
+	public function testMethod_url()
 	{
 		$_SERVER['HTTPS'] = null;
 		$_SERVER['HTTP_HOST'] = "www.example.com";
@@ -47,7 +55,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->url(), "http://www.example.com/path/to/here/?p=1");
 	}
 	
-	public function testPath()
+	public function testMethod_path()
 	{
 		$_SERVER['HTTPS'] = null;
 		$_SERVER['HTTP_HOST'] = "www.example.com";
@@ -60,7 +68,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->path(), "/path/to/here/");
 	}
 	
-	public function testHere()
+	public function testMethod_here()
 	{
 		$_SERVER['HTTPS'] = null;
 		$_SERVER['HTTP_HOST'] = "www.example.com";
@@ -74,7 +82,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->here(), "/to/here/");
 	}
 	
-	public function testQueryString()
+	public function testMethod_queryString()
 	{
 		$_SERVER['HTTPS'] = null;
 		$_SERVER['HTTP_HOST'] = "www.example.com";
@@ -84,14 +92,14 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->queryString(), "p=1&q=2");
 	}
 	
-	public function testIPaddress()
+	public function testMethod_ipaddress()
 	{
 		// ipaddress()
 		$_SERVER["REMOTE_ADDR"] = "127.0.0.1";
 		$this->assertEquals($this->request->ipaddress(), "127.0.0.1");
 	}
 	
-	public function testQuery()
+	public function testMethod_query()
 	{
 		// query()
 		// test valid arguments
@@ -114,7 +122,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($this->request->query("a"));
 	}
 	
-	public function testLink()
+	public function testMethod_link()
 	{		 
 		// link()
 		$_SERVER['HTTPS'] = null;
@@ -150,7 +158,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->link("path/to/here/"), "https://www.example.com/under/doc/root/path/to/here/");
 	}
 	
-	public function testGet()
+	public function testMethod_get()
 	{
 		$_GET = null;
 		
@@ -165,7 +173,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->get("q"), "2");
 	}
 	
-	public function testPost()
+	public function testMethod_post()
 	{
 		$_POST = null;
 		
@@ -180,7 +188,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->post("q"), "2");
 	}
 	
-	public function testFiles()
+	public function testMethod_files()
 	{
 		$_FILES = null;
 		
@@ -195,7 +203,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->files("file2"), "2");
 	}
 	
-	public function testMethod()
+	public function testMethod_method()
 	{
 		// get
 		$_SERVER['REQUEST_METHOD'] = "GET";
@@ -218,7 +226,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->method(), "");
 	}
 	
-	public function testIs()
+	public function testMEethod_is()
 	{	
 		$_SERVER['REQUEST_METHOD'] = "GET";
 		// test is('get')
