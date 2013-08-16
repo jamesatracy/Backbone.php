@@ -132,6 +132,28 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse($model->isNew());
 	}
 	
+	// Test the fetch methdod
+	public function testMethod_fetch()
+	{
+		$model = new MockModel();
+		
+		$this->db->setData(array(
+			"ID" => 1,
+			"first" => "John",
+			"last" => "Doe",
+			"age" => 21,
+			"gender" => "Male",
+			"modified" => "0000-00-00 00:00:00",
+			"created" => "0000-00-00 00:00:00"
+		));
+		$this->assertTrue($model->fetch(1));
+		$this->assertEquals($model->ID, 1);
+		$this->assertEquals($model->first, "John");
+		$this->assertEquals($model->last, "Doe");
+		$this->assertEquals($model->age, 21);
+		$this->assertEquals($model->gender, "Male");
+	}
+	
 	// Test the clearChanged() method
 	public function testMethod_clearChanged()
 	{
