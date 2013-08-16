@@ -8,7 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses(array("Connections", "DataType", "JSON", "SchemaRules"));
+Backbone::uses(array("Connections", "DataType", "SchemaRules"));
 
 /**
  * Class for working with MySQL schemas as model representations. 
@@ -78,7 +78,7 @@ class Schema
 				}
 			}
 			if($this->schemaFile) {
-				$cache = JSON::parse(file_get_contents(ABSPATH.$this->schemaFile));
+				$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile));
 				$this->_schema = $cache['schema'];
 				$this->_id = $cache['id'];
 			} else {
@@ -176,7 +176,7 @@ class Schema
 		if(substr($file, 0, 1) == "/") {
 			$file = substr($file, 1);
 		}
-		file_put_contents(ABSPATH.$file, JSON::stringify(array("id" => $this->getID(), "schema" => $this->schemaToJSON())));
+		file_put_contents(ABSPATH.$file, json_encode(array("id" => $this->getID(), "schema" => $this->schemaToJSON())));
 	}
 	
 	/**
