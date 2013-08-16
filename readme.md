@@ -28,7 +28,7 @@ Versions
 
 *0.2.0*
 * Converted existing unit tests to phpunit.
-* Removed modules: BackboneTest and TestSuite.
+* Removed modules: BackboneTest, TestSuite, and JSON.
 * Updated and improved the blog example application.
 
 *0.1.1*
