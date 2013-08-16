@@ -18,7 +18,6 @@
 * DataType
 * Events
 * Html
-* JSON
 * Model
 * MySQL
 * MySQLResult
