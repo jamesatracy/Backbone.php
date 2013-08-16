@@ -78,7 +78,7 @@ class Schema
 				}
 			}
 			if($this->schemaFile) {
-				$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile));
+				$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile), TRUE);
 				$this->_schema = $cache['schema'];
 				$this->_id = $cache['id'];
 			} else {
