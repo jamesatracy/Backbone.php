@@ -320,7 +320,7 @@ class Collection implements Iterator
 	 * 
 	 * @since 0.1.0
 	 * @param bool $compact Whether or not to include the model keys in the representation.
-	 * @return string A JSON formatted string representation of the collection.
+	 * @return array Returns an array of raw model data
 	 */
 	public function toJSON($compact = false)
 	{
