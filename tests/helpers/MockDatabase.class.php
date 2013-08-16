@@ -13,6 +13,27 @@ Backbone::uses(array("DataSource", "/tests/helpers/MockDatabaseResult"));
 /**
  * Mock database class for testing db functions without a live db.
  *
+ * For code the requires a live database connection, you can use
+ * this mock database. It will always report that the connection
+ * is "connected" regardless of whether or not you need to fetch
+ * or update data in your tests.
+ *
+ * Q: How does this work, exactly?
+ *
+ * A: This class allows you to fake database results by passing your
+ * data into the MockDatabase class prior to your db call. When
+ * data is fetched through MockDatabase, the class will return
+ * your data set exactly as is through a MockDatabaseResult object.
+ *
+ * 	$db = new MockDatabase();
+ *	$db->setData(array("first" => "John", "last" => "Doe"));
+ *	$result = $db->select("blah", array());
+ *		// the parameters to select() do not matter...
+ *  $row = $result->fetch();
+ *		// $row = array("first" => "John", "last" => "Doe")
+ *
+ *  NOTE that you can pass an array of arrays to MockDatabase and
+ *	thereby simulate fetching multiple rows of data.
  */
 class MockDatabase extends DataSource
 {
@@ -39,8 +60,6 @@ class MockDatabase extends DataSource
 	/**
 	 * Fetch data from the mock database
 	 *
-	 * Limited functionality.
-	 *
 	 * @return MockDatabaseResult
 	 */
 	public function select($table, $fields, $options = array())
@@ -48,46 +67,7 @@ class MockDatabase extends DataSource
 		if(empty($this->data)) {
 			return new MockDatabaseResult(array());
 		}
-		
-		if(!is_array($fields)) {
-			if($fields === "*") {
-				return $this->selectAll($table, $options);
-			}
-			$fields = array($fields);
-		}
-		
-		if(!isset($options['where'])) {
-			// everything
-			$results = array();
-			foreach($this->data as $i => $row) {
-				$cur = array();
-				foreach($fields as $name) {
-					$cur[$name] = $row[$name];
-				}
-				$results[] = $cur;
-			}
-			return new MockDatabaseResult($results);
-		}
-		
-		$where = $options['where'];
-		
-		// use the first where condition
-		$keys = array_keys($where);
-		$key = $keys[0];
-		$values = array_values($where);
-		$value = $values[0];
-		
-		$results = array();
-		foreach($this->data as $i => $row) {
-			if($row[$key] == $value) {
-				$cur = array();
-				foreach($fields as $name) {
-					$cur[$name] = $row[$name];
-				}
-				$results[] = $cur;
-			}
-		}
-		return new MockDatabaseResult($results);
+		return new MockDatabaseResult($this->data);
 	}
 	
 	/**
@@ -100,31 +80,7 @@ class MockDatabase extends DataSource
 		if(empty($this->data)) {
 			return new MockDatabaseResult(array());
 		}
-		
-		if(!isset($options['where'])) {
-			// everything
-			$results = array();
-			foreach($this->data as $i => $row) {
-				$results[] = $row;
-			}
-			return new MockDatabaseResult($results);
-		}
-		
-		$where = $options['where'];
-		
-		// use the first where condition
-		$keys = array_keys($where);
-		$key = $keys[0];
-		$values = array_values($where);
-		$value = $values[0];
-		
-		$results = array();
-		foreach($this->data as $i => $row) {
-			if($row[$key] == $value) {
-				$results[] = $row;
-			}
-		}
-		return new MockDatabaseResult($results);
+		return new MockDatabaseResult($this->data);
 	}
 }
 ?>
