@@ -26,7 +26,7 @@ Backbone::uses(array("DataSource", "/tests/helpers/MockDatabaseResult"));
  * your data set exactly as is through a MockDatabaseResult object.
  *
  * 	$db = new MockDatabase();
- *	$db->setData(array("first" => "John", "last" => "Doe"));
+ *	$db->setResultsData(array("first" => "John", "last" => "Doe"));
  *	$result = $db->select("blah", array());
  *		// the parameters to select() do not matter...
  *  $row = $result->fetch();
@@ -40,11 +40,11 @@ class MockDatabase extends DataSource
 	protected $data = array();
 	
 	/**
-	 * Set the mock data. 
+	 * Set the mock results data. 
 	 *
-	 * @param array $data An array of data arrays.
+	 * @param array $data 
 	 */
-	public function setData($data)
+	public function setResultsData($data)
 	{
 		$this->data = $data;
 	}

@@ -137,7 +137,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	{
 		$model = new MockModel();
 		
-		$this->db->setData(array(
+		$this->db->setResultsData(array(
 			"ID" => 1,
 			"first" => "John",
 			"last" => "Doe",
