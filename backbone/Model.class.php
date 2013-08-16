@@ -354,7 +354,7 @@ class Model extends Schema
 	/**
 	 * Return a JSON representation of the model.
 	 *
-	 * This is not a string, but an associative array that you can pass to JSON::stringify().
+	 * This is not a string, but an associative array that you can pass to json_encode().
 	 *
 	 * The JSON is compacted by leaving out the field names and returning the values
 	 * as a plain array.
