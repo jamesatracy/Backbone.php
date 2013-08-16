@@ -42,10 +42,12 @@ class MockModel extends Model
  */
 class ModelTest extends PHPUnit_Framework_TestCase
 {
+	protected $db = null;
+	
 	public function setUp()
 	{
 		Backbone::uses("/tests/helpers/MockDatabase");
-		Connections::create("default", "MockDatabase", array("server" => "localhost", "user" => "root", "pass" => ""));
+		$this->db = Connections::create("default", "MockDatabase", array("server" => "localhost", "user" => "root", "pass" => ""));
 	}
 	
 	public function testBehavior_DefaultValues()
