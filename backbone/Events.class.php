@@ -64,7 +64,7 @@ class Events
 	 * @param string $event The event name
 	 * @param mixed $params Parameters to pass along with the event
 	 */
-	public function trigger($event, $params = null)
+	public static function trigger($event, $params = null)
 	{
 		if(isset(self::$_events[$event])) {
 			self::dispatch(self::$_events[$event], $params);
@@ -78,7 +78,7 @@ class Events
 	 * @param array $callbacks The array of event callbacks
 	 * @param mixed $params Parameters to pass along with the event
 	 */
-	protected function dispatch($callbacks, $params)
+	protected static function dispatch($callbacks, $params)
 	{
 		foreach($callbacks as $callable) {
 			if(call_user_func($callable, $params) === false) {
