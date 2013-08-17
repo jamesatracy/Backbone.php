@@ -201,7 +201,8 @@ class Backbone
 	 */
 	protected static function loadModule($name)
 	{
-		$classname = end(explode($name, "/"));
+		$tmparr = explode($name, "/");
+		$classname = end($tmparr);
 		//if(!isset(self::$modules[$name]))
 		if(!class_exists($classname)) {
 			//self::$modules[$name] = true;
