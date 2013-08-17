@@ -1,4 +1,4 @@
-<phpunit>
+<phpunit strict="false">
   <testsuites>
     <testsuite name="Backbone.php Tests">
       <directory>tests</directory>
