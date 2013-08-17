@@ -208,7 +208,7 @@ class Model extends Schema
 		if(empty($attributes)) {
 			return true;
 		}
-		if($this->validate()) {
+		if($this->validateModel()) {
 			$result = null;
 			if($this->isNew()) {
 				// insert
@@ -301,7 +301,7 @@ class Model extends Schema
 	 * @since 0.1.0
 	 * @return bool True if the attributes validate, false otherwise
 	 */
-	public function validate()
+	public function validateModel()
 	{
 		return parent::validate($this->_attributes);
 	}
