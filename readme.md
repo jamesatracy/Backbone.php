@@ -23,6 +23,13 @@ Documentation
 
 For all of the documentation, please go to the [documentation table of contents](https://github.com/jamesatracy/Backbone.php/blob/master/docs/toc.md)
 
+Build Statuses
+--------------
+
+master [![Build Status](https://travis-ci.org/jamesatracy/Backbone.php.png?branch=master)](https://travis-ci.org/jamesatracy/Backbone.php?branch=master)
+
+backbone0.2.0 [![Build Status](https://travis-ci.org/jamesatracy/Backbone.php.png?branch=backbone0.2.0)](https://travis-ci.org/jamesatracy/Backbone.php?branch=backbone0.2.0)
+
 Versions
 --------
 
