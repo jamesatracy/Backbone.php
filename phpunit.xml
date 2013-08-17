@@ -1,0 +1,7 @@
+<phpunit>
+  <testsuites>
+    <testsuite name="Backbone.php Tests">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
