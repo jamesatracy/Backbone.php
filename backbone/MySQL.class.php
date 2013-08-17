@@ -256,7 +256,7 @@ class MySQL extends DataSource
 	 * Wrapper for calling select with COUNT(*). See select() for description
 	 *
 	 * @since 0.1.0
-	 * @return MySQLResult
+	 * @return int The number of rows
 	 */
 	public function count($table, $options)
 	{

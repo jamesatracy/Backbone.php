@@ -138,13 +138,15 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$model = new MockModel();
 		
 		$this->db->setResultsData(array(
-			"ID" => 1,
-			"first" => "John",
-			"last" => "Doe",
-			"age" => 21,
-			"gender" => "Male",
-			"modified" => "0000-00-00 00:00:00",
-			"created" => "0000-00-00 00:00:00"
+			array(
+				"ID" => 1,
+				"first" => "John",
+				"last" => "Doe",
+				"age" => 21,
+				"gender" => "Male",
+				"modified" => "0000-00-00 00:00:00",
+				"created" => "0000-00-00 00:00:00"
+			)
 		));
 		$this->assertTrue($model->fetch(1));
 		$this->assertEquals($model->ID, 1);
@@ -152,6 +154,46 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($model->last, "Doe");
 		$this->assertEquals($model->age, 21);
 		$this->assertEquals($model->gender, "Male");
+		
+		// simulate no result
+		$this->db->setResultsData(array());
+		$this->assertFalse($model->fetch(1));
+		
+		// simulate invalid result
+		$this->db->setResultsData(null);
+		$this->assertFalse($model->fetch(1));
+	}
+	
+	// Test the save() method
+	public function testMethod_save()
+	{
+		$model = new MockModel();
+		
+		// save a new model with defaults
+		$this->assertTrue($model->save());
+		$this->assertEquals($this->db->getMethodCalled(), "insert");
+		$this->assertFalse($model->isNew());
+		$this->assertEquals($model->ID, 1);
+		$this->assertEquals($model->age, 13);
+		$this->assertEquals($model->gender, "Male");
+		
+		// update the model; only changed field is updated
+		$model->set("age", 21);
+		$this->assertTrue($model->save());
+		$this->assertEquals($this->db->getMethodCalled(), "update");
+		$this->assertEquals($this->db->getResultsData(), array(array("age" => 21)));
+	}
+	
+	// Test the delete() method
+	public function testMethod_delete()
+	{
+		$model = new MockModel();
+		
+		// cannot delete new model
+		$this->assertFalse($model->delete());
+		$model->set("ID", 1);
+		$this->assertTrue($model->delete());
+		$this->assertEquals($this->db->getMethodCalled(), "delete");
 	}
 	
 	// Test the clearChanged() method

@@ -185,7 +185,8 @@ class Model extends Schema
 	 * Save a model back to the server. 
 	 *
 	 * Only valid changed fields are actually sent to the database to be
-	 * updated. All else is ignored.
+	 * updated. All else is ignored. For new models, all values are sent
+	 * to the server to be inserted.
 	 *
 	 * @since 0.1.0
 	 * @return bool True on success
@@ -262,6 +263,12 @@ class Model extends Schema
 	{
 		if(!$this->_db || !$this->_db->isConnected()) {
 			$this->_errors[] = get_class($this).": No database connection.";
+			return false;
+		}
+		
+		// cannot delete if the model is new
+		if($this->isNew()) {
+			$this->_errors[] = get_class($this).": Cannot delete new model";
 			return false;
 		}
 			

@@ -52,13 +52,16 @@
 	}
 	
 	/**
-	 * Is the result valid? In this case, the result is always valid.
+	 * Is the result valid? 
 	 *
-	 * @return boolean True.
+	 * In this case, the result is valid if the mock data is a valid 
+	 * array.
+	 *
+	 * @return boolean True if the mock data is a valid array.
 	 */
 	public function isValid()
 	{
-		return true;
+		return is_array($this->rows);
 	}
 	
 	/**
