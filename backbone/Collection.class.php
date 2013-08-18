@@ -68,8 +68,7 @@ class Collection implements Iterator
 	public function count($options = array())
 	{
 		if(!$this->_db) {
-			$this->_errors[] = "Invalid Database Connection";
-			return false;
+			throw new RuntimeException("Collection: Invalid Database Connection");
 		}
 		return $this->_db->count($this->_table, $options);
 	}
@@ -84,13 +83,13 @@ class Collection implements Iterator
 	 * 	"limit" => integer
 	 * 	"offset" => integer
 	 * @return bool True if successful.	
+	 * @throws RuntimeException
 	 */
 	public function fetch($options = array())
 	{
 		$this->reset();
 		if(!$this->_db) {
-			$this->_errors[] = "Invalid Database Connection";
-			return false;
+			throw new RuntimeException("Collection: Invalid Database Connection");
 		}
 		
 		$result = $this->_db->selectAll(
@@ -114,11 +113,12 @@ class Collection implements Iterator
 	 * @since 0.1.0
 	 * @param string $id The model's ID
 	 * @return Model The model, or null if not found
+	 * @throws RuntimeException
 	 */
 	public function get($id)
 	{
 		if(!$this->_db) {
-			return null;
+			throw new RuntimeException("Collection: Invalid Database Connection");
 		}
 		$model = null;
 		$schema = new Schema($this->_db);
@@ -134,70 +134,10 @@ class Collection implements Iterator
 		}
 		return $model;
 	}
-	
-	/**
-	 * Create a new instance of a model in a collection.
-	 * 
-	 * This is equivalent of creating a new model instance, settign its attributes,
-	 * and saving it.
-	 * 
-	 * Fires a "collection.[table name].add" event with the new model.
-	 * 
-	 * @sicne 0.1.0
-	 * @param array $attributes An array of attributes.
-	 * @return Model|bool Returns the model if successful, false otherwise.
-	 */
-	public function create($attributes)
-	{
-		$model = new $this->_model($this->_table, $this->_db);
-		$model->set($attributes);
-		if($model->save()) {
-			Events::trigger("collection.".$this->_table.".add", $model);
-			return $model;
-		}
-		return false;
-	}
-	
-	/**
-	 * Remove a model from a collection.
-	 * 
-	 * This is equivalent of loading the model and then deleting it.
-	 * 
-	 * Fires a "collection.[table name].remove event with the model ID.
-	 * 
-	 * @since 0.1.0
-	 * @param int $id The ID of the model to remove
-	 * @return [boolean] True if success
-	 */
-	public function remove($id)
-	{
-		if($this->_model != "Model") {
-			Backbone::uses("/models/".$this->_model);
-			$model = new $this->_model($this->_db);
-		} else {
-			$model = new $this->_model($this->_table, $this->_db);
-		}
-		if($model->fetch($id)) {
-			if($model->delete()) {
-				Events::trigger("collection.".$this->_table.".remove", $id);
-				return true;
-			}			
-		}
-		return false;
-	}
-	
-	/**
-	 * Rewind the Iterator to the first element 
-	 * 
-	 * @since 0.1.0
-	 */
-	public function rewind() 
-	{
-        	$this->_position = 0;
-	}
 
 	/**
-	 * Return the current model element 
+	 * Return the current model element. 
+	 * Iterator method.
 	 * 
 	 * @since 0.1.0
 	 * @return Model The current model
@@ -216,7 +156,56 @@ class Collection implements Iterator
 			return $model;
 		}
 		return null;
-    	}
+	}
+    
+	/**
+	 * Return the key of the current element. 
+	 * Iterator method.
+	 * 
+	 * This will be the index position into the array of models.
+	 * @since 0.1.0
+	 */
+	public function key()
+	{
+		return $this->_position;
+	}
+	
+	/**
+	 * Return the current element and move forward to next element.
+	 * Iterator method.
+	 * 
+	 * @since 0.1.0
+	 * @return Model The current element before the position is incremented
+	 */
+	public function next() 
+	{
+		$cur = $this->current();
+		++$this->_position;
+		return $cur;
+	}
+	
+	/**
+	 * Rewind the Iterator to the first element.
+	 * Iterator method.
+	 * 
+	 * @since 0.1.0
+	 */
+	public function rewind() 
+	{
+		$this->_position = 0;
+	}
+	
+	/**
+	 * Checks if current position is valid.
+	 * Iterator method.
+	 * 
+	 * @since 0.1.0
+	 * @return bool True if the positino is valid, false otherwise
+	 */
+	public function valid()
+	{
+	    return isset($this->_models[$this->_position]);
+	}
 	
 	/**
 	 * Returns the current element's raw attributes 
@@ -230,71 +219,6 @@ class Collection implements Iterator
 			return $this->_models[$this->_position];
 		}
 		return null;
-	}
-
-	/**
-	 * Return the position of the current element 
-	 * 
-	 * @since 0.1.0
-	 * @return int The position of the current element
-	 */
-    	public function position() 
-	{
-        	return $this->_position;
-    	}
-    
-    	/**
-    	 * Alias for position() 
-    	 * 
-    	 * @since 0.1.0
-    	 */
-	public function key()
-	{
-		return $this->position();
-	}
-
-	/**
-	 * Return the current element and move forward to next element 
-	 * 
-	 * @since 0.1.0
-	 * @return Model The current element before the position is incremented
-	 */
-    	public function next() 
-    	{
-    		$cur = $this->current();
-        	++$this->_position;
-        	return $cur;
-    	}
-	
-	/**
-	 * Checks if current position is valid 
-	 * 
-	 * @since 0.1.0
-	 * @return bool True if the positino is valid, false otherwise
-	 */
-	public function items()
-	{
-	    return isset($this->_models[$this->_position]);
-	}
-    
-    	/**
-    	 * Alias for items() 
-    	 * 
-    	 * @since 0.1.0
-    	 */
-	public function hasNext()
-	{
-		return $this->items();
-	}
-	
-	/**
-	 * Alias for items() 
-	 * 
-	 * @since 0.1.0
-	 */
-	public function valid()
-	{
-		return $this->items();
 	}
 	
 	/**

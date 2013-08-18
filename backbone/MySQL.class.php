@@ -154,7 +154,8 @@ class MySQL extends DataSource
 	 *			"field1" => "2", // default operator is AND
 	 *			"OR" => array(
 	 *				"field2" => array("LIKE", "Jones"),
-	 *				"field3" => array("IN", array(1,2,4))
+	 *				"field3" => array("IN", array(1,2,4)),
+	 *				"field4" => array("OR", 1, 2) // (field4 = '1' OR field4 = '2')
 	 *			)
 	 *		)
 	 *	)
@@ -518,6 +519,15 @@ class MySQL extends DataSource
 							$value = $value[0];
 						}
 						$tmp[] = $this->format($key)." ".$in." (".join(",", $value).")";
+					} else if($value[0] == "OR") {
+						// multiple conditions on the same field
+						array_shift($value);
+						$tmpstr = "(";
+						foreach($value as $cond) {
+							$tmpstr .= $this->format($key)." = ".$cond;
+						}
+						$tmpstr .= ")";
+						$tmp[] = $tmpstr;
 					} else {
 						$tmp[] = $this->format($key)." ".$value[0]." '".$value[1]."'";
 					}

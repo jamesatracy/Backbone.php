@@ -104,6 +104,7 @@ class Response
 	 * @since 0.2.0
 	 * @param int The status code number
 	 * @return int Returns the status if $code is set to null
+	 * @throws InvalidArgumentException
 	 */
 	public function status($code = null)
 	{
