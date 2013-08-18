@@ -5,17 +5,9 @@
 </head>
 <body>
 <h1>Blog Example</h1>
-<table width="980px">
-	<tr>
-		<td align="left" valign="top">
-			<section id="content">
-				<?php $this->render("content"); ?>
-			</section>
-		</td>
-		<td width="300px" align="left" valign="top" style="padding-left: 10px">
-			<button id="create_post" onclick="window.location = '<?php echo Backbone::$request->link("/create/"); ?>'">Create Post</button>
-		</td>
-	</tr>
-</table>
+<?php $this->display("_navigation"); ?>
+<section id="content">
+	<?php $this->render("content"); ?>
+</section>
 </body>
 </html>

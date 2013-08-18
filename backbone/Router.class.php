@@ -41,9 +41,7 @@ class Router
 	 */
 	public function __construct()
 	{
-		$this->view = new View();
-		$this->response = new Response();
-		$this->response->header("X-Backbone-Version", Backbone::version());
+		// empty
 	}
 	
 	/**
@@ -109,6 +107,11 @@ class Router
 				// url match
 				$this->pattern = $original;
 				if(method_exists($this, $callback)) {
+					// initialize the response and view objects
+					$this->view = new View();
+					$this->response = new Response();
+					$this->response->header("X-Backbone-Version", Backbone::version());
+					// check pre route hook
 					if($this->onPreRouteHook($uri)) {
 						// call the callback method
 						// if there is an uncaught application exception, then a 500 error is sent

@@ -13,7 +13,7 @@ class BlogRouter extends Router
 		));
 		
 		// handle invalid urls (404 errors)
-		Events::bind("request.invalid-url", array($this, "error404"));
+		Events::bind("response.404", array($this, "error404"));
 	}
 	
 	/**
@@ -39,7 +39,7 @@ class BlogRouter extends Router
 		if(Backbone::$request->post()) {
 			if(Backbone::$request->post("cancel")) {
 				// cancelled, redirect back to home page
-				header("Location: ".Backbone::$request->link("/"));
+				$this->response->header("Location", Backbone::$request->link("/"));
 			} else {
 				// do the submit
 				$errors = array();
@@ -57,7 +57,8 @@ class BlogRouter extends Router
 					$post = new Post();
 					$post->set(Backbone::$request->post());
 					$post->save();
-					header("Location: ".Backbone::$request->link("/"));
+					// after successful submit, redirect to home page
+					$this->response->header("Location", Backbone::$request->link("/"));
 					return;
 				}
 			}
@@ -69,7 +70,7 @@ class BlogRouter extends Router
 	
 	public function error404()
 	{
-		echo "Invalid URL: ".Backbone::$request->here();
+		echo "Invalid URL (HTTP 404): ".Backbone::$request->here();
 	}
 }
 

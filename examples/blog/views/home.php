@@ -2,8 +2,7 @@
 $this->extend("master-template");
 
 // Get the list of posts to display
-// Notice that this information is passed from the Router
-// and not computed withiin this view.
+// Notice that this information is passed from the Router and not computed within this view.
 $posts = $this->get("posts");
 ?>
 
