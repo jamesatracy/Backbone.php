@@ -66,6 +66,31 @@ class Backbone
 	}
 	
 	/**
+	 * Wrapper for native var_dump() function that buffers the output
+	 * and returns it back to you.
+	 *
+	 * By default, this method handles arrays and objects differently than var_dump.
+	 * For arrays, it prints out "(array)" plus the length of the array.
+	 * For objects, it prints out "(object)" plust the class name.
+	 *
+	 * @since 0.2.0
+	 * @param mixed $var The variable to dump
+	 * @return string A string representation of the variable
+	 */
+	public static function dump($var)
+	{
+		if(is_array($var)) {
+			return "(array) length:".count($var);
+		}
+		if(is_object($var)) {
+			return "(object) ".get_class($var);
+		}
+		ob_start();
+		var_dump($var);
+		return ob_get_clean();
+	}
+	
+	/**
 	 * Include a class module.
 	 * 
 	 * For framework code, the $name parameter should be the classname.
@@ -109,6 +134,9 @@ class Backbone
 		$fullpath = self::resolvePath(ROUTERPATH, $name.".class.php");
 		if($fullpath) {
 			require_once($fullpath);
+			if(class_exists($name)) {
+				self::addRouter(new $name());
+			}
 		}
 	}
 	

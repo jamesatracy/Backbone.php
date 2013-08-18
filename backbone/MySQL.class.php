@@ -40,6 +40,7 @@ class MySQL extends DataSource
 	 *
 	 * @since 0.1.0
 	 * @param array $options An array of data source specific options.
+	 * @throws RuntimeException
 	 */
 	public function connect($options, $name = "")
 	{
@@ -54,7 +55,10 @@ class MySQL extends DataSource
 		
 		$this->_options = $options;
 		$this->_name = $name;
-		$this->_connection = mysql_connect($options['server'], $options['user'], $options['pass']) or die(mysql_error());
+		$this->_connection = mysql_connect($options['server'], $options['user'], $options['pass']);
+		if(!$this->_connection) {
+			throw new RuntimeException(mysql_error());
+		}
 	}
 	
 	/**

@@ -15,7 +15,6 @@
 * [Connections](connections_class.md)
 * DataMap
 * DataSource
-* DataType
 * Events
 * Html
 * Model
@@ -26,6 +25,6 @@
 * [Router](router_class.md)
 * Sanitize
 * [Schema](schema_class.md)
-* SchemaRules
 * [Session](session_class.md)
+* Validate
 * [View](view_class.md)

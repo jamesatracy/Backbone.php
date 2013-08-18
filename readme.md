@@ -20,7 +20,7 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 Classes
 -------
 
-The Backbone.php core framework consists of the following 20 modules: `Backbone`, `Collection`, `Connections`, `DataMap`, `DataSource`, `DataType`, `Events`, `Html`, `Model`, `MySQL`, `MySQLLogger`, `MySQLResult`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `SchemaRules`, `Session`, and `View`
+The Backbone.php core framework consists of the following 19 modules: `Backbone`, `Collection`, `Connections`, `DataMap`, `DataSource`, `Events`, `Html`, `Model`, `MySQL`, `MySQLLogger`, `MySQLResult`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `Session`, `Validate`, and `View`
 		
 Documentation
 -------------
@@ -34,7 +34,8 @@ Version History
 * Converted unit tests to phpunit.
 * Added module: Response.
 * Renamed module DataSet to DataMap.
-* Removed modules: BackboneTest, TestSuite, and JSON.
+* Renamed module SchemaRules to Validate.
+* Removed modules: BackboneTest, DataType, TestSuite, and JSON.
 * Backbone now triggers a "response.404" event instead of "request.invalid-url"
 * Backbone sends a HTTP 500 error if there is an uncaught exception in the route.
 * Updated and improved the blog example application.

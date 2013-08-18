@@ -8,7 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses(array("Connections", "DataType", "SchemaRules"));
+Backbone::uses("Connections");
 
 /**
  * Class for working with MySQL schemas as model representations. 
@@ -16,18 +16,44 @@ Backbone::uses(array("Connections", "DataType", "SchemaRules"));
  * Supports automatic validation against the schema.
  * Schema is the base class for Model.
  *
+ * Schema data structure format:
+ *
+ *		{
+ *			// the name of the primary key
+ *			"id" : "ID",
+ *			// an array of column definitions. the key is the column name.
+ *			"schema" : {
+ *				"ID" : {
+ *					// true if primary key
+ *					"primary" : true,
+ *					// see below for supported types
+ *					"type" : "integer|float|string|char|timesstamp",
+ *					// for integer types only. determines the range.
+ *					"size" : "tinyint|smallint|mediumint|int|bigint",
+ *					// for string and char types. determines max size.
+ *					"length" : "11",
+ *					// for integer types. may be 0 (signed) or 1
+ *					"unsigned" : "1",
+ *					// can this field accept null? 1 true, 0 false
+ *					"acceptNULL" : "0",
+ *					// the default value for this field
+ *					"default" : "0"
+ *				},
+ *			...
+ *		}			
+ *
  * @since 0.1.0
  */
 class Schema
 {
+	/** @var string Optional pointer to schema file name */
+	public $schemaFile = null;
+	
 	/** @var array Central cache for schema definitions */
 	protected static $_schema_cache = array();
 	
 	/** @var object Database connection */
 	protected $_db = null;
-	
-	/** @var string Optional pointer to schema file name */
-	public $schemaFile = null;
 	
 	/** @var array The schema */
 	protected $_schema = array();
@@ -43,6 +69,7 @@ class Schema
 	 *
 	 * @constructor
 	 * @param string $connection The name of the database connection.
+	 * @throws RuntimeException
 	 */
 	public function __construct($connection = "default")
 	{
@@ -54,7 +81,7 @@ class Schema
 			$this->_db = $connection;
 		}
 		if(!$this->_db) {
-			trigger_error("Error: Invalid connection suplied to Schema");
+			throw new RuntimeException("Error: Invalid connection supplied to Schema");
 		}
 	}
 	
@@ -188,7 +215,6 @@ class Schema
 	public function getErrors()
 	{
 		return $this->_errors;
-		//return join(" // ", $this->_errors);
 	}
 	
 	/**
@@ -210,12 +236,12 @@ class Schema
 	 * @since 0.1.0
 	 * @param array $fields An array of field => value pairs to validate
 	 * @returns bool True if all fields validate, false otherwise.
+	 * @throws RuntimeException
 	 */
 	public function validate($fields)
 	{
 		if(!$this->_schema) {
-			$this->_errors = array("The Schema has not been initialized.");
-			return false;
+			throw new RuntimeException("Error: Schema has not been initialized.");
 		}
 		
 		$this->_errors = array();
@@ -280,11 +306,12 @@ class Schema
 			}
 		}
 		
-		// check for custom schema rules
+		// check for custom validation rules
 		if(isset($field['rules'])) {
+			Backbone::uses("Validate");
 			foreach($field['rules'] as $rule => $args) {
-				if(SchemaRules::invoke($rule, $name, $value, $args) === false) {
-					$this->_errors[] = SchemaRules::$last_error;
+				if(Validate::invoke($rule, $name, $value, $args) === false) {
+					$this->_errors[] = Validate::$last_error;
 					return;
 				}
 			}
@@ -296,44 +323,44 @@ class Schema
 		if($type == "integer") {
 			if(!is_int($value) && !is_numeric($value)) {
 				// not a number
-				$this->_errors[] = "Type mismatch `".$name."`: Expected integer and found ".DataType::export($value);
+				$this->_errors[] = "Type mismatch `".$name."`: Expected integer and found ".Backbone::dump($value);
 				return;
 			}
 			$int_value = intval($value);
 			if($field['size'] == "tinyint") {
 				if(($field['unsigned'] && ($int_value < 0 || $int_value > 255)) || (!$field['unsigned'] && ($int_value < -128 || $int_value > 127))) {
 					// out of bounds
-					$this->_errors[] = "Out of bounds error `".$name."`: Expected tinyint ".($field['unsigned'] ? "unsigned " : "")."and found ".DataType::export($value);
+					$this->_errors[] = "Out of bounds error `".$name."`: Expected tinyint ".($field['unsigned'] ? "unsigned " : "")."and found ".Backbone::dump($value);
 				}
 			} else if($field['size'] == "smallint") {
 				// out of bounds
 				if(($field['unsigned'] && ($int_value < 0 || $int_value > 65535)) || (!$field['unsigned'] && ($int_value < -32768 || $int_value > 32767))) {
 					// out of bounds
-					$this->_errors[] = "Out of bounds error `".$name."`: Expected smallint ".($field['unsigned'] ? "unsigned " : "")."and found ".DataType::export($value);
+					$this->_errors[] = "Out of bounds error `".$name."`: Expected smallint ".($field['unsigned'] ? "unsigned " : "")."and found ".Backbone::dump($value);
 				}
 			} else if($field['size'] == "mediumint") {
 				// out of bounds
 				if(($field['unsigned'] && ($int_value < 0 || $int_value > 16777215)) || (!$field['unsigned'] && ($int_value < -8388608 || $int_value > 8388607))) {
 					// out of bounds
-					$this->_errors[] = "Out of bounds error `".$name."`: Expected mediumint ".($field['unsigned'] ? "unsigned " : "")."and found ".DataType::export($value);
+					$this->_errors[] = "Out of bounds error `".$name."`: Expected mediumint ".($field['unsigned'] ? "unsigned " : "")."and found ".Backbone::dump($value);
 				}
 			} else if($field['size'] == "int") {
 				// out of bounds
 				if(($field['unsigned'] && ($int_value < 0 || $int_value > 4294967295)) || (!$field['unsigned'] && ($int_value < -2147483648 || $int_value > 2147483647))) {
 					// out of bounds
-					$this->_errors[] = "Out of bounds error `".$name."`: Expected int ".($field['unsigned'] ? "unsigned " : "")."and found ".DataType::export($value);
+					$this->_errors[] = "Out of bounds error `".$name."`: Expected int ".($field['unsigned'] ? "unsigned " : "")."and found ".Backbone::dump($value);
 				}
 			} else if($field['size'] == "bigint") {
 				// out of bounds
 				if(($field['unsigned'] && ($int_value < 0 || $int_value > 18446744073709551615)) || (!$field['unsigned'] && ($int_value < -9223372036854775808 || $int_value > 9223372036854775807))) {
 					// out of bounds
-					$this->_errors[] = "Out of bounds error `".$name."`: Expected bigint ".($field['unsigned'] ? "unsigned " : "")."and found ".DataType::export($value);
+					$this->_errors[] = "Out of bounds error `".$name."`: Expected bigint ".($field['unsigned'] ? "unsigned " : "")."and found ".Backbone::dump($value);
 				}
 			}
 		} else if($type == "float") {
 			if(!is_float($value) && !is_numeric($value)) {
 				// not a float
-				$this->_errors[] = "Type mismatch `".$name."`: Expected float and found ".DataType::export($value);
+				$this->_errors[] = "Type mismatch `".$name."`: Expected float and found ".Backbone::dump($value);
 				return;
 			}
 		} else if($type == "string") {
@@ -341,24 +368,24 @@ class Schema
 				$length = strlen(strval($value));
 				if($length > $field['length']) {
 					// string exceeds maximum character length
-					$this->_errors[] = "String length (".$field['length'].") exceeded for `".$name."`: ".DataType::export($value)." (".$length.")";
+					$this->_errors[] = "String length (".$field['length'].") exceeded for `".$name."`: ".Backbone::dump($value)." (".$length.")";
 				}
 			}
 		} else if($type == "char") {
 			$length = strlen(strval($value));
 			if($length > 255) {
 				// string exceeds maximum character length
-				$this->_errors[] = "Char length (".$field['length'].") exceeded for `".$name."`: ".DataType::export($value)." (".$length.")";
+				$this->_errors[] = "Char length (".$field['length'].") exceeded for `".$name."`: ".Backbone::dump($value)." (".$length.")";
 			} else if($length > $field['length']) {
 				// string exceeds maximum character length
-				$this->_errors[] = "Char length (".$field['length'].") exceeded for `".$name."`: ".DataType::export($value)." (".$length.")";
+				$this->_errors[] = "Char length (".$field['length'].") exceeded for `".$name."`: ".Backbone::dump($value)." (".$length.")";
 			}
 		} else if($type == "datetime") {
 			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/", $value, $matches)) { 
 				if(!checkdate($matches[2], $matches[3], $matches[1])) { 
 					if($value != "0000-00-00 00:00:00") {
 						// invalid datetime
-						$this->_errors[] = "Invalid datetime `".$name."`: ".DataType::export($value);
+						$this->_errors[] = "Invalid datetime `".$name."`: ".Backbone::dump($value);
 					}
 				} else {
 					if($value < "1000-01-01 00:00:00") {
@@ -367,14 +394,14 @@ class Schema
 				}
 			} else {
 				// invalid datetime
-				$this->_errors[] = "Expecting datetime `".$name."`: ".DataType::export($value);
+				$this->_errors[] = "Expecting datetime `".$name."`: ".Backbone::dump($value);
 			}
 		} else if($type == "timestamp") {
 			if(preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/", $value, $matches)) { 
 				if(!checkdate($matches[2], $matches[3], $matches[1])) { 
 					// invalid timestamp
 					if($value != "0000-00-00 00:00:00") {
-						$this->_errors[] = "Invalid timestamp `".$name."`: ".DataType::export($value);
+						$this->_errors[] = "Invalid timestamp `".$name."`: ".Backbone::dump($value);
 					}
 				} else {
 					if($value < "1970-01-01 00:00:01") {
@@ -383,7 +410,7 @@ class Schema
 				}
 			} else {
 				// invalid timestamp
-				$this->_errors[] = "Expecting timestamp `".$name."`: ".DataType::export($value);
+				$this->_errors[] = "Expecting timestamp `".$name."`: ".Backbone::dump($value);
 			}
 		}
 	}

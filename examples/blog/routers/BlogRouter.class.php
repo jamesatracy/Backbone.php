@@ -42,12 +42,13 @@ class BlogRouter extends Router
 				$this->response->header("Location", Backbone::$request->link("/"));
 			} else {
 				// do the submit
+				Backbone::uses("Validate");
 				$errors = array();
-				if(!Backbone::$request->post("post_title"))
+				if(!Validate::required("post_title", Backbone::$request->post("post_title")))
 					$errors[] = "*** Post Title is a Required Field.";
-				if(!Backbone::$request->post("post_author"))
+				if(!Validate::required("post_author", Backbone::$request->post("post_author")))
 					$errors[] = "*** Post Author is a Required Field.";
-				if(!Backbone::$request->post("post_body"))
+				if(!Validate::required("post_body", Backbone::$request->post("post_body")))
 					$errors[] = "*** Post Body is a Required Field.";
 				if(!empty($errors)) {
 					$this->view->set("errors", join("<br/>", $errors));
@@ -73,5 +74,3 @@ class BlogRouter extends Router
 		echo "Invalid URL (HTTP 404): ".Backbone::$request->here();
 	}
 }
-
-Backbone::addRouter(new BlogRouter());
