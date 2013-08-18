@@ -226,9 +226,6 @@ class Router
 		$resp->header("X-Backbone-Exception", $e->getMessage());
 		$resp->send();
 		ob_end_clean();
-		// trigger a 500 error response event
-		// the application may bind to this event and present a custom 500 page
-		Events::trigger("response.500");
 		exit();
 	}
 };

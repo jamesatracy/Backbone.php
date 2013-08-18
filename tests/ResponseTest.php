@@ -29,6 +29,9 @@ Backbone::uses("Response");
  */
 class ResponseTest extends PHPUnit_Framework_TestCase
 {
+	protected $eventResponse200Triggered = false;
+	protected $eventResponse500Triggered = false;
+	
 	public function testMethod_status()
 	{
 		$resp = new Response();
@@ -91,9 +94,35 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 	{
 		$resp = new Response();
 		
+		// test response event triggered
+		Events::bind("response.200", array($this, "onResponse200"));
+		
 		$this->expectOutputString("body content goes here");
 		$resp->body("body content goes here");
 		$resp->send();
+		$this->assertTrue($this->eventResponse200Triggered);
+	}
+	
+	public function testBehavior_send500()
+	{
+		$resp = new Response();
+		
+		// test response event for 500 status code
+		Events::bind("response.500", array($this, "onResponse500"));
+		
+		$resp->status(500);
+		$resp->send();
+		$this->assertTrue($this->eventResponse500Triggered);
+	}
+	
+	public function onResponse200()
+	{
+		$this->eventResponse200Triggered = true;
+	}
+	
+	public function onResponse500()
+	{
+		$this->eventResponse500Triggered = true;
 	}
 }
 ?>

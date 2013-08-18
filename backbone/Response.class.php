@@ -94,6 +94,8 @@ class Response
 		if($this->_body !== null) {
 			echo $this->_body;
 		}
+		// trigger status code event
+		Events::trigger("response.".$this->_status);
 	}
 	
 	/**
