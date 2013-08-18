@@ -26,10 +26,8 @@ require("boot.php");
 // dispatch request
 if(!Backbone::dispatch(Backbone::$request))
 {
-	/*
-	Trigger an invalid url event (404 error).
-	It is up to the application to handle these by binding to this event
-	*/
-	Events::trigger("request.invalid-url");
+	// trigger an invalid url event (404 error).
+	// it is up to the application to handle these by binding to this event
+	Events::trigger("response.404");
 }
 ?>

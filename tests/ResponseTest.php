@@ -39,6 +39,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 		$resp->status(404);
 		$this->assertEquals($resp->status(), 404);
 		// invalid status code
+		$this->setExpectedException("InvalidArgumentException", "Response: Invalid status code 700");
 		$this->assertFalse($resp->status(700));
 		$this->assertEquals($resp->status(), 404);
 	}

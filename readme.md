@@ -31,10 +31,12 @@ Version History
 ---------------
 
 *0.2.0*
-* Converted existing unit tests to phpunit.
+* Converted unit tests to phpunit.
 * Added module: Response.
 * Renamed module DataSet to DataMap.
 * Removed modules: BackboneTest, TestSuite, and JSON.
+* Backbone now triggers a "response.404" event instead of "request.invalid-url"
+* Backbone sends a HTTP 500 error if there is an uncaught exception in the route.
 * Updated and improved the blog example application.
 
 *0.1.1*

@@ -10,6 +10,7 @@
 
 
 // Load required framework classes
+require_once(FRAMEWORK."Response.class.php");
 require_once(FRAMEWORK."Request.class.php");
 require_once(FRAMEWORK."Router.class.php");
 require_once(FRAMEWORK."Events.class.php");
@@ -40,7 +41,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.1.1";
+	protected static $version = "0.2.0";
 	
 	/**
 	 * Initialize Backbone.php 

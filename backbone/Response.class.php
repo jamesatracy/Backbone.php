@@ -109,7 +109,7 @@ class Response
 			return $this->_status;
 		}
 		if(!isset($this->_status_codes[$code])) {
-			return false;
+			throw new InvalidArgumentException("Response: Invalid status code ".$code);
 		}
 		$this->_status = $code;
 		return $this->_status;
