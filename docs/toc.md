@@ -13,7 +13,7 @@
 * [Backbone](backbone_class.md)
 * Collection
 * [Connections](connections_class.md)
-* DataSet
+* DataMap
 * DataSource
 * DataType
 * Events
@@ -21,6 +21,7 @@
 * Model
 * MySQL
 * MySQLResult
+* Response
 * [Request](request_class.md)
 * [Router](router_class.md)
 * Sanitize

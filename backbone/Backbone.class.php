@@ -13,7 +13,7 @@
 require_once(FRAMEWORK."Request.class.php");
 require_once(FRAMEWORK."Router.class.php");
 require_once(FRAMEWORK."Events.class.php");
-require_once(FRAMEWORK."DataSet.class.php");
+require_once(FRAMEWORK."DataMap.class.php");
 require_once(FRAMEWORK."View.class.php");
 require_once(FRAMEWORK."Html.class.php");
 
@@ -27,7 +27,7 @@ class Backbone
 	/** @var string Defines the root URI directory */
 	public static $root = "/";
 	
-	/** @var DataSet Global configuration object for application specific configurations */
+	/** @var DataMap Global configuration object for application specific configurations */
 	public static $config = null;
 	
 	/** @var array List of registered routers */
@@ -49,7 +49,7 @@ class Backbone
 	 */
 	public static function initialize()
 	{
-		self::$config = new DataSet();
+		self::$config = new DataMap();
 		return;
 	}
 	

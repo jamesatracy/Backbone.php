@@ -8,8 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses("ConnectionManager");
-
 /**
  * Class for sanitizing strings, including striping html and escpaing for database input.
  *
@@ -125,19 +123,19 @@ class Sanitize
 	 *
 	 * @since 0.1.0
 	 * @param string $string The string to escape
-	 * @param string $connection The name of the connection.
+	 * @param string $connection The optional name of the connection.
 	 * @return string The sanitized string
 	 */
-	public static function escape($string, $connection = "default")
+	public static function escape($string, $connection = null)
 	{
-		if(!$connection || empty($connection)) {
-			$connection = "default";
+		if($connection) {
+			Backbone::uses("Connections");
+			$db = Connections::get($connection);
+			if($db) {
+				return $db->escape($string);
+			}
 		}
-		$dbo = ConnectionManager::get($connection);
-		if($dbo) {
-			return $dbo->escape($string);
-		}
-		return $string; // not a valid connection
+		return addslashes($string);
 	}
 };
 

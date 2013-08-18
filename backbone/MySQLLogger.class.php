@@ -18,6 +18,15 @@ Backbone::$config->set("mysql.logfile", "mysql.log");
  * To set mysql logging to true, Backbone::$config->set("mysql.log", true)
  * To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
  * File name is relative to the application's web root and must be writable.
+ *
+ * Make a call to MySQLLogger::clearQueryLog() at the beginning of execution to
+ * flush the log file.
+ *
+ * Make a call to MySQLLogger::tallyQueryLog() at the end of executino to flush
+ * the log file.
+ *
+ * You can pause and resume logging activities if you need to skip logging certain
+ * queries by calling MySQLLogger::pause() and MySQLLogger::resume().
  */
 class MySQLLogger
 {

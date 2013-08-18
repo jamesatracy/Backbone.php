@@ -8,7 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses("DataSet");
+Backbone::uses("DataMap");
 
 /**
  * Generic class for Session management.
@@ -107,7 +107,7 @@ class Session
 			return;
 		}
 
-		$data = new DataSet($_SESSION);
+		$data = new DataMap($_SESSION);
 		$data->set($name, $value);
 		$_SESSION = $data->get();
 	}
@@ -124,7 +124,7 @@ class Session
 			return;
 		}
 
-		$data = new DataSet($_SESSION);
+		$data = new DataMap($_SESSION);
 		return $data->get($name);
 	}
 };
