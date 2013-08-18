@@ -14,10 +14,10 @@ if(!defined('FRAMEWORK'))
 	define('FRAMEWORK', ABSPATH.'backbone/');
 
 require_once(FRAMEWORK.'Backbone.class.php');
-Backbone::uses("DataSet");
+Backbone::uses("DataMap");
 
 /**
- * PHPUnit Test suite for DataSet class
+ * PHPUnit Test suite for DataMap class
  *
  * Tests for individual class methods following this naming
  * convention:
@@ -27,11 +27,11 @@ Backbone::uses("DataSet");
  * conventions:
  * 		public function testBehavior_${description}
  */
-class DataSetTest extends PHPUnit_Framework_TestCase
+class DataMapTest extends PHPUnit_Framework_TestCase
 {
 	public function testBehavior_SimpleKeys()
 	{
-		$set = new DataSet();
+		$set = new DataMap();
 		
 		// set a simple value
 		$set->set("foo", "one");
@@ -46,7 +46,7 @@ class DataSetTest extends PHPUnit_Framework_TestCase
 	
 	public function testBehavior_NestedKeys()
 	{
-		$set = new DataSet();
+		$set = new DataMap();
 		
 		// set a nested value
 		$set->set("foo.homer", "simpson");
