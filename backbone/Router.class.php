@@ -81,9 +81,9 @@ class Router
 	 * Checks the lists of routes agaisnt the given request
 	 *
 	 * @since 0.1.0
-	 * @return [boolean] true if the the request was routed, false otherwise
+	 * @return bool True if the the request was routed, false otherwise
 	 */
-	public function route($request)
+	public function route()
 	{
 		$request = Backbone::$request;
 		$success = false;

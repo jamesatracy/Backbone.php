@@ -196,7 +196,7 @@ class Backbone
 	{
 		$success = false;
 		foreach(self::$routers as $router) {
-			if($router->route($request)) {
+			if($router->route()) {
 				$success = true;
 				break;
 			}
