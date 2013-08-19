@@ -255,5 +255,24 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$model->set("first", "John");
 		$this->assertTrue($model->hasChanged());
 	}
+	
+	// Test the model's validation on save
+	public function testBehavior_validation()
+	{
+		$model = new MockModel();
+		
+		$model->rules(array(
+			"first" => array("required" => true, "maxlength" => 10)
+		));
+		$model->set("first", "");
+		$this->assertFalse($model->save());
+		$this->assertTrue(count($model->getErrors()) > 0);
+		$model->set("first", "abcdefghijklmnop");
+		$this->assertFalse($model->save());
+		$this->assertTrue(count($model->getErrors()) > 0);
+		$model->set("first", "abc");
+		$this->assertTrue($model->save());
+		$this->assertTrue(count($model->getErrors()) == 0);
+	}
 }
 ?>

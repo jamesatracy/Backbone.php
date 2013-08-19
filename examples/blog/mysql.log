@@ -1,16 +1,16 @@
 [localhost / default]
 SELECT * FROM `blog`.`posts`
 Num Rows: 6
-Duration: 0.0007 seconds
+Duration: 0.0012 seconds
 
 [localhost / default]
 DESCRIBE `blog`.`posts`
 Num Rows: 6
-Duration: 0.0034 seconds
+Duration: 0.0039 seconds
 
 ----------------------------------------------------------------
 Total Queries: 2
-Total Duration: 0.0041 seconds
+Total Duration: 0.0051 seconds
 ----------------------------------------------------------------
 Active DB Connections: default
 ----------------------------------------------------------------
