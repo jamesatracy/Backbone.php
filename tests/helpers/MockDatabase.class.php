@@ -8,7 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
  
-Backbone::uses(array("DataSource", "/tests/helpers/MockDatabaseResult"));
+Backbone::uses("DataSource");
 
 /**
  * Mock database class for testing db functions without a live db.
@@ -23,16 +23,15 @@ Backbone::uses(array("DataSource", "/tests/helpers/MockDatabaseResult"));
  * A: This class allows you to fake database results by passing your
  * data into the MockDatabase class prior to your db call. When
  * data is fetched through MockDatabase, the class will return
- * your data set exactly as is through a MockDatabaseResult object.
+ * your data set exactly as is.
  *
  * 	$db = new MockDatabase();
  *	$db->setResultsData(array(
  *			array("first" => "John", "last" => "Doe")
  *		));
- *	$result = $db->select("blah", array());
- *		// the parameters to select() do not matter...
- *  $row = $result->fetch();
- *		// $row = array("first" => "John", "last" => "Doe")
+ *	$results = $db->read("blah", array());
+ *		// the parameters to read() do not matter...
+ *		// $result = array(array("first" => "John", "last" => "Doe"))
  *
  *  NOTE that you can pass an array of arrays to MockDatabase and
  *	thereby simulate fetching multiple rows of data.
@@ -90,6 +89,19 @@ class MockDatabase extends DataSource
 	}
 	
 	/** 
+	 * Was there an error?
+	 *
+	 * You can simulate an error condition by setting last error to
+	 * a string value. Otherwise, it should be set to null.
+	 *
+	 * @return null|string The last error
+	 */
+	public function hasError()
+	{
+		return (!empty($this->lastError));
+	}
+	
+	/** 
 	 * Get the last error.
 	 *
 	 * You can simulate an error condition by setting last error to
@@ -121,31 +133,27 @@ class MockDatabase extends DataSource
 	}
 	
 	/**
-	 * Fetch data from the mock database
+	 * Return the table schema. Currently does nothing.
 	 *
-	 * @return MockDatabaseResult
+	 * @since 0.2.0
+	 * @param string $table The table name
+	 * @return array The schema structure
+	 * @throws RuntimeException
 	 */
-	public function select($table, $fields, $options = array())
+	public function schema($table)
 	{
-		$this->methodCalled = "select";
-		if(empty($this->data)) {
-			return new MockDatabaseResult(array());
-		}
-		return new MockDatabaseResult($this->data);
+		return;
 	}
 	
 	/**
-	 * Select all fields
+	 * Fetch data from the mock database
 	 *
-	 * @return MockDatabaseResult
+	 * @return array The data result set.
 	 */
-	public function selectAll($table, $options)
+	public function read($table, $options = array())
 	{
-		$this->methodCalled = "select";
-		if(empty($this->data)) {
-			return new MockDatabaseResult(array());
-		}
-		return new MockDatabaseResult($this->data);
+		$this->methodCalled = "read";
+		return $this->data;
 	}
 	
 	/**
@@ -169,13 +177,13 @@ class MockDatabase extends DataSource
 	 *
 	 * @param string $table The table name
 	 * @param array $fields An array of key => value pairs to insert
-	 * @return MockDatabaseResult
+	 * @return bool
 	 */
-	public function insert($table, $fields)
+	public function create($table, $fields)
 	{
 		$this->methodCalled = "insert";
 		$this->data = array($fields);
-		return new MockDatabaseResult(array());
+		return true;
 	}
 	
 	/**
@@ -189,13 +197,13 @@ class MockDatabase extends DataSource
 	 * @param string $table The table name
 	 * @param array $fields An array of key => value pairs to update
 	 * @param array $options An array of options, such as a where clause
-	 * @return MockDatabaseResult
+	 * @return bool
 	 */
 	public function update($table, $fields)
 	{
 		$this->methodCalled = "update";
 		$this->data = array($fields);
-		return new MockDatabaseResult(array());
+		return true;
 	}
 	
 	/** 
@@ -206,12 +214,13 @@ class MockDatabase extends DataSource
 	 *
 	 * @param string $table The table name
 	 * @param array $options An array of options, such as a where clause
-	 * @return MockDatabaseResult
+	 * @return bool
 	 */
 	public function delete($table, $options)
 	{
 		$this->methodCalled = "delete";
-		return new MockDatabaseResult(array());
+		$this->data = array();
+		return true;
 	}
 }
 ?>

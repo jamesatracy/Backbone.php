@@ -98,26 +98,25 @@ class Model extends Schema
 			$where = array_merge($where, $options['where']);
 		}
 		
-		$result = $this->_db->selectAll(
+		$result = $this->_db->read(
 			$this->_table, 
-			array(
-				"where" => $where
-			)
+			array("where" => $where)
 		);
-		if($result->isValid()) {
-			if($result->numRows() > 0) {
-				$row = $result->fetch();
-				$this->set($row);
-				$this->_changed = array();
-				
-				if(isset($options) && isset($options['with'])) {
-					$this->_with($options['with']);
-				}
-				return true;
+
+		if(count($result) > 0) {
+			$this->set($result[0]);
+			$this->_changed = array();
+			
+			if(isset($options) && isset($options['with'])) {
+				$this->_with($options['with']);
 			}
-			$this->_errors[] = get_class($this).": No results returned";
+			return true;
 		} else {
-			$this->_errors = $this->_db->getError();
+			if($this->_db->hasError()) {
+				$this->_errors[] = $this->_db->getError();
+			} else {
+				$this->_errors[] = get_class($this).": No results returned";
+			}
 		}
 		return false;
 	}
@@ -212,7 +211,7 @@ class Model extends Schema
 			$result = null;
 			if($this->isNew()) {
 				// insert
-				$result = $this->_db->insert(
+				$result = $this->_db->create(
 					$this->_table,
 					$attributes
 				);
@@ -224,16 +223,10 @@ class Model extends Schema
 				$result = $this->_db->update(
 					$this->_table, 
 					$attributes,
-					array(
-						"where" => $where
-					)
+					array("where" => $where)
 				);
 			}
 			if(!$result) {
-				$this->_errors = array($this->_db->getError());
-				return false;
-			}
-			if(!$result->isValid() || $this->_db->getError()) {
 				$this->_errors = array($this->_db->getError());
 				return false;
 			}
@@ -277,14 +270,10 @@ class Model extends Schema
 				
 		$result = $this->_db->delete(
 			$this->_table, 
-			array(
-				"where" => $where
-			)
+			array("where" => $where)
 		);
+
 		if(!$result) {
-			return false;
-		}
-		if(!$result->isValid() || $this->_db->getError()) {
 			$this->_errors[] = $this->_db->getError();
 			return false;
 		}

@@ -92,15 +92,17 @@ class Collection implements Iterator
 			throw new RuntimeException("Collection: Invalid Database Connection");
 		}
 		
-		$result = $this->_db->selectAll(
+		$this->_models = $this->_db->read(
 			$this->_table,
 			$options
 		);
-		if(!$result->isValid() || $this->_db->getError()) {
+		if($this->_db->hasError()) {
 			$this->errors[] = $this->_db->getError();
+			return false;
 		}
-		$this->_models = $result->fetchAll();
-		$this->length = $result->numRows();
+		// $this->_models = $result->fetchAll();
+		
+		$this->length = count($this->_models);
 		$this->rewind();
 		return true;
 	}

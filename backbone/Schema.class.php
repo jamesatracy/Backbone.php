@@ -109,7 +109,7 @@ class Schema
 				$this->_schema = $cache['schema'];
 				$this->_id = $cache['id'];
 			} else {
-				$this->_schema = $this->_loadSchema($table);
+				$this->_schema = $this->_db->schema($table);
 			}
 			if($cacheable) {
 				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_schema);
@@ -413,89 +413,6 @@ class Schema
 				$this->_errors[] = "Expecting timestamp `".$name."`: ".Backbone::dump($value);
 			}
 		}
-	}
-	
-	/**
-	 * Internal function for loading a schema
-	 *
-	 * @since 0.1.0
-	 * @param string $table The table name
-	 * @return array The schema object as an associated array
-	 */
-	protected function _loadSchema($table)
-	{
-		$db = $this->_db;
-		$fields = array();
-		$result = $db->describe($table);
-		while($row = $result->fetch()) {
-			// print_r($row);
-			// echo "<br/>";
-			$attrs = array();
-			$field = $row['Field'];
-			$type = $row['Type'];
-			$null = $row['Null'];
-			$default = $row['Default'];
-			
-			if($row['Key'] == "PRI") {
-				// set the primary key
-				$this->_id = $field;
-				$attrs['primary'] = true;
-			}
-			
-			// format type
-			if(substr($type, 0, 3) == "int" || substr($type, 0, 7) == "tinyint" || substr($type, 0, 8) == "smallint" || substr($type, 0, 9) == "mediumint" || substr($type, 0, 6) == "bigint") {
-				// get size
-				preg_match_all('/\((.*?)\)/', $type, $matches);
-				$attrs["type"] = "integer";
-				$attrs["size"] = substr($type, 0, strpos($type, "("));
-				$attrs["length"] = $matches[1][0];
-				
-				if(stripos($type, "unsigned") !== false) {
-					$attrs["unsigned"] = "1";
-				} else {
-					$attrs["unsigned"] = "0";
-				}
-				
-				if($default == null && $null == "NO") {
-					$default = "0";
-				}
-			} else if(substr($type, 0, 5) == "float" || substr($type, 0, 6) == "double") {
-				// get size
-				preg_match_all('/\((.*?)\)/', $type, $matches);
-				$attrs["type"] = "float";
-				$attrs["size"] = substr($type, 0, strpos($type, "("));
-				$attrs["length"] = $matches[1][0];
-			} else if(substr($type, 0, 7) == "varchar") {
-				// get size
-				preg_match_all('/\((.*?)\)/', $type, $matches);
-				$attrs["type"] = "string";
-				$attrs["length"] = $matches[1][0];
-			} else if(substr($type, 0, 4) == "char") {
-				// get size
-				preg_match_all('/\((.*?)\)/', $type, $matches);
-				$attrs["type"] = "char";
-				$attrs["length"] = $matches[1][0];
-			} else if(substr($type, 0, 4) == "text" || substr($type, 0, 8) == "longtext") {
-				// get size
-				$attrs["type"] = "string";
-				$attrs["length"] = null;
-			} else {
-				$attrs["type"] = $type;
-			}
-			
-			// null
-			if($null == "NO") {
-				$attrs["acceptNULL"] = '0';
-			} else {
-				$attrs["acceptNULL"] = '1';
-			}
-			
-			// default
-			$attrs["default"] = ($default == null ? "" : ($default == "NULL" ? null : $default));
-			
-			$fields[$field] = $attrs;
-		}
-		return $fields;
 	}
 };
 

@@ -22,7 +22,7 @@ Backbone::$config->set("mysql.logfile", "mysql.log");
  * Make a call to MySQLLogger::clearQueryLog() at the beginning of execution to
  * flush the log file.
  *
- * Make a call to MySQLLogger::tallyQueryLog() at the end of executino to flush
+ * Make a call to MySQLLogger::tallyQueryLog() at the end of execution to flush
  * the log file.
  *
  * You can pause and resume logging activities if you need to skip logging certain
@@ -32,8 +32,10 @@ class MySQLLogger
 {
 	/** @var int Number of quieries */
 	protected static $_queries_count = 0;
+	
 	/** @var int Cumulative query time */
 	protected static $_queries_time = 0;
+	
 	/** @var bool Whether or not the logging is paused */
 	protected static $_paused = false;
 	

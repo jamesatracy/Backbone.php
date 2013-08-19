@@ -17,8 +17,8 @@
  */
 abstract class DataSource 
 {	
-	/** @var array Data source options used to connect */
-	protected $_options = null;
+	/** @var array The options used to connect to this data source. */
+	protected $_options = array();
 	
 	/** @var bool Is the data source connected */
 	protected $_is_connected = false;
@@ -54,6 +54,92 @@ abstract class DataSource
 	public function isConnected()
 	{
 		return $this->_is_connected;
+	}
+	
+	/**
+	 * Return a data source's schema. 
+	 *
+	 * For the data structure used for the schema, see the documentation
+	 * for the Schema class.
+	 *
+	 * @since 0.2.0
+	 * @param string $source Usually the table name
+	 * @return array The schema structure
+	 * @throws RuntimeException
+	 */
+	public function schema($source)
+	{
+		// stub function to be implemented
+		return false;
+	}
+	
+	/**
+	 * CRUD: Create a new record in the data source.
+	 *
+	 * @since 0.2.0
+	 * @param string $source Usually the table name
+	 * @param array $data The fields and values to create
+	 * @return bool True if the creation succeeded.
+	 */
+	public function create($source, $data)
+	{
+		// stub function to be implemented
+		return false;
+	}
+	
+	/**
+	 * CRUD: Read data from the data source.
+	 *
+	 * @since 0.2.0
+	 * @param string $source Usually the table name
+	 * @param array $options Query options.
+	 * @return array The data that was read.
+	 */
+	public function read($source, $options)
+	{
+		// stub function to be implemented
+		return false;
+	}
+	
+	/**
+	 * CRUD: Update a record in the data source.
+	 *
+	 * @since 0.2.0
+	 * @param string $source Usually the table name
+	 * @param array $data The fields and values to create
+	 * @param array $options Query options.
+	 * @return bool True if the update succeeded.
+	 */
+	public function update($source, $data, $options)
+	{
+		// stub function to be implemented
+		return false;
+	}
+	
+	/**
+	 * CRUD: Delete data from the data source.
+	 *
+	 * @since 0.2.0
+	 * @param string $source Usually the table name
+	 * @param array $options Query options.
+	 * @return bool True if the delete succeeded.
+	 */
+	public function delete($source, $options)
+	{
+		// stub function to be implemented
+		return false;
+	}
+	
+	/**
+	 * Get the primary key of the last record inserted
+	 *
+	 * @since 0.2.0
+	 * @return int The primary key ID
+	 */
+	public function lastInsertID()
+	{
+		// stub function to be implemented
+		return false;
 	}
 	
 	/**
