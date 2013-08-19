@@ -199,7 +199,7 @@ class MockDatabase extends DataSource
 	 * @param array $options An array of options, such as a where clause
 	 * @return bool
 	 */
-	public function update($table, $fields)
+	public function update($table, $fields, $options)
 	{
 		$this->methodCalled = "update";
 		$this->data = array($fields);
