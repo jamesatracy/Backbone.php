@@ -122,21 +122,21 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	public function testMethod_onPreMatchHook()
 	{
 		$_SERVER['REQUEST_URI'] = "/";
-		$this->router->route()
+		$this->router->route();
 		$this->assertTrue($this->router->preMatchHookCalled);
 	}
 	
 	public function testMethod_onPreRouteHook()
 	{
 		$_SERVER['REQUEST_URI'] = "/";
-		$this->router->route()
+		$this->router->route();
 		$this->assertTrue($this->router->preRouteHookCalled);
 	}
 	
 	public function testMethod_onPostRouteHook()
 	{
 		$_SERVER['REQUEST_URI'] = "/";
-		$this->router->route()
+		$this->router->route();
 		$this->assertTrue($this->router->postRouteHookCalled);
 	}
 }
