@@ -91,6 +91,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		Backbone::$root = "/";
+		Backbone::$request = new Request();
 		$this->router = new TestRouter();
 	}
 	
