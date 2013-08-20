@@ -32,6 +32,6 @@ if(!Backbone::dispatch(Backbone::$request)) {
 }
 
 if(Backbone::$config->get("mysql.log")) {
-	MySQLLogger::tallyQueryLog();
+	MySQL_Logger::tallyQueryLog();
 }
 ?>

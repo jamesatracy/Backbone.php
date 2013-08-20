@@ -19,7 +19,6 @@
 * Html
 * Model
 * MySQL
-* MySQLLogger
 * Response
 * [Request](request_class.md)
 * [Router](router_class.md)
