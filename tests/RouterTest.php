@@ -21,7 +21,7 @@ Backbone::uses("Router");
  */
 class TestRouter extends Router
 {
-	public $methodCalled = null;
+	public $methodCalled = false;
 	public $argsPassed = array();
 	public $preMatchHookCalled = false;
 	public $preRouteHookCalled = false;
@@ -31,28 +31,19 @@ class TestRouter extends Router
 	{
 		$this->add(
 			array(
-				"/" => "indexRoute",
-				"/path/" => "simplePathRoute",
-				"/double/path/" => "doublePathRoute"
+				"/" => "onRoute",
+				"/path/" => "onRoute",
+				"/double/path/" => "onRoute",
+				"/test-number-param/:number/" => "onRoute",
+				"/test-alpha-param/:alpha/" => "onRoute",
+				"/test-alphanum-param/:alphanum/" => "onRoute"
 			)
 		);
 	}
 	
-	public function indexRoute()
+	public function onRoute()
 	{
-		$this->methodCalled = "indexRoute";
-		$this->argsPassed = func_get_args();
-	}
-	
-	public function simplePathRoute()
-	{
-		$this->methodCalled = "simplePathRoute";
-		$this->argsPassed = func_get_args();
-	}
-	
-	public function doublePathRoute()
-	{
-		$this->methodCalled = "doublePathRoute";
+		$this->methodCalled = true;
 		$this->argsPassed = func_get_args();
 	}
 	
@@ -100,14 +91,16 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_URI'] = "/";
 		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->methodCalled, "indexRoute");
+		$this->assertEquals($this->router->getMatchedPattern(), "/");
+		$this->assertTrue($this->router->methodCalled);
 		$this->assertEmpty($this->router->argsPassed);
 		
 		// test with root == /path/
 		Backbone::$root = "/path/";
 		$_SERVER['REQUEST_URI'] = "/path/";
 		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->methodCalled, "indexRoute");
+		$this->assertEquals($this->router->getMatchedPattern(), "/");
+		$this->assertTrue($this->router->methodCalled);
 		$this->assertEmpty($this->router->argsPassed);
 	}
 	
@@ -115,8 +108,70 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	{
 		$_SERVER['REQUEST_URI'] = "/path/";
 		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->methodCalled, "simplePathRoute");
+		$this->assertEquals($this->router->getMatchedPattern(), "/path/");
+		$this->assertTrue($this->router->methodCalled);
 		$this->assertEmpty($this->router->argsPassed);
+	}
+	
+	public function testBehavior_doublePathRoute()
+	{
+		$_SERVER['REQUEST_URI'] = "/double/path/";
+		$this->assertTrue($this->router->route());
+		$this->assertEquals($this->router->getMatchedPattern(), "/double/path/");
+		$this->assertTrue($this->router->methodCalled);
+		$this->assertEmpty($this->router->argsPassed);
+	}
+	
+	public function testBehavior_numberParamRoute()
+	{
+		$_SERVER['REQUEST_URI'] = "/test-number-param/12/";
+		$this->assertTrue($this->router->route());
+		$this->assertEquals($this->router->getMatchedPattern(), "/test-number-param/:number/");
+		$this->assertTrue($this->router->methodCalled);
+		$this->assertCount(1, $this->router->argsPassed);
+		$this->assertEquals($this->router->argsPassed[0], 12);
+		
+		$_SERVER['REQUEST_URI'] = "/test-number-param/abc/";
+		$this->assertFalse($this->router->route());
+	}
+	
+	public function testBehavior_alphaParamRoute()
+	{
+		$_SERVER['REQUEST_URI'] = "/test-alpha-param/abc/";
+		$this->assertTrue($this->router->route());
+		$this->assertEquals($this->router->getMatchedPattern(), "/test-alpha-param/:alpha/");
+		$this->assertTrue($this->router->methodCalled);
+		$this->assertCount(1, $this->router->argsPassed);
+		$this->assertEquals($this->router->argsPassed[0], "abc");
+		
+		$_SERVER['REQUEST_URI'] = "/test-alpha-param/12/";
+		$this->assertFalse($this->router->route());
+	}
+	
+	public function testBehavior_alphanumParamRoute()
+	{
+		$_SERVER['REQUEST_URI'] = "/test-alphanum-param/abc/";
+		$this->assertTrue($this->router->route());
+		$this->assertEquals($this->router->getMatchedPattern(), "/test-alphanum-param/:alphanum/");
+		$this->assertTrue($this->router->methodCalled);
+		$this->assertCount(1, $this->router->argsPassed);
+		$this->assertEquals($this->router->argsPassed[0], "abc");
+		
+		$_SERVER['REQUEST_URI'] = "/test-alphanum-param/12/";
+		$this->router->methodCalled = false;
+		$this->assertTrue($this->router->route());
+		$this->assertEquals($this->router->getMatchedPattern(), "/test-alphanum-param/:alphanum/");
+		$this->assertTrue($this->router->methodCalled);
+		$this->assertCount(1, $this->router->argsPassed);
+		$this->assertEquals($this->router->argsPassed[0], "12");
+		
+		$_SERVER['REQUEST_URI'] = "/test-alphanum-param/abc12/";
+		$this->router->methodCalled = false;
+		$this->assertTrue($this->router->route());
+		$this->assertEquals($this->router->getMatchedPattern(), "/test-alphanum-param/:alphanum/");
+		$this->assertTrue($this->router->methodCalled);
+		$this->assertCount(1, $this->router->argsPassed);
+		$this->assertEquals($this->router->argsPassed[0], "abc12");
 	}
 	
 	/** Testing route hook methods */

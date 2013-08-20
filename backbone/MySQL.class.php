@@ -28,6 +28,9 @@ class MySQL extends DataSource
 	
 	/** @var string The last mysql error, if any */
 	protected $_error = "";
+	
+	/** @var string The last mysql query */
+	protected $_query = "";
 		
 	/** @var array An array of external hooks into the MySQL class */
 	protected $_hooks = array();
@@ -97,6 +100,17 @@ class MySQL extends DataSource
 	}
 	
 	/**
+	 * Get the last query, if any
+	 *
+	 * @since 0.2.0
+	 * @return string The last query, if any.
+	 */
+	public function getLastQuery()
+	{
+		return $this->_query;
+	}
+	
+	/**
 	 * Hook into the MySQL class.
 	 *
 	 * Currently supported hooks:
@@ -127,7 +141,9 @@ class MySQL extends DataSource
 		if(empty($table)) {
 			return array();
 		}
-		return $this->query("DESCRIBE ".$this->formatTable($table));
+		
+		$options['table'] = $table;
+		return $this->query($this->buildQuery("describe", $options));
 	}
 	
 	/**
@@ -250,82 +266,8 @@ class MySQL extends DataSource
 			return array();
 		}
 		
-		$options = $this->_normalizeOptions($options);
-		
-		// command
-		$sql = "SELECT ";
-		
-		// fields
-		if($options['fields']) {
-			$fields = $options['fields'];
-			if(!is_array($fields)) {
-				$fields = array($fields);
-			}
-			// loop over list of fields
-			foreach($fields as $index => $field) {
-				if($field == "COUNT(*)") {
-					$fields[$index] = $field;
-				} else {
-					$fields[$index] = $this->format($field);
-				}
-			}
-			$sql .= join(",", $fields);
-		} else {
-			// select all
-			$sql .= "*";
-		}
-		
-		// table
-		$sql .= " FROM ".$this->formatTable($table);
-		
-		// joins
-		if($options['join']) {
-			$joins = "";
-			foreach($options['join'] as $key => $value) {
-				$type = "LEFT";
-				if(isset($value['type'])) {
-					$type = $value['type'];
-				}
-				if(!isset($value['fields'])) {
-					return array();
-				}
-				$joins .= $type." JOIN ".$this->formatTable($key)." ON ".$this->format($value['fields'][0])." = ".$this->format($value['fields'][1])." ";
-			}
-			$sql .= " ".$joins;
-		}
-		
-		// where
-		if($options['where']) {
-			$sql .= " ".$this->_formatWhere($options['where']);
-		}
-		
-		// group by
-		if($options['group_by']) {
-			$sql .= " GROUP BY ".$this->format($options['group_by']);
-		}
-		
-		// order by
-		if($options['order_by']) {
-			if(isset($options['order_by'][0])) {
-				$sql .= " ORDER BY ".$this->format($options['order_by'][0])." ";
-				if(isset($options['order_by'][1])) {
-					$sql .= $options['order_by'][1];
-				} else {
-					$sql .= "ASC";
-				}
-			}
-		}
-		
-		// limit
-		if($options['limit']) {
-			$sql .= " LIMIT ".$options['limit'];
-		}
-		
-		// offset
-		if($options['offset']) {
-			$sql .= " OFFSET ".$options['offset'];
-		}
-		return $this->query($sql);
+		$options['table'] = $table;		
+		return $this->query($this->buildQuery("select", $options));
 	}
 	
 	/**
@@ -372,21 +314,10 @@ class MySQL extends DataSource
 			return array();
 		}
 			
-		$keys = array_keys($data);
-		$values = array_values($data);
-	
-		// field names
-		foreach($keys as $i => $key) {
-			$keys[$i] = "`".$key."`";
-		}
+		$options['table'] = $table;
+		$options['fields'] = $data;
 		
-		// values
-		foreach($values as $i => $val) {
-			$values[$i] = $this->_formatValue($val);
-		}
-			
-		$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->formatTable($table), join(", ", $keys), join(", ", $values));
-		$this->query($sql);
+		$this->query($this->buildQuery("insert", $options));
 		return (!$this->hasError());
 	}
 	
@@ -412,21 +343,10 @@ class MySQL extends DataSource
 			return array();
 		}
 		
-		$options = $this->_normalizeOptions($options);
+		$options['table'] = $table;
+		$options['fields'] = $data;
 		
-		$updates = array();
-		foreach($data as $key => $value) {
-			$value = $this->_formatValue($value);
-			$updates[] = "`".$key."` = ".$value;
-		}
-			
-		$sql = sprintf("UPDATE %s SET %s", $this->formatTable($table), join(", ", $updates));
-		
-		// where
-		if($options['where']) {
-			$sql .= " ".$this->_formatWhere($options['where']);
-		}
-		$this->query($sql);
+		$this->query($this->buildQuery("update", $options));
 		return (!$this->hasError());
 	}
 	
@@ -448,11 +368,9 @@ class MySQL extends DataSource
 			return array();
 		}
 		
-		$sql = "DELETE FROM ".$this->formatTable($table);
-		if(isset($options['where'])) {
-			$sql .= " ".$this->_formatWhere($options['where']);
-		}
-		$this->query($sql);
+		$options['table'] = $table;
+		
+		$this->query($this->buildQuery("delete", $options));
 		return (!$this->hasError());
 	}
 	
@@ -476,7 +394,8 @@ class MySQL extends DataSource
 		$t = microtime(true);
 		$this->_result = mysql_query($query, $this->_connection);
 		$this->_error = mysql_error();
-		
+		$this->_query = $query;
+
 		// do logging?
 		if(Backbone::$config->get("mysql.log")) {
 			$duration = round((microtime(true) - $t), 4);
@@ -486,8 +405,10 @@ class MySQL extends DataSource
 		
 		// gather up all the rows
 		$rows = array();
-		while($current = mysql_fetch_array($this->_result, MYSQL_ASSOC)) {
-			$rows[] = $current;
+		if($this->_result !== false) {
+			while($current = mysql_fetch_array($this->_result, MYSQL_ASSOC)) {
+				$rows[] = $current;
+			}
 		}
 		return $rows;
 	}
@@ -566,7 +487,7 @@ class MySQL extends DataSource
 				$tmp = explode(",", $var);
 				$str[] = $this->format(trim($tmp[0]));
 				if(isset($tmp[1])) {
-					$str[] = $tmp[1];
+					$str[] = $this->format(trim($tmp[1]));
 				}
                 return substr($name, 0, $first + 1).join(",",$str).")";
             }
@@ -588,6 +509,40 @@ class MySQL extends DataSource
 	}
 	
 	/**
+	 * Function that builds a MySQL query string given the action
+	 * and an array of options.
+	 *
+	 * @since 0.2.0
+	 * @param string $action select,insert,update,delete, or describe
+	 * @param array $options An array of query options
+	 * @return string The query string.
+	 */
+	public function buildQuery($action, $options)
+	{
+		if(!isset($options['table'])) {
+			return "";
+		}
+		
+		$query = "";
+		$action = strtolower($action);
+		$options = $this->_normalizeOptions($options);
+		
+		if($action === "select") {
+			$query = $this->_buildSelect($options);
+		} else if($action === "insert") {
+			$query = $this->_buildInsert($options);
+		} else if($action === "update") {
+			$query = $this->_buildUpdate($options);
+		} else if($action === "delete") {
+			$query = $this->_buildDelete($options);
+		} else if($action === "describe") {
+			$query = $this->_buildDescribe($options);
+		}
+		
+		return $query;
+	}
+	
+	/**
 	 * Internal function for normalizing the options data.
 	 *
 	 * @since 0.2.0
@@ -597,6 +552,7 @@ class MySQL extends DataSource
 	protected function _normalizeOptions($options = array())
 	{
 		$options = array_merge(array(
+			"table" => null,
 			"fields" => null,
 			"where" => null,
 			"join" => null, 
@@ -605,6 +561,188 @@ class MySQL extends DataSource
 			"limit" => null,
 			"offset" => null
 		), (array)$options);
+		return $options;
+	}
+	
+	/**
+	 * Internal function for building a select statement
+	 * 
+	 * @since 0.2.0
+	 * @param array $options The query options
+	 * @return string The select statement
+	 */
+	protected function _buildSelect($options)
+	{
+		$table = $options['table'];
+		
+		// command
+		$sql = "SELECT ";
+		
+		// fields
+		if($options['fields']) {
+			$fields = $options['fields'];
+			if(!is_array($fields)) {
+				$fields = array($fields);
+			}
+			// loop over list of fields
+			foreach($fields as $index => $field) {
+				if($field == "COUNT(*)") {
+					$fields[$index] = $field;
+				} else {
+					$fields[$index] = $this->format($field);
+				}
+			}
+			$sql .= join(",", $fields);
+		} else {
+			// select all
+			$sql .= "*";
+		}
+		
+		// table
+		$sql .= " FROM ".$this->formatTable($table);
+		
+		// joins
+		if($options['join']) {
+			$joins = "";
+			foreach($options['join'] as $key => $value) {
+				$type = "LEFT";
+				if(isset($value['type'])) {
+					$type = $value['type'];
+				}
+				if(!isset($value['fields'])) {
+					return array();
+				}
+				$joins .= $type." JOIN ".$this->formatTable($key)." ON ".$this->format($value['fields'][0])." = ".$this->format($value['fields'][1])." ";
+			}
+			$sql .= " ".$joins;
+		}
+		
+		// where
+		if($options['where']) {
+			$sql .= " ".$this->_formatWhere($options['where']);
+		}
+		
+		// group by
+		if($options['group_by']) {
+			$sql .= " GROUP BY ".$this->format($options['group_by']);
+		}
+		
+		// order by
+		if($options['order_by']) {
+			if(is_string($options['order_by'])) {
+				$sql .= " ORDER BY ".$this->format($options['order_by'])." ASC";
+			} else if(isset($options['order_by'][0])) {
+				$sql .= " ORDER BY ".$this->format($options['order_by'][0])." ";
+				if(isset($options['order_by'][1])) {
+					$sql .= $options['order_by'][1];
+				} else {
+					$sql .= "ASC";
+				}
+			}
+		}
+		
+		// limit
+		if($options['limit']) {
+			$sql .= " LIMIT ".$options['limit'];
+		}
+		
+		// offset
+		if($options['offset']) {
+			$sql .= " OFFSET ".$options['offset'];
+		}
+		
+		return $sql;
+	}
+	
+	/**
+	 * Internal function for building an insert statement.
+	 *
+	 * @since 0.2.0
+	 * @param array $options The query options
+	 * @return string The insert statement.
+	 */
+	protected function _buildInsert($options)
+	{
+		$table = $options['table'];
+		$data = $options['fields'];
+		
+		$keys = array_keys($data);
+		$values = array_values($data);
+	
+		// field names
+		foreach($keys as $i => $key) {
+			$keys[$i] = "`".$key."`";
+		}
+		
+		// values
+		foreach($values as $i => $val) {
+			$values[$i] = $this->_formatValue($val);
+		}
+			
+		$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->formatTable($table), join(", ", $keys), join(", ", $values));
+		
+		return $sql;
+	}
+	
+	/**
+	 * Internal function for building an update statement.
+	 *
+	 * @since 0.2.0
+	 * @param array $options The query options
+	 * @return string The update statement.
+	 */
+	protected function _buildUpdate($options)
+	{
+		$table = $options['table'];
+		$data = $options['fields'];
+		
+		$updates = array();
+		foreach($data as $key => $value) {
+			$value = $this->_formatValue($value);
+			$updates[] = "`".$key."` = ".$value;
+		}
+			
+		$sql = sprintf("UPDATE %s SET %s", $this->formatTable($table), join(", ", $updates));
+		
+		// where
+		if($options['where']) {
+			$sql .= " ".$this->_formatWhere($options['where']);
+		}
+		
+		return $sql;
+	}
+	
+	/**
+	 * Internal functino for building a delete statement.
+	 *
+	 * @since 0.2.0
+	 * @param array $options The query options
+	 * @return string The delete statement.
+	 */
+	protected function _buildDelete($options)
+	{
+		$table = $options['table'];
+		
+		$sql = "DELETE FROM ".$this->formatTable($table);
+		if(isset($options['where'])) {
+			$sql .= " ".$this->_formatWhere($options['where']);
+		}
+		
+		return $sql;
+	}
+	
+	/**
+	 * Internal functino for building a describe statement.
+	 *
+	 * @since 0.2.0
+	 * @param array $options The query options
+	 * @return string The describe statement.
+	 */
+	protected function _buildDescribe($options)
+	{
+		$table = $options['table'];
+		$sql = "DESCRIBE ".$this->formatTable($table);
+		return $sql;
 	}
 	
 	/**
@@ -675,12 +813,11 @@ class MySQL extends DataSource
 					} else if($value[0] == "OR") {
 						// multiple conditions on the same field
 						array_shift($value);
-						$tmpstr = "(";
+						$tmparr = array();
 						foreach($value as $cond) {
-							$tmpstr .= $this->format($key)." = ".$cond;
+							$tmparr[] = $this->format($key)." = '".$cond."'";
 						}
-						$tmpstr .= ")";
-						$tmp[] = $tmpstr;
+						$tmp[] = "(".join(" OR ", $tmparr).")";
 					} else {
 						$tmp[] = $this->format($key)." ".$value[0]." '".$value[1]."'";
 					}
