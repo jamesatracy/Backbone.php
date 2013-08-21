@@ -23,9 +23,9 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 Classes
 -------
 
-The Backbone.php framework consists of the following 17 modules: 
+The Backbone.php framework consists of the following 16 modules: 
 
-`Backbone`, `Collection`, `Connections`, `DataMap`, `DataSource`, `Events`, `Html`, `Model`, `MySQL`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `Session`, `Validate`, and `View`
+`Backbone`, `Collection`, `Connections`, `DataMap`, `DataSource`, `Events`, `Html`, `Model`, `MySQL`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `Validate`, and `View`
 
 Dependencies
 ------------
@@ -47,7 +47,7 @@ This release contains significant and fundamental changes across the board:
 * Added module: Response.
 * Renamed module DataSet to DataMap.
 * Renamed module SchemaRules to Validate.
-* Removed modules: BackboneTest, DataType, MySQLResult, TestSuite, and JSON.
+* Removed modules: BackboneTest, DataType, MySQLResult, TestSuite, Session, and JSON.
 * Fleshed out abstract DataSource class, the glue between models and data sources.
 * Updated MySQL to follow new DataSource interfaces. CRUD methods return actual data. MySQLResult is gone.
 * Backbone now triggers a "response.404" event instead of "request.invalid-url"

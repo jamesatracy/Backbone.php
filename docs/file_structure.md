@@ -8,7 +8,7 @@ Backbone.php consists of the core framework code in a `/backbone/` directory and
 
 * `backbone.php` Initializes the Backbone.php framework and sets up the request object. This file should not be modified.
 
-* `config.php` Sets up several directory constants required by Backbone.php to find the core framework, application, and view directories. By modifiying the FRAMEWORK constant you can place the core /backbone/ directory elsewhere than your web root.
+* `config.php` Sets up several directory constants required by Backbone.php to find the core framework, application, router, and view directories. By modifiying the FRAMEWORK constant you can place the core /backbone/ directory elsewhere than your web root.
 
 * `boot.php` Sets the web root relative path, loads routers, and performs other application specific bootstraping.
 

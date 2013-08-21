@@ -24,6 +24,5 @@
 * [Router](router_class.md)
 * Sanitize
 * [Schema](schema_class.md)
-* [Session](session_class.md)
 * Validate
 * [View](view_class.md)
