@@ -31,13 +31,13 @@ Backbone::uses("Connections");
  *					// for integer types only. determines the range.
  *					"size" : "tinyint|smallint|mediumint|int|bigint",
  *					// for string and char types. determines max size.
- *					"length" : "11",
+ *					"length" : "255",
  *					// for integer types. may be 0 (signed) or 1
- *					"unsigned" : "1",
+ *					"unsigned" : "0|1",
  *					// can this field accept null? 1 true, 0 false
- *					"acceptNULL" : "0",
+ *					"acceptNULL" : "0|1",
  *					// the default value for this field
- *					"default" : "0"
+ *					"default" : "0|1"
  *				},
  *			...
  *		}			
@@ -49,13 +49,13 @@ class Schema
 	/** @var string Optional pointer to schema file name */
 	public $schemaFile = null;
 	
-	/** @var array Central cache for schema definitions */
+	/** @var array A central cache for schema definitions */
 	protected static $_schema_cache = array();
 	
 	/** @var object Database connection */
 	protected $_db = null;
 	
-	/** @var array The schema */
+	/** @var array The schema definition */
 	protected $_schema = array();
 	
 	/** @var string The primary key */
@@ -115,6 +115,7 @@ class Schema
 				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_schema);
 			}
 		}
+		return $this->_schema;
 	}
 	
 	/**
@@ -192,7 +193,7 @@ class Schema
 	}
 	
 	/**
-	 * Export this schema defintion to a file
+	 * Export this schema definition to a file
 	 *
 	 * @since 0.1.0
 	 * @param string $file The file name relative to the ABSPATH
