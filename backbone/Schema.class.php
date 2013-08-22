@@ -11,12 +11,20 @@
 Backbone::uses("Connections");
 
 /**
- * Class for working with MySQL schemas as model representations. 
+ * Schema represents the definition of a data resource and
+ * is the base class for Backbone.php's Model class. 
  *
- * Supports automatic validation against the schema.
- * Schema is the base class for Model.
+ * Schema is responsible for providing information about a model's
+ * definition and for validation of data against that definition.
+ * This provides a layer of security between data input and the 
+ * database itself. Schema itself is database agnostic - it depends
+ * on the database object to implement a "schmea" method that converts
+ * the resource's schmea into the definition outlined below. The
+ * database object should be an extension of DataSource.
  *
- * Schema data structure format:
+ * The schema is also used to populate new model's with default data.
+ *
+ * Schema data structure format, as a JSON string:
  *
  *		{
  *			// the name of the primary key
@@ -55,8 +63,8 @@ class Schema
 	/** @var object Database connection */
 	protected $_db = null;
 	
-	/** @var array The schema definition */
-	protected $_schema = array();
+	/** @var array Associated array of field definitions */
+	protected $_fields = array();
 	
 	/** @var string The primary key */
 	protected $_id = "";
@@ -101,21 +109,21 @@ class Schema
 					$cache = Schema::$_schema_cache[$table];
 					$this->_schema = $cache['schema'];
 					$this->_id = $cache['id'];
-					return $this->_schema;
+					return $this->_fields;
 				}
 			}
 			if($this->schemaFile) {
 				$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile), TRUE);
-				$this->_schema = $cache['schema'];
+				$this->_fields = $cache['schema'];
 				$this->_id = $cache['id'];
 			} else {
-				$this->_schema = $this->_db->schema($table);
+				$this->_fields = $this->_db->schema($table);
 			}
 			if($cacheable) {
-				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_schema);
+				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_fields);
 			}
 		}
-		return $this->_schema;
+		return $this->_fields;
 	}
 	
 	/**
@@ -126,7 +134,7 @@ class Schema
 	 */
 	public function isInitialized()
 	{
-		return (!empty($this->_schema));
+		return (!empty($this->_fields));
 	}
 	
 	/**
@@ -143,10 +151,10 @@ class Schema
 	 */
 	public function rules($rules)
 	{
-		if($this->_schema && is_array($rules)) {
+		if($this->_fields && is_array($rules)) {
 			foreach($rules as $key => $values) {
-				if(isset($this->_schema[$key])) {
-					$this->_schema[$key]['rules'] = $values;
+				if(isset($this->_fields[$key])) {
+					$this->_fields[$key]['rules'] = $values;
 				}
 			}
 		}
@@ -175,7 +183,7 @@ class Schema
 		if(!$this->isInitialized()) {
 			return false;
 		}
-		return (isset($this->_schema[$field]));
+		return (isset($this->_fields[$field]));
 	}
 	
 	/**
@@ -186,10 +194,10 @@ class Schema
 	 */
 	public function schemaToJSON()
 	{
-		if(!$this->_schema) {
+		if(!$this->_fields) {
 			return "";
 		}
-		return $this->_schema;
+		return $this->_fields;
 	}
 	
 	/**
@@ -241,16 +249,16 @@ class Schema
 	 */
 	public function validate($fields)
 	{
-		if(!$this->_schema) {
+		if(!$this->_fields) {
 			throw new RuntimeException("Error: Schema has not been initialized.");
 		}
 		
 		$this->_errors = array();
 		foreach($fields as $key => $value) {
-			if(!isset($this->_schema[$key])) {
+			if(!isset($this->_fields[$key])) {
 				$this->_errors[] = "Invalid field name: ".$key.". ";
 			} else {
-				$this->_validateField($this->_schema[$key], $key, $value);
+				$this->_validateField($this->_fields[$key], $key, $value);
 			}
 		}
 		
@@ -270,11 +278,11 @@ class Schema
 	public function defaultValues()
 	{
 		$defaults = array();
-		if(!$this->_schema) {
+		if(!$this->_fields) {
 			return $defaults;
 		}
 		
-		foreach($this->_schema as $key => $definition) {
+		foreach($this->_fields as $key => $definition) {
 			$value = $definition['default'];
 			if($value == "CURRENT_TIMESTAMP") {
 				$value = date('Y-m-d H:i:s', time());
