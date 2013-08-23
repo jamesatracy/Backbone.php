@@ -128,6 +128,11 @@ class Collection implements Iterator
 		// loop over models
 		foreach($this->_models as $data) {
 			if(isset($data[$key]) && $data[$key] == $id) {
+				Backbone::uses($this->_model);
+				$classname = Backbone::getClassName($this->model);
+				if(!class_exists($classname)) {
+					throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
+				}
 				$model = new $this->_model($this->_table, $this->_db);
 				$model->set($data);
 				break;
@@ -142,13 +147,18 @@ class Collection implements Iterator
 	 * 
 	 * @since 0.1.0
 	 * @return Model The current model
+	 * @throws RuntimeException
 	 */
    	public function current() 
 	{
 		if(isset($this->_models[$this->_position])) {
 			if($this->_model != "Model") {
-				Backbone::uses("/models/".$this->_model);
-				$model = new $this->_model($this->_db);
+				Backbone::uses($this->_model);
+				$classname = Backbone::getClassName($this->_model);
+				if(!class_exists($classname)) {
+					throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
+				}
+				$model = new $classname($this->_db);
 			} else {
 				$model = new $this->_model($this->_table, $this->_db);
 			}
@@ -260,10 +270,10 @@ class Collection implements Iterator
 	}
 	
 	/**
-	 * Get the associated model classname
+	 * Get the associated model name
 	 * 
 	 * @since 0.1.0
-	 * @return string The associated model's classname.
+	 * @return string The associated model's name.
 	 */
 	public function getModelName()
 	{

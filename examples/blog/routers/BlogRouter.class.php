@@ -23,7 +23,7 @@ class BlogRouter extends Router
 	public function index()
 	{
 		Backbone::uses("Collection");
-		$posts = new Collection(DATABASE_NAME.".posts", array("model" => "Post"));
+		$posts = new Collection(DATABASE_NAME.".posts", array("model" => "/models/Post"));
 		$posts->fetch(array("order_by" => array("post_created", "DESC"), "limit" => "10"));
 		$this->view->set("title", "Blog Example");
 		$this->view->set("posts", $posts);

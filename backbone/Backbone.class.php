@@ -186,6 +186,22 @@ class Backbone
 	}
 	
 	/**
+	 * Get a class name from a relative path.
+	 *
+	 * Ex:
+	 *	Backbone::className("/models/employees/Developer");
+	 *	// returns "Developer"
+	 *
+	 * @since 0.2.1
+	 * @returns string The classname
+	 */
+	public static function getClassName($path)
+	{
+		$tmparr = explode("/", $path);	// pass strict mode
+		return end($tmparr);
+	}
+	
+	/**
 	 * Dispatches the request by trying to find a matching route among the registered routers.
 	 * 
 	 * @since 0.1.0
@@ -230,8 +246,7 @@ class Backbone
 	 */
 	protected static function loadModule($name)
 	{
-		$tmparr = explode($name, "/");	// pass strict mode
-		$classname = end($tmparr);
+		$classname = self::getClassName($name);
 		//if(!isset(self::$modules[$name]))
 		if(!class_exists($classname)) {
 			//self::$modules[$name] = true;
