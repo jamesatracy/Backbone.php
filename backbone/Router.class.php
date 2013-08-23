@@ -22,6 +22,12 @@ class Router
 	protected $view;
 	
 	/** 
+	 * @var Response The active reponse object. 
+	 * @since 0.2.0
+	 */
+	protected $response;
+	
+	/** 
 	 * @var string The currently matched pattern, or empty string.
 	 * @since 0.1.1
 	 */
@@ -35,7 +41,7 @@ class Router
 	 */
 	public function __construct()
 	{
-		$this->view = new View();
+		// empty
 	}
 	
 	/**
@@ -75,9 +81,9 @@ class Router
 	 * Checks the lists of routes agaisnt the given request
 	 *
 	 * @since 0.1.0
-	 * @return [boolean] true if the the request was routed, false otherwise
+	 * @return bool True if the the request was routed, false otherwise
 	 */
-	public function route($request)
+	public function route()
 	{
 		$request = Backbone::$request;
 		$success = false;
@@ -101,15 +107,30 @@ class Router
 				// url match
 				$this->pattern = $original;
 				if(method_exists($this, $callback)) {
+					// initialize the response and view objects
+					$this->view = new View();
+					$this->response = new Response();
+					$this->response->header("X-Backbone-Version", Backbone::version());
+					// check pre route hook
 					if($this->onPreRouteHook($uri)) {
 						// call the callback method
-						if(count($matches) > 1) {
-							$params = array_slice($matches, 1);				
-							$return = call_user_func_array(array($this, $callback), $params);
-						} else {
-							$return = call_user_func(array($this, $callback));
+						// if there is an uncaught application exception, then a 500 error is sent
+						ob_start();
+						try {
+							if(count($matches) > 1) {
+								$params = array_slice($matches, 1);				
+								$return = call_user_func_array(array($this, $callback), $params);
+							} else {
+								$return = call_user_func(array($this, $callback));
+							}
+							$this->onPostRouteHook($return);
+						} catch(Exception $e) {
+							// return a 500 error
+							$this->handleException($e);
 						}
-						$this->onPostRouteHook($return);
+						// send the response and flush any output
+						$this->sendResponse();
+						ob_end_flush();
 					}
 					$success = true;
 				}
@@ -180,6 +201,35 @@ class Router
 	public function onPostRouteHook($response)
 	{
 		return true;
+	}
+	
+	/**
+	 * Sends the response back to the client via the $this->response object.
+	 *
+	 * @since 0.2.0
+	 */
+	protected function sendResponse()
+	{
+		$this->response->send();
+	}
+	
+	/**
+	 * Handles an internal exception by sending a HTTP 500.
+	 * 
+	 * The error message will be included in the custom header X-Backbone-Exception.
+	 *
+	 * @since 0.2.0
+	 * @protected
+	 * @param Exception $e The Exception object
+	 */
+	protected function handleException($e)
+	{
+		$resp = $this->response;
+		$resp->status(500);
+		$resp->header("X-Backbone-Exception", $e->getMessage());
+		$resp->send();
+		ob_end_clean();
+		exit();
 	}
 };
 

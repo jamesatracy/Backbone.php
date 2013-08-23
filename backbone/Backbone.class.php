@@ -10,10 +10,11 @@
 
 
 // Load required framework classes
+require_once(FRAMEWORK."Response.class.php");
 require_once(FRAMEWORK."Request.class.php");
 require_once(FRAMEWORK."Router.class.php");
 require_once(FRAMEWORK."Events.class.php");
-require_once(FRAMEWORK."DataSet.class.php");
+require_once(FRAMEWORK."DataMap.class.php");
 require_once(FRAMEWORK."View.class.php");
 require_once(FRAMEWORK."Html.class.php");
 
@@ -27,7 +28,7 @@ class Backbone
 	/** @var string Defines the root URI directory */
 	public static $root = "/";
 	
-	/** @var DataSet Global configuration object for application specific configurations */
+	/** @var DataMap Global configuration object for application specific configurations */
 	public static $config = null;
 	
 	/** @var array List of registered routers */
@@ -40,7 +41,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.1.1";
+	protected static $version = "0.2.0";
 	
 	/**
 	 * Initialize Backbone.php 
@@ -49,7 +50,7 @@ class Backbone
 	 */
 	public static function initialize()
 	{
-		self::$config = new DataSet();
+		self::$config = new DataMap();
 		return;
 	}
 	
@@ -62,6 +63,31 @@ class Backbone
 	public static function version()
 	{
 		return self::$version;
+	}
+	
+	/**
+	 * Wrapper for native var_dump() function that buffers the output
+	 * and returns it back to you.
+	 *
+	 * By default, this method handles arrays and objects differently than var_dump.
+	 * For arrays, it prints out "(array)" plus the length of the array.
+	 * For objects, it prints out "(object)" plust the class name.
+	 *
+	 * @since 0.2.0
+	 * @param mixed $var The variable to dump
+	 * @return string A string representation of the variable
+	 */
+	public static function dump($var)
+	{
+		if(is_array($var)) {
+			return "(array) length:".count($var);
+		}
+		if(is_object($var)) {
+			return "(object) ".get_class($var);
+		}
+		ob_start();
+		var_dump($var);
+		return ob_get_clean();
 	}
 	
 	/**
@@ -108,6 +134,9 @@ class Backbone
 		$fullpath = self::resolvePath(ROUTERPATH, $name.".class.php");
 		if($fullpath) {
 			require_once($fullpath);
+			if(class_exists($name)) {
+				self::addRouter(new $name());
+			}
 		}
 	}
 	
@@ -167,7 +196,7 @@ class Backbone
 	{
 		$success = false;
 		foreach(self::$routers as $router) {
-			if($router->route($request)) {
+			if($router->route()) {
 				$success = true;
 				break;
 			}
@@ -201,7 +230,8 @@ class Backbone
 	 */
 	protected static function loadModule($name)
 	{
-		$classname = end(explode($name, "/"));
+		$tmparr = explode($name, "/");	// pass strict mode
+		$classname = end($tmparr);
 		//if(!isset(self::$modules[$name]))
 		if(!class_exists($classname)) {
 			//self::$modules[$name] = true;

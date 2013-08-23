@@ -1,0 +1,56 @@
+{
+	"id" : "ID",
+	"schema" : {
+		"ID" : {
+			"primary" : true,
+			"type" : "integer",
+			"size" : "int",
+			"length" : "11",
+			"unsigned" : "1",
+			"acceptNULL" : "0",
+			"default" : "0"
+		},
+		
+		"first" : {
+			"type" : "string",
+			"length" : "255",
+			"acceptNULL" : "0",
+			"default" : ""
+		},
+		
+		"last" : {
+			"type" : "string",
+			"length" : "255",
+			"acceptNULL" : "0",
+			"default" : ""
+		},
+		
+		"age" : {
+			"type" : "integer",
+			"size" : "int",
+			"length" : "11",
+			"unsigned" : "1",
+			"acceptNULL" : "0",
+			"default" : "13"
+		},
+		
+		"gender" : {
+			"type" : "string",
+			"length" : "255",
+			"acceptNULL" : "0",
+			"default" : "Male"
+		},
+		
+		"modified" : {
+			"type" : "timestamp",
+			"acceptNULL" : "0",
+			"default" : "0000-00-00 00:00:00"
+		},
+		
+		"created" : {
+			"type" : "timestamp",
+			"acceptNULL" : "0",
+			"default" : "0000-00-00 00:00:00"
+		}
+	}
+}

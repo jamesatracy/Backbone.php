@@ -98,26 +98,25 @@ class Model extends Schema
 			$where = array_merge($where, $options['where']);
 		}
 		
-		$result = $this->_db->selectAll(
+		$result = $this->_db->read(
 			$this->_table, 
-			array(
-				"where" => $where
-			)
+			array("where" => $where)
 		);
-		if($result->isValid()) {
-			if($result->numRows() > 0) {
-				$row = $result->fetch();
-				$this->set($row);
-				$this->_changed = array();
-				
-				if(isset($options) && isset($options['with'])) {
-					$this->_with($options['with']);
-				}
-				return true;
+
+		if(count($result) > 0) {
+			$this->set($result[0]);
+			$this->_changed = array();
+			
+			if(isset($options) && isset($options['with'])) {
+				$this->_with($options['with']);
 			}
-			$this->_errors[] = get_class($this).": No results returned";
+			return true;
 		} else {
-			$this->_errors = $this->_db->getError();
+			if($this->_db->hasError()) {
+				$this->_errors[] = $this->_db->getError();
+			} else {
+				$this->_errors[] = get_class($this).": No results returned";
+			}
 		}
 		return false;
 	}
@@ -182,7 +181,11 @@ class Model extends Schema
 	}
 	
 	/**
-	 * Save a model back to the server. Only changed fields are actually updated.
+	 * Save a model back to the server. 
+	 *
+	 * Only valid changed fields are actually sent to the database to be
+	 * updated. All else is ignored. For new models, all values are sent
+	 * to the server to be inserted.
 	 *
 	 * @since 0.1.0
 	 * @return bool True on success
@@ -204,11 +207,11 @@ class Model extends Schema
 		if(empty($attributes)) {
 			return true;
 		}
-		if($this->validate()) {
+		if($this->validateModel()) {
 			$result = null;
 			if($this->isNew()) {
 				// insert
-				$result = $this->_db->insert(
+				$result = $this->_db->create(
 					$this->_table,
 					$attributes
 				);
@@ -220,16 +223,10 @@ class Model extends Schema
 				$result = $this->_db->update(
 					$this->_table, 
 					$attributes,
-					array(
-						"where" => $where
-					)
+					array("where" => $where)
 				);
 			}
 			if(!$result) {
-				$this->_errors = array($this->_db->getError());
-				return false;
-			}
-			if(!$result->isValid() || $this->_db->getError()) {
 				$this->_errors = array($this->_db->getError());
 				return false;
 			}
@@ -261,20 +258,22 @@ class Model extends Schema
 			$this->_errors[] = get_class($this).": No database connection.";
 			return false;
 		}
+		
+		// cannot delete if the model is new
+		if($this->isNew()) {
+			$this->_errors[] = get_class($this).": Cannot delete new model";
+			return false;
+		}
 			
 		$where = $this->where;
 		$where[$this->getID()] = $this->get($this->getID());
 				
 		$result = $this->_db->delete(
 			$this->_table, 
-			array(
-				"where" => $where
-			)
+			array("where" => $where)
 		);
+
 		if(!$result) {
-			return false;
-		}
-		if(!$result->isValid() || $this->_db->getError()) {
 			$this->_errors[] = $this->_db->getError();
 			return false;
 		}
@@ -291,7 +290,7 @@ class Model extends Schema
 	 * @since 0.1.0
 	 * @return bool True if the attributes validate, false otherwise
 	 */
-	public function validate()
+	public function validateModel()
 	{
 		return parent::validate($this->_attributes);
 	}
@@ -351,7 +350,7 @@ class Model extends Schema
 	/**
 	 * Return a JSON representation of the model.
 	 *
-	 * This is not a string, but an associative array that you can pass to JSON::stringify().
+	 * This is not a string, but an associative array that you can pass to json_encode().
 	 *
 	 * The JSON is compacted by leaving out the field names and returning the values
 	 * as a plain array.

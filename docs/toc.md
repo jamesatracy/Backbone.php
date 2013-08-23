@@ -11,23 +11,18 @@
 ## Framework
 
 * [Backbone](backbone_class.md)
-* [BackboneTest](backbone_test_class.md)
 * Collection
 * [Connections](connections_class.md)
-* DataSet
+* DataMap
 * DataSource
-* DataType
 * Events
 * Html
-* JSON
 * Model
 * MySQL
-* MySQLResult
+* Response
 * [Request](request_class.md)
 * [Router](router_class.md)
 * Sanitize
 * [Schema](schema_class.md)
-* SchemaRules
-* [Session](session_class.md)
-* [TestSuite](test_suite_class.md)
+* Validate
 * [View](view_class.md)

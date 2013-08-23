@@ -1,0 +1,17 @@
+<phpunit backupGlobals="true"
+         backupStaticAttributes="true"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="true"
+         strict="true"
+         verbose="true">
+  <testsuites>
+    <testsuite name="Backbone.php Tests">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
