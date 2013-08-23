@@ -150,7 +150,7 @@ abstract class DataSource
 	 */
 	public function escape($string)
 	{
-		if($string == null || emptry($string) || !is_string($string)) {
+		if($string == null || empty($string) || !is_string($string)) {
 			return $string;
 		}
 		return addslashes($string);
