@@ -128,5 +128,36 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($attrs[1], "Jane");
 		$this->assertEquals($attrs[2], "Jessie");
 	}
+	
+	public function testMethod_getModelName()
+	{
+		$collection = new MockCollection();
+
+		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
+		
+		$this->assertEquals($collection->getModelName(), "/tests/fixtures/MockModel");
+	}
+	
+	public function testMethod_getTableName()
+	{
+		$collection = new MockCollection();
+
+		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
+		
+		$this->assertEquals($collection->getTableName(), "table");
+	}
+	
+	public function testMethod_reset()
+	{
+		$collection = new MockCollection();
+
+		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
+
+		$this->assertTrue($collection->fetch());
+		$collection->reset();
+		$this->assertEquals($collection->length, 0);
+		$this->assertEmpty($collection->toJSON());
+		$this->assertEmpty($collection->getErrors());
+	}
 }
 ?>
