@@ -107,7 +107,7 @@ class Schema
 			if($cacheable) {
 				if(isset(Schema::$_schema_cache[$table])) {
 					$cache = Schema::$_schema_cache[$table];
-					$this->_schema = $cache['schema'];
+					$this->_fields = $cache['schema'];
 					$this->_id = $cache['id'];
 					return $this->_fields;
 				}
@@ -117,7 +117,9 @@ class Schema
 				$this->_fields = $cache['schema'];
 				$this->_id = $cache['id'];
 			} else {
-				$this->_fields = $this->_db->schema($table);
+				$schema = $this->_db->schema($table);
+				$this->_id = $schema['id'];
+				$this->_fields = $schema['schema'];
 			}
 			if($cacheable) {
 				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_fields);

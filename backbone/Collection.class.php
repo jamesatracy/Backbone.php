@@ -100,7 +100,6 @@ class Collection implements Iterator
 			$this->errors[] = $this->_db->getError();
 			return false;
 		}
-		// $this->_models = $result->fetchAll();
 		
 		$this->length = count($this->_models);
 		$this->rewind();

@@ -165,6 +165,7 @@ class MySQL extends DataSource
 			throw new RuntimeException("MySql: Invalid connection");
 		}
 		
+		$id = 0;
 		$fields = array();
 		$result = $this->describe($table);
 		foreach($result as $row) {
@@ -176,7 +177,7 @@ class MySQL extends DataSource
 			
 			if($row['Key'] == "PRI") {
 				// set the primary key
-				$this->_id = $field;
+				$id = $field;
 				$attrs['primary'] = true;
 			}
 			
@@ -233,7 +234,7 @@ class MySQL extends DataSource
 			
 			$fields[$field] = $attrs;
 		}
-		return $fields;
+		return array("id" => $id, "schema" => $fields);
 	}
 	
 	/**
