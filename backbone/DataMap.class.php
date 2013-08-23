@@ -9,7 +9,7 @@
  */
 
 /**
- * Utility class for working with sets of nested key, values.
+ * Utility class for working with a map of nested key, values.
  *
  * For example, it allows you to get and set values that can be expressed as:
  *
@@ -18,10 +18,10 @@
  *
  * @since 0.1.0
  */
-class DataSet 
+class DataMap
 {
-	/** @var array The internal set */
-	protected $set;
+	/** @var array The internal map */
+	protected $_map;
 	
 	/**
 	 * Constructor
@@ -31,7 +31,7 @@ class DataSet
 	 */
 	public function __construct($set = array())
 	{
-		$this->_set = &$set;
+		$this->_map = &$set;
 	}
 	
 	/**
@@ -41,7 +41,7 @@ class DataSet
 	 */
 	public function clear()
 	{
-		$this->_set = array();
+		$this->_map = array();
 	}
 	
 	/**
@@ -71,7 +71,7 @@ class DataSet
 			$write = explode(".", $name);
 		}
 
-		$current = &$this->_set;
+		$current = &$this->_map;
 		foreach($write as $val) {
 			if(!isset($current[$val])) {
 				$current[$val] = array();
@@ -90,7 +90,7 @@ class DataSet
 	public function get($name = null)
 	{
 		if(empty($name)) {
-			return $this->_set;
+			return $this->_map;
 		}
 			
 		if(strpos($name, ".") === FALSE) {
@@ -101,7 +101,7 @@ class DataSet
 			$write = explode(".", $name);
 		}
 
-		$current = &$this->_set;
+		$current = &$this->_map;
 		foreach($write as $val) {
 			if(!isset($current[$val])) {
 				// value does not exist
@@ -132,7 +132,7 @@ class DataSet
 			$write = explode(".", $name);
 		}
 
-		$current = &$this->_set;
+		$current = &$this->_map;
 		foreach($write as $val) {
 			if(!isset($current[$val])) {
 				// value does not exist

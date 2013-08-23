@@ -14,5 +14,11 @@ Backbone::loadRouter("BlogRouter");
 Backbone::uses(array("Connections", "MySQL"));
 
 // Database
-Connections::create("default", "MySQL", array("server" => "localhost", "user" => "root", "pass" => ""));
+Connections::create("default", "MySQL", array("server" => DB_SERVER, "user" => DB_USER, "pass" => DB_PASS));
+
+// Mysql logging
+Backbone::$config->set("mysql.log", false);
+Backbone::$config->set("mysql.logfile", "mysql.log");
+
+//MySQL_Logger::clearQueryLog();
 ?>

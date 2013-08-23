@@ -37,8 +37,6 @@ class View
 	 */
 	public function __construct()
 	{
-		global $request;
-		$this->request = $request;
 		$this->html = new Html();
 	}
 	

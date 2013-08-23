@@ -13,41 +13,55 @@ class BlogRouter extends Router
 		));
 		
 		// handle invalid urls (404 errors)
-		Events::bind("request.invalid-url", array($this, "error404"));
+		Events::bind("response.404", array($this, "error404"));
 	}
 	
+	/**
+	 * Home page implementation.
+	 * Maps to: /
+	 */
 	public function index()
 	{
 		Backbone::uses("Collection");
-		$posts = new Collection("blog.posts", array("model" => "Post"));
+		$posts = new Collection(DATABASE_NAME.".posts", array("model" => "Post"));
 		$posts->fetch(array("order_by" => array("post_created", "DESC"), "limit" => "10"));
 		$this->view->set("title", "Blog Example");
 		$this->view->set("posts", $posts);
 		$this->view->load("home");
 	}
 	
+	/*
+	 * Create post page impementation.
+	 * Maps to: /create/
+	 */
 	public function create()
 	{
-		if(Backbone::$request->post())
-		{
-			// do the submit
-			$errors = array();
-			if(!Backbone::$request->post("post_title"))
-				$errors[] = "*** Post Title is a Required Field.";
-			if(!Backbone::$request->post("post_author"))
-				$errors[] = "*** Post Author is a Required Field.";
-			if(!Backbone::$request->post("post_body"))
-				$errors[] = "*** Post Body is a Required Field.";
-			if(!empty($errors)) {
-				$this->view->set("errors", join("<br/>", $errors));
+		if(Backbone::$request->post()) {
+			if(Backbone::$request->post("cancel")) {
+				// cancelled, redirect back to home page
+				$this->response->header("Location", Backbone::$request->link("/"));
 			} else {
-				// save the post
-				Backbone::uses("/models/Post");
-				$post = new Post();
-				$post->set(Backbone::$request->post());
-				$post->save();
-				header("Location: ".Backbone::$request->link("/"));
-				return;
+				// do the submit
+				Backbone::uses("Validate");
+				$errors = array();
+				if(!Validate::required("post_title", Backbone::$request->post("post_title")))
+					$errors[] = "*** Post Title is a Required Field.";
+				if(!Validate::required("post_author", Backbone::$request->post("post_author")))
+					$errors[] = "*** Post Author is a Required Field.";
+				if(!Validate::required("post_body", Backbone::$request->post("post_body")))
+					$errors[] = "*** Post Body is a Required Field.";
+				if(!empty($errors)) {
+					$this->view->set("errors", join("<br/>", $errors));
+				} else {
+					// save the post
+					Backbone::uses("/models/Post");
+					$post = new Post();
+					$post->set(Backbone::$request->post());
+					$post->save();
+					// after successful submit, redirect to home page
+					$this->response->header("Location", Backbone::$request->link("/"));
+					return;
+				}
 			}
 		}
 		
@@ -57,8 +71,6 @@ class BlogRouter extends Router
 	
 	public function error404()
 	{
-		echo "Invalid URL: ".Backbone::$request->here();
+		echo "Invalid URL (HTTP 404): ".Backbone::$request->here();
 	}
 }
-
-Backbone::addRouter(new BlogRouter());

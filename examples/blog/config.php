@@ -11,4 +11,20 @@ define('VIEWPATH', "/views/");
 // Router path constant. Semicolon delimited list of paths to search for routers.
 // Must be relative to the abspath.
 define('ROUTERPATH', "/routers/");
+
+/* Application specific defines */
+
+// Database configurations
+if(!defined('DATABASE_NAME')) {
+	define('DATABASE_NAME', 'blog');
+}
+if(!defined('DB_SERVER')) {
+	define('DB_SERVER', 'localhost');
+}
+if(!defined('DB_USER')) {
+	define('DB_USER', 'root');
+}
+if(!defined('DB_PASS')) {
+	define('DB_PASS', '');
+}
 ?>
