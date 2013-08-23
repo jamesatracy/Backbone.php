@@ -212,6 +212,26 @@ class Request
 	}
 	
 	/**
+	 * Gets an array of key => value pairs for each header sent by the
+	 * HTTP request.
+	 *
+	 * @since 0.2.0
+	 * @return array The HTTP request headers.
+	 */
+	public function getHeaders()
+	{
+		$headers = array();
+		foreach($_SERVER as $key => $value) {
+			if (substr($key, 0, 5) != "HTTP_") {
+				continue;
+			}
+			$header = str_replace(" ", "-", ucwords(str_replace("_", " ", strtolower(substr($key, 5)))));
+			$headers[$header] = $value;
+		}
+		return $headers;
+	}
+	
+	/**
 	 * Gets the request data as an argument array.
 	 *
 	 * @since 0.1.1

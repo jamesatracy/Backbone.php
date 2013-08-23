@@ -160,6 +160,14 @@ class RequestTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->request->link("path/to/here/"), "https://www.example.com/under/doc/root/path/to/here/");
 	}
 	
+	public function testMethod_getHeaders()
+	{
+		$_SERVER['HTTP_X_REQUESTED_WITH'] = "foobar";
+		$headers = $this->request->getHeaders();
+		$this->assertArrayHasKey("X-Requested-With", $headers);
+		$this->assertEquals($headers['X-Requested-With'], "foobar");
+	}
+	
 	public function testMethod_get()
 	{
 		$_GET = null;

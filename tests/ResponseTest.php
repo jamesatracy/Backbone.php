@@ -103,6 +103,19 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($this->eventResponse200Triggered);
 	}
 	
+	public function testMethod_send_withParam()
+	{
+		$resp = new Response();
+		
+		// test response event triggered
+		Events::bind("response.404", array($this, "onResponse404"));
+		
+		$this->expectOutputString("body content goes here");
+		$resp->body("body content goes here");
+		$resp->send(404);
+		$this->assertTrue($this->eventResponse404Triggered);
+	}
+	
 	public function testBehavior_send500()
 	{
 		$resp = new Response();
@@ -118,6 +131,11 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 	public function onResponse200()
 	{
 		$this->eventResponse200Triggered = true;
+	}
+	
+	public function onResponse404()
+	{
+		$this->eventResponse404Triggered = true;
 	}
 	
 	public function onResponse500()

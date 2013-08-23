@@ -78,9 +78,13 @@ class Response
 	 * Sends the complete response, including headers and content.
 	 *
 	 * @since 0.2.0
+	 * @param int $status Optional status as a shortcut to calling status()
 	 */
-	public function send()
+	public function send($status = null)
 	{
+		if($status !== null) {
+			$this->status($status);
+		}
 		// send protocol and status
 		$code_message = $this->_status_codes[$this->_status];
 		$this->sendHeader($this->_protocol." ".$this->_status." ".$code_message);

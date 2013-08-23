@@ -4,11 +4,12 @@ Backbone.php
 [![Build Status](https://travis-ci.org/jamesatracy/Backbone.php.png?branch=master)](https://travis-ci.org/jamesatracy/Backbone.php?branch=master)
 
 * [Download Latest](https://github.com/jamesatracy/Backbone.php/archive/master.zip)
+* [Download 0.2.0](https://github.com/jamesatracy/Backbone.php/releases/tag/0.2.0)
 * [Download 0.1.1](https://github.com/jamesatracy/Backbone.php/releases/tag/0.1.1)
 
 Backbone.php, much like its javascript namesake, is a small collection of PHP classes that provide structure or scaffolding for a PHP application or PHP powered website. It follows the Model-View-Controller (MVC) convention and includes classes for handling routes, database backed models, and HTML views. Applications or websites built using Backbone.php can be up and running very quickly because it removes the necessity of writing much boilerplate code.
 
-**NOTE: This project is considered to be pre-1.0 and the code may change in significant and backward incompatible ways between releases.**
+**NOTE: This project is pre-1.0 and the code may change in significant and backward incompatible ways between releases.**
 
 The framework is built with the following goals in mind:
 
