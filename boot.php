@@ -1,18 +1,13 @@
 <?php
-/*
-Perform all of your bootstrap operations here in this file.
-That includes loading Routers and other resources (database connections, etc.).
-*/
+/**
+ * Perform all of your bootstrap operations here in this file.
+ * That includes loading Routers and other resources (database connections, etc.).
+ */
 
 // Set the web root path
-Backbone::$root = "/Backbone.php/";
+Backbone::$root = "/";
 
 // Load routers
-Backbone::loadRouter("TestRouter");
 
-// Database
-Backbone::uses(array("Connections", "MySQL"));
-
-Connections::create("db", "MySQL", array("server" => "localhost", "user" => "jtracy", "pass" => "Roxie910"));
-
+// Application specifc bootstrapping
 ?>
