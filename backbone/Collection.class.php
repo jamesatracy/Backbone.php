@@ -129,11 +129,11 @@ class Collection implements Iterator
 		foreach($this->_models as $data) {
 			if(isset($data[$key]) && $data[$key] == $id) {
 				Backbone::uses($this->_model);
-				$classname = Backbone::getClassName($this->model);
+				$classname = Backbone::getClassName($this->_model);
 				if(!class_exists($classname)) {
 					throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
 				}
-				$model = new $this->_model($this->_table, $this->_db);
+				$model = new $classame($this->_table, $this->_db);
 				$model->set($data);
 				break;
 			}
