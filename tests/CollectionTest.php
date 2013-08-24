@@ -72,6 +72,15 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 		$this->assertNull($model);
 	}
 	
+	public function testMethod_count()
+	{
+		$collection = new MockCollection();
+
+		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
+
+		$this->assertEquals($collection->count(), 3);
+	}
+	
 	public function testBehavior_iterator()
 	{
 		$collection = new MockCollection();
