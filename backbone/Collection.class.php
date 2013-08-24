@@ -121,7 +121,7 @@ class Collection implements Iterator
 		if(!$this->_db) {
 			throw new RuntimeException("Collection: Invalid Database Connection");
 		}
-		$model = null;
+
 		$schema = new Schema($this->_db);
 		$schema->initialize($this->_table);
 		$key = $schema->getID();
@@ -135,10 +135,10 @@ class Collection implements Iterator
 				}
 				$model = new $classame($this->_table, $this->_db);
 				$model->set($data);
-				break;
+				return $model;
 			}
 		}
-		return $model;
+		return null;
 	}
 
 	/**
