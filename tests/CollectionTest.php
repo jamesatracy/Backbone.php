@@ -111,15 +111,10 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 		$this->assertNotNull($next);
 		$this->assertEquals(get_class($next), "MockModel");
 		$this->assertEquals($collection->key(), 3);
-		// is valid
-		$this->assertTrue($collection->valid());
-		// current
-		$this->assertNotNull($collection->current());
-		$this->assertEquals(get_class($collection->current()), "MockModel");
-		// next (we reach the end here)
-		$next = $collection->next();
-		$this->assertNull($next);
+		// is valid (we reach the end here)
 		$this->assertFalse($collection->valid());
+		// current
+		$this->assertNull($collection->current());
 		// rewind
 		$collection->rewind();
 		$this->assertEquals($collection->key(), 0);
