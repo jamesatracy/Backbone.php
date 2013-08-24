@@ -122,18 +122,12 @@ class Collection implements Iterator
 			throw new RuntimeException("Collection: Invalid Database Connection");
 		}
 
-		$schema = new Schema($this->_db);
-		$schema->initialize($this->_table);
-		$key = $schema->getID();
+		$model = $this->createModel();
+		$key = $model->getID();
+		
 		// loop over models
 		foreach($this->_models as $data) {
 			if(isset($data[$key]) && $data[$key] == $id) {
-				Backbone::uses($this->_model);
-				$classname = Backbone::getClassName($this->_model);
-				if(!class_exists($classname)) {
-					throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
-				}
-				$model = new $classame($this->_table, $this->_db);
 				$model->set($data);
 				return $model;
 			}
@@ -152,16 +146,7 @@ class Collection implements Iterator
    	public function current() 
 	{
 		if(isset($this->_models[$this->_position])) {
-			if($this->_model != "Model") {
-				Backbone::uses($this->_model);
-				$classname = Backbone::getClassName($this->_model);
-				if(!class_exists($classname)) {
-					throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
-				}
-				$model = new $classname($this->_db);
-			} else {
-				$model = new $this->_model($this->_table, $this->_db);
-			}
+			$model = $this->createModel();
 			$model->set($this->_models[$this->_position]);
 			$model->clearChanged();
 			return $model;
@@ -301,6 +286,24 @@ class Collection implements Iterator
 		$this->_errors = array();
 		$this->_models = array();
 		$this->length = 0;
+	}
+	
+	/**
+	 * Create a new instance of the Collection's model class
+	 *
+	 * @since 0.2.1
+	 * @return mixed The model object
+	 * @throws RuntimeException
+	 */
+	public function createModel()
+	{
+		Backbone::uses($this->_model);
+		$classname = Backbone::getClassName($this->_model);
+		if(!class_exists($classname)) {
+			throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
+		}
+		$model = new $classname($this->_table, $this->_db);
+		return $model;
 	}
 	
 	/**
