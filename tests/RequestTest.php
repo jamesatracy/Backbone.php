@@ -8,12 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
  
-if(!defined('ABSPATH')) 
-	define('ABSPATH', dirname(__FILE__).'/../');
-if(!defined('FRAMEWORK'))
-	define('FRAMEWORK', ABSPATH.'backbone/');
-
-require_once(FRAMEWORK.'Backbone.class.php');
+require("setup.php");
 Backbone::uses("Request");
 
 /**

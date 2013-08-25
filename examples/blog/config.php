@@ -2,7 +2,7 @@
 /* Backbone.php configuration file. */
 
 // Framework path constant. Points to the backbone core.
-define('FRAMEWORK', ABSPATH."../../backbone/");
+define('FRAMEWORK', ABSPATH."../../src/backbone/");
 // Application path constant. Points to the application's root directory
 define('APPPATH', ABSPATH."/");
 // View path constant. Semicolon delimited list of paths to search for views.
