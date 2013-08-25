@@ -40,6 +40,11 @@ For all of the documentation, please go to the [documentation table of contents]
 Version History
 ---------------
 
+*0.2.2*
+
+* Moved all Backbone.php source files to the /src/ directory.
+* Fixed issue #13
+
 *0.2.1*
 
 * Fixed issue #11
