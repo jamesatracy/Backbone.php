@@ -110,7 +110,7 @@ class View
 	 * NOTE: Child views are executed in the reverse order in which they are extended.
 	 *
 	 * @since 0.1.0
-	 * @param [string] $name The name of the view
+	 * @param string $name The name of the view
 	 */
 	public function extend($name)
 	{
@@ -121,6 +121,19 @@ class View
 		if($fullpath) {
 			$this->_extensions[] = $name;
 		}
+	}
+	
+	/**
+	 * Determine whether or not a given view exists.
+	 * 
+	 * @since 0.2.2
+	 * @param string $name The name of the view
+	 * @return bool True if the view exists, false otherwise.
+	 */
+	public function exists($name)
+	{
+		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		return (!empty($fullpath));
 	}
 	
 	/**
