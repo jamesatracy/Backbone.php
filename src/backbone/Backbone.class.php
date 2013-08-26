@@ -101,12 +101,12 @@ class Backbone
 	 */
 	public static function uses($name)
 	{
-		if(is_array($name)) {
-			foreach($name as $classname)
-				self::loadModule($classname);
-		} else {
-			self::loadModule($name);
+		if(is_string($name)) {
+			$name = explode(",", $name);
 		}
+
+		foreach($name as $classname)
+			self::loadModule($classname);
 	}
 	
 	/**
