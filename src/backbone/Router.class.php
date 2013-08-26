@@ -226,7 +226,7 @@ class Router
 	{
 		$resp = $this->response;
 		$resp->status(500);
-		$resp->header("X-Backbone-Exception", $e->getMessage());
+		$resp->header("X-Backbone-Exception", get_class($e).": ".$e->getMessage()." in ".$e->getFile()."(".$e->getLine().")");
 		$resp->send();
 		ob_end_clean();
 		exit();
