@@ -126,7 +126,7 @@ class View
 	/**
 	 * Determine whether or not a given view exists.
 	 * 
-	 * @since 0.2.2
+	 * @since 0.2.3
 	 * @param string $name The name of the view
 	 * @return bool True if the view exists, false otherwise.
 	 */
