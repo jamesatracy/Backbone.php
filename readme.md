@@ -40,4 +40,4 @@ For all of the documentation, please go to the [documentation table of contents]
 Version History
 ---------------
 
-Please see [version history](https://github.com/jamesatracy/Backbone.php/versions.md).
+Please see [version history](https://github.com/jamesatracy/Backbone.php/blob/master/versions.md).
