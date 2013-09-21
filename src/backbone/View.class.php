@@ -41,6 +41,20 @@ class View
 	}
 	
 	/**
+	 * Shortcut for view code to construct an internal URL. This method
+	 * will echo the fully resolved URL string.
+	 *
+	 * Wraps Backbone::$request->link().
+	 *
+	 * @since 0.2.3
+	 * @param string $path The relative url path.
+	 */
+	public function url($path)
+	{
+		echo Backbone::$request->link($path);
+	}
+	
+	/**
 	 * Load a view to execute from the application's /views/ directory
 	 *
 	 * Exs: 
