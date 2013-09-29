@@ -78,7 +78,8 @@ class Router
 	}
 	
 	/**
-	 * Checks the lists of routes agaisnt the given request
+	 * Checks the lists of routes against the given request.
+	 * If there is a match, then the callback method is invoked.
 	 *
 	 * @since 0.1.0
 	 * @return bool True if the the request was routed, false otherwise
@@ -87,6 +88,7 @@ class Router
 	{
 		$request = Backbone::$request;
 		$success = false;
+		$params = array();
 		$uri = $request->here();
 		
 		// reset the last matched pattern
@@ -107,30 +109,13 @@ class Router
 				// url match
 				$this->pattern = $original;
 				if(method_exists($this, $callback)) {
-					// initialize the response and view objects
-					$this->view = new View();
-					$this->response = new Response();
-					$this->response->header("X-Backbone-Version", Backbone::version());
+					// get any url parameters
+					if(count($matches) > 1) {
+						$params = array_slice($matches, 1);
+					}
 					// check pre route hook
 					if($this->onPreRouteHook($uri)) {
-						// call the callback method
-						// if there is an uncaught application exception, then a 500 error is sent
-						ob_start();
-						try {
-							if(count($matches) > 1) {
-								$params = array_slice($matches, 1);				
-								$return = call_user_func_array(array($this, $callback), $params);
-							} else {
-								$return = call_user_func(array($this, $callback));
-							}
-							$this->onPostRouteHook($return);
-						} catch(Exception $e) {
-							// return a 500 error
-							$this->handleException($e);
-						}
-						// send the response and flush any output
-						$this->sendResponse();
-						ob_end_flush();
+						$this->invokeRouteCallback(array($this, $callback), $params);
 					}
 					$success = true;
 				}
@@ -141,6 +126,40 @@ class Router
 	}
 	
 	/**
+	 * This function takes a calback and optional params and invokes the
+	 * callback in the context of a properly initialized router.
+	 *
+	 * @since 0.2.3
+	 * @param string|array $callback A valid php callback
+	 * @param array $params Optional array of parameters for the callback.
+	 */
+	public function invokeRouteCallback($callback, $params = array())
+	{
+		// initialize the response and view objects
+		$this->view = new View();
+		$this->response = new Response();
+		$this->response->header("X-Backbone-Version", Backbone::version());
+		
+		// call the callback method
+		// if there is an uncaught application exception, then a 500 error is sent
+		ob_start();
+		try {
+			if(count($params) > 0) {				
+				$return = call_user_func_array($callback, $params);
+			} else {
+				$return = call_user_func($callback);
+			}
+			$this->onPostRouteHook($return);
+		} catch(Exception $e) {
+			// return a 500 error
+			$this->handleException($e);
+		}
+		// send the response and flush any output
+		$this->sendResponse();
+		ob_end_flush();
+	}
+	
+	/**
 	 * Loads a view file directly 
 	 *
 	 * @since 0.1.0
@@ -148,7 +167,9 @@ class Router
 	*/
 	public function loadView($name)
 	{
-		$this->view->load($name);
+		if($this->view) {
+			$this->view->load($name);
+		}
 	}
 	
 	/**

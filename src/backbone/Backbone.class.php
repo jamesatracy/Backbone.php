@@ -41,7 +41,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.2.0";
+	protected static $version = "0.2.3";
 	
 	/**
 	 * Initialize Backbone.php 
@@ -221,9 +221,9 @@ class Backbone
 			$here = trim($request->here(), "/");
 			// No routes are defined.
 			// Auto route this page if we find a corresponding view that ends in '-page'
-			if(file_exists(VIEWPATH.$here."-page.php")) {
+			if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {
 				$router = new Router();
-				$router->loadView($here."-page");
+				$router->invokeRouteCallback(array($router, "loadView"), array($here."-page"));
 				$success = true;
 			}
 		}
