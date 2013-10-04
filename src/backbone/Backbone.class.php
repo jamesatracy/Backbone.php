@@ -8,7 +8,18 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-
+/**
+ * Core Backbone module.
+ * 
+ * Provides core functionality such as loading modules, loading routers, and
+ * dispatching routes.
+ * 
+ * The Request object for the current request is also stored here and 
+ * accessible through Backbone::$request.
+ * 
+ * @since 0.1.0
+ */
+ 
 // Load required framework classes
 require_once(FRAMEWORK."Response.class.php");
 require_once(FRAMEWORK."Request.class.php");
@@ -18,11 +29,6 @@ require_once(FRAMEWORK."DataMap.class.php");
 require_once(FRAMEWORK."View.class.php");
 require_once(FRAMEWORK."Html.class.php");
 
-/**
- * Core Backbone module.
- * 
- * @since 0.1.0
- */
 class Backbone
 {	
 	/** @var string Defines the root URI directory */

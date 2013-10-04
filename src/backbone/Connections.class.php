@@ -15,7 +15,7 @@
  */
 class Connections
 {
-	/* @var List of open connections */
+	/** @var List of open connections */
 	protected static $_connections = array();
 	
 	/**
