@@ -117,7 +117,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertEmpty($this->router->argsPassed);
 		
 		// test custom view class instantiated
-		$this->assertEquals(class_name($this->router->getView()), "TestView");
+		$this->assertEquals(get_class($this->router->getView()), "TestView");
 	}
 	
 	public function testBehavior_simplePathRoute()
