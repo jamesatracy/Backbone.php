@@ -6,6 +6,7 @@ Version History
 * Backbone::uses() can accept a comma delimited list of modules.
 * Added exists() to View.
 * Added url() to View.
+* Added createView() to Router so sub classes can override the Router's view object.
 
 *0.2.2*
 

@@ -9,7 +9,15 @@
  */
 
 require("setup.php");
-Backbone::uses("Router");
+Backbone::uses("Router, View");
+
+/**
+ * Test View class
+ */
+class TestView extends View
+{
+	public $test = true;
+}
 
 /**
  * Test router for testing.
@@ -59,6 +67,11 @@ class TestRouter extends Router
 		$this->postRouteHookCalled = true;
 		return true;
 	}
+	
+	protected function createView()
+	{
+		return new TestView();
+	}
 }
 
 /**
@@ -97,6 +110,9 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($this->router->getMatchedPattern(), "/");
 		$this->assertTrue($this->router->methodCalled);
 		$this->assertEmpty($this->router->argsPassed);
+		
+		// test custom view class instantiated
+		$this->assertTrue($this->router->view->test);
 	}
 	
 	public function testBehavior_simplePathRoute()

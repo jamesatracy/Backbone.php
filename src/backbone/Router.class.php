@@ -126,7 +126,7 @@ class Router
 	}
 	
 	/**
-	 * This function takes a calback and optional params and invokes the
+	 * This function takes a callback and optional params and invokes the
 	 * callback in the context of a properly initialized router.
 	 *
 	 * @since 0.2.3
@@ -136,7 +136,7 @@ class Router
 	public function invokeRouteCallback($callback, $params = array())
 	{
 		// initialize the response and view objects
-		$this->view = new View();
+		$this->view = $this->createView();
 		$this->response = new Response();
 		$this->response->header("X-Backbone-Version", Backbone::version());
 		
@@ -225,6 +225,20 @@ class Router
 	}
 	
 	/**
+	 * Initializes a view object for the current route.
+	 *
+	 * Child classes of Router can override this method to use a custom class
+	 * descended from View.
+	 *
+	 * @since 0.2.3
+	 * @return View An instantiated view object.
+	 */
+	protected function createView()
+	{
+		return new View();
+	}
+	
+	/**
 	 * Sends the response back to the client via the $this->response object.
 	 *
 	 * @since 0.2.0
@@ -239,8 +253,11 @@ class Router
 	 * 
 	 * The error message will be included in the custom header X-Backbone-Exception.
 	 *
+	 * Applications can capture a 500 error and show a custom error page by
+	 * binding an action to the "response.500" global event through the Events
+	 * object.
+	 *
 	 * @since 0.2.0
-	 * @protected
 	 * @param Exception $e The Exception object
 	 */
 	protected function handleException($e)
