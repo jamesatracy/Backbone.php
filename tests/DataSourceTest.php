@@ -8,7 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-require("setup.php");
 Backbone::uses("DataSource");
 
 // DataSource is abstract, so need a class extension
