@@ -10,19 +10,4 @@
 
 ## Framework
 
-* [Backbone](backbone_class.md)
-* Collection
-* [Connections](connections_class.md)
-* DataMap
-* DataSource
-* Events
-* Html
-* Model
-* MySQL
-* Response
-* [Request](request_class.md)
-* [Router](router_class.md)
-* Sanitize
-* [Schema](schema_class.md)
-* Validate
-* [View](view_class.md)
+See api documentation in /docs/api/index.html
