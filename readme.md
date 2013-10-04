@@ -39,6 +39,8 @@ Documentation
 
 For all of the documentation, please go to the [documentation table of contents](https://github.com/jamesatracy/Backbone.php/blob/master/docs/toc.md)
 
+See api documentation in /docs/api/index.html
+
 Version History
 ---------------
 
