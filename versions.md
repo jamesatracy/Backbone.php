@@ -1,7 +1,7 @@
 Version History
 ---------------
 
-*0.2.3 (master)*
+*0.2.3*
 
 * Backbone::uses() can accept a comma delimited list of modules.
 * Added exists() to View.
