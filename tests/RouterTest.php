@@ -68,6 +68,11 @@ class TestRouter extends Router
 		return true;
 	}
 	
+	public function getView()
+	{
+		return $this->view;
+	}
+	
 	protected function createView()
 	{
 		return new TestView();
@@ -112,7 +117,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertEmpty($this->router->argsPassed);
 		
 		// test custom view class instantiated
-		$this->assertTrue($this->router->view->test);
+		$this->assertEquals(class_name($this->router->getView()), "TestView");
 	}
 	
 	public function testBehavior_simplePathRoute()
