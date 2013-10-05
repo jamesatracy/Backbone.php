@@ -1,6 +1,9 @@
 Version History
 ---------------
 
+*0.2.4*
+* Added Router->stop() method.
+
 *0.2.3*
 
 * Backbone::uses() can accept a comma delimited list of modules.
