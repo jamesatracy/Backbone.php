@@ -19,6 +19,11 @@ class MockSQL extends MySQL
 	{
 		$this->_is_connected = true;
 	}
+	
+	public function escape($string)
+	{
+	    return addslashes($string);
+	}
 }
 
 /**
@@ -37,6 +42,17 @@ class MySQLTest extends PHPUnit_Framework_TestCase
 	public function setUp()
 	{
 		$this->db = new MockSQL();
+	}
+	
+	public function testMethod_format()
+	{
+	    $this->assertEquals($this->db->format("ID"), "`ID`");
+	    $this->assertEquals($this->db->format("blog_posts.ID"), "`blog_posts`.`ID`");
+	    $this->assertEquals($this->db->format("_1.blog_posts.ID"), "`_1`.`blog_posts`.`ID`");
+	    $this->assertEquals($this->db->format("*"), "*");
+	    $this->assertEquals($this->db->format("COUNT(*)"), "COUNT(*)");
+	    $this->assertEquals($this->db->format("COUNT(author)"), "COUNT(`author`)");
+	    $this->assertEquals($this->db->format("FUNC(author,title)"), "FUNC(`author`,`title`)");
 	}
 	
 	public function testBehavior_describe()
@@ -255,5 +271,72 @@ class MySQLTest extends PHPUnit_Framework_TestCase
 			)
 		));
 		$this->assertEquals($query, "SELECT * FROM `blog_posts` INNER JOIN `blog_authors` ON `blog_posts`.`author_id` = `blog_authors`.`id` ");
+	}
+	
+	public function testBehavior_update()
+	{
+	    $query = $this->db->buildQuery("update", array(
+			"table" => "blog_posts",
+			"fields" => array("type" => "news")
+		));
+		$this->assertEquals($query, "UPDATE `blog_posts` SET `type` = 'news'");
+		
+		$query = $this->db->buildQuery("update", array(
+			"table" => "blog_posts",
+			"fields" => array("type" => "news", "title" => "Title")
+		));
+		$this->assertEquals($query, "UPDATE `blog_posts` SET `type` = 'news', `title` = 'Title'");
+		
+		$query = $this->db->buildQuery("update", array(
+			"table" => "blog_posts",
+			"fields" => array("type" => "news", "title" => "Title"),
+			"where" => array("ID" => 10)
+		));
+		$this->assertEquals($query, "UPDATE `blog_posts` SET `type` = 'news', `title` = 'Title' WHERE (`ID` = '10')");
+	}
+	
+	public function testBehavior_insert()
+	{
+	    $query = $this->db->buildQuery("insert", array(
+			"table" => "blog_posts",
+			"fields" => array("type" => "news")
+		));
+		$this->assertEquals($query, "INSERT INTO `blog_posts` (`type`) VALUES ('news')");
+		
+		$query = $this->db->buildQuery("insert", array(
+			"table" => "blog_posts",
+			"fields" => array("type" => "news", "title" => "Title")
+		));
+		$this->assertEquals($query, "INSERT INTO `blog_posts` (`type`, `title`) VALUES ('news', 'Title')");
+	}
+	
+	public function testBehavior_delete()
+	{
+	    $query = $this->db->buildQuery("delete", array(
+			"table" => "blog_posts"
+		));
+		$this->assertEquals($query, "DELETE FROM `blog_posts`");
+		
+		$query = $this->db->buildQuery("delete", array(
+			"table" => "blog_posts",
+			"where" => array("ID" => 10)
+		));
+		$this->assertEquals($query, "DELETE FROM `blog_posts` WHERE (`ID` = '10')");
+	}
+	
+	public function testBehavior_tableHook()
+	{
+	    $this->db->hook("table", array($this, "onTableHook"));
+	    
+	    $query = $this->db->buildQuery("select", array(
+			"table" => "blog_posts",
+			"fields" => "*"
+		));
+		$this->assertEquals($query, "SELECT * FROM `_1`.`blog_posts`");
+	}
+	
+	public function onTableHook($name)
+	{
+	    return "_1.".$name;
 	}
 }
