@@ -203,7 +203,7 @@ class Router
 	    }
 	    
 	    $resp = new Response();
-	    $resp->status($status)
+	    $resp->status($status);
 	    $resp->body($body);
 	    $resp->send();
 	    exit(0);
