@@ -184,6 +184,32 @@ class Router
 	}
 	
 	/**
+	 * Immediately stops execution of the script and returns the response code
+	 * and body passed in as parameters OR it returns the headers contained in
+	 * the Router's active response object.
+	 * 
+	 * @since 0.2.4
+	 * @param int $status The status code
+	 * @param string $body The message body
+	 */
+	public function stop($status = null, $body = null)
+	{
+	    if($stats === null && $body === null) {
+	        $this->response->send();
+	        exit(0);
+	    }
+	    if($body === null) {
+	        $body = "";
+	    }
+	    
+	    $resp = new Response();
+	    $resp->status($status);
+	    $resp->body($body);
+	    $resp->send();
+	    exit(0);
+	}
+	
+	/**
 	 * Stub function for providing a hook before a route is matched.
 	 *
 	 * You can prevent the route from being matched by returning false.
