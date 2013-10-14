@@ -94,7 +94,6 @@ class Router
 	{
 		$request = Backbone::$request;
 		$success = false;
-		$params = array();
 		$uri = $request->here();
 		
 		// reset the last matched pattern
@@ -109,14 +108,12 @@ class Router
 		}
 		
 		foreach($this->_routes as $pattern => $callback) {
-			if($this->routeMatches($uri, $pattern, $params)) {
+			if($this->routeMatches($uri, $pattern)) {
 				// url match
-				$this->pattern = $pattern;
-				$this->arguments = $params;
 				if(method_exists($this, $callback)) {
 					// check pre route hook
 					if($this->onPreRouteHook($uri)) {
-						$this->invokeRouteCallback(array($this, $callback), $params);
+						$this->invokeRouteCallback(array($this, $callback), $this->arguments);
 					}
 					$success = true;
 				}
@@ -268,25 +265,30 @@ class Router
 	/**
 	 * Determines whether a given route matches a page route pattern.
 	 *
+	 * The matched pattern is saved to $this->pattern.
+	 * The matched arguments are saved to $this->arguments.
+	 *
 	 * @since 0.2.4
 	 * @param string $url The url fragement to match the pattern against
 	 * 		Ex: /page/to/url/
 	 * @param string $pattern The page's route pattern as defined in the page.
-	 * @param array $params An array that will hold any matched url arguments.
 	 * @return bool True if the route matches the pattern.
 	 */
-	protected function routeMatches($url, $pattern, $params)
+	protected function routeMatches($url, $pattern)
 	{
 		// convert the pattern placeholders to regex style
 		$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
 		
+		$params = array();
 		if(preg_match("{^".$pattern."$}", $url, $params)) {
 			// we have a match
 			if(count($params) > 1) {
 				$params = array_slice($params, 1);
 			}
+			$this->arguments = $params;
 			return true;
 		}
+		$this->arguments = array();
 		return false;
 	}
 	
