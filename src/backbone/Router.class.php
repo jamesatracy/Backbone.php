@@ -96,8 +96,9 @@ class Router
 		$success = false;
 		$uri = $request->here();
 		
-		// reset the last matched pattern
+		// reset the last matched pattern and args
 		$this->pattern = "";
+		$this->arguments = array();
 		
 		if(!$this->onPreMatchHook($uri)) {
 			return true;
@@ -289,8 +290,6 @@ class Router
 			$this->arguments = $params;
 			return true;
 		}
-		$this->pattern = "";
-		$this->arguments = array();
 		return false;
 	}
 	
