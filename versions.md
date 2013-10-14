@@ -3,6 +3,7 @@ Version History
 
 *0.2.4*
 * Added Router->stop() method.
+* Added Router->routeMatches (protected method).
 
 *0.2.3*
 
