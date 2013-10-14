@@ -33,6 +33,12 @@ class Router
 	 */
 	protected $pattern = "";
 	
+	/**
+	 * @var array The currently matched arguments, or empty array.
+	 * @since 0.2.4
+	 */
+	protected $arguments = array();
+	
 	/** @var string The root of the router's url maps, if any */
 	public $root = "";
 	
@@ -103,14 +109,11 @@ class Router
 		}
 		
 		foreach($this->_routes as $pattern => $callback) {
-			if($this->routeMatches($uri, $pattern, $matches)) {
+			if($this->routeMatches($uri, $pattern, $params)) {
 				// url match
 				$this->pattern = $pattern;
+				$this->arguments = $params;
 				if(method_exists($this, $callback)) {
-					// get any url parameters
-					if(count($matches) > 1) {
-						$params = array_slice($matches, 1);
-					}
 					// check pre route hook
 					if($this->onPreRouteHook($uri)) {
 						$this->invokeRouteCallback(array($this, $callback), $params);
@@ -269,18 +272,18 @@ class Router
 	 * @param string $url The url fragement to match the pattern against
 	 * 		Ex: /page/to/url/
 	 * @param string $pattern The page's route pattern as defined in the page.
-	 * @param array $matches An array that will hold any matched url arguments.
+	 * @param array $params An array that will hold any matched url arguments.
 	 * @return bool True if the route matches the pattern.
 	 */
-	protected function routeMatches($url, $pattern, $matches)
+	protected function routeMatches($url, $pattern, $params)
 	{
 		// convert the pattern placeholders to regex style
 		$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
 		
-		if(preg_match("{^".$pattern."$}", $url, $matches)) {
+		if(preg_match("{^".$pattern."$}", $url, $params)) {
 			// we have a match
-			if(count($matches) > 1) {
-				$matches = array_slice($matches, 1);
+			if(count($params) > 1) {
+				$params = array_slice($params, 1);
 			}
 			return true;
 		}
