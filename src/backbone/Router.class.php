@@ -277,17 +277,19 @@ class Router
 	protected function routeMatches($url, $pattern)
 	{
 		// convert the pattern placeholders to regex style
-		$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
+		$test = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
 		
 		$params = array();
-		if(preg_match("{^".$pattern."$}", $url, $params)) {
+		if(preg_match("{^".$test."$}", $url, $params)) {
 			// we have a match
-			if(count($params) > 1) {
+			if(count($params) > 0) {
 				$params = array_slice($params, 1);
 			}
+			$this->pattern = $pattern;
 			$this->arguments = $params;
 			return true;
 		}
+		$this->pattern = "";
 		$this->arguments = array();
 		return false;
 	}
