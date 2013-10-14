@@ -103,11 +103,9 @@ class Router
 		}
 		
 		foreach($this->_routes as $pattern => $callback) {
-			$original = $pattern;
-			$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
-			if(preg_match("{^".$pattern."$}", $uri, $matches)) {
+			if($this->routeMatches($uri, $pattern, $matches)) {
 				// url match
-				$this->pattern = $original;
+				$this->pattern = $pattern;
 				if(method_exists($this, $callback)) {
 					// get any url parameters
 					if(count($matches) > 1) {
@@ -262,6 +260,31 @@ class Router
 	protected function createView()
 	{
 		return new View();
+	}
+	
+	/**
+	 * Determines whether a given route matches a page route pattern.
+	 *
+	 * @since 0.2.4
+	 * @param string $url The url fragement to match the pattern against
+	 * 		Ex: /page/to/url/
+	 * @param string $pattern The page's route pattern as defined in the page.
+	 * @param array $matches An array that will hold any matched url arguments.
+	 * @return bool True if the route matches the pattern.
+	 */
+	protected function routeMatches($url, $pattern, $matches)
+	{
+		// convert the pattern placeholders to regex style
+		$pattern = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
+		
+		if(preg_match("{^".$pattern."$}", $url, $matches)) {
+			// we have a match
+			if(count($matches) > 1) {
+				$matches = array_slice($matches, 1);
+			}
+			return true;
+		}
+		return false;
 	}
 	
 	/**
