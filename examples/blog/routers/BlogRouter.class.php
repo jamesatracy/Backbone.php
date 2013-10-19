@@ -8,9 +8,11 @@ class BlogRouter extends Router
 		parent::__construct();
 		
 		$this->add(array(
-			"/" => "index",
-			"/create/" => "create"
+			"/" => "index"
 		));
+		
+		$this->get("/create/", "create");
+		$this->post("/create/", "createSubmit");
 		
 		// handle invalid urls (404 errors)
 		Events::bind("response.404", array($this, "error404"));
@@ -31,11 +33,22 @@ class BlogRouter extends Router
 	}
 	
 	/*
-	 * Create post page impementation.
-	 * Maps to: /create/
+	 * Create page.
+	 * Maps to: GET /create/
 	 */
 	public function create()
 	{
+		$this->view->set("title", "Create Blog Post");
+		$this->view->load("create-post");
+	}
+	
+	/*
+	 * Create post page impementation.
+	 * Maps to: POST /create/
+	 */
+	public function createSubmit()
+	{
+		echo "hello";
 		if(Backbone::$request->post()) {
 			if(Backbone::$request->post("cancel")) {
 				// cancelled, redirect back to home page
@@ -64,9 +77,6 @@ class BlogRouter extends Router
 				}
 			}
 		}
-		
-		$this->view->set("title", "Create Blog Post");
-		$this->view->load("create-post");
 	}
 	
 	public function error404()
