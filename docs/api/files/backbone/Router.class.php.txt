@@ -411,6 +411,7 @@ class Router
 	        $route = $this->_routes[$pattern];
 	        if(is_array($route)) {
 	            $route[$method] = $callback;
+				$this->_routes[$pattern] = $route;
 	        }
 	    } else {
 	        $this->_routes[$pattern] = array();
