@@ -79,6 +79,38 @@ class TestRouter extends Router
 }
 
 /**
+ * Test router for testing.
+ */
+class TestMethodRouter extends Router
+{
+	public $methodCalled = false;
+	public $argsPassed = array();
+	
+	public function __construct()
+	{
+		$this->add(
+			array(
+				"/path/" => array(
+				    "GET" => "onRoute"
+				),
+				"/another/path/" => array(
+				    "PUT" => "onRoute" ,
+				    "DELETE" => "onRoute"
+				)
+			)
+		);
+		
+		$this->post("/a/path/to/post/", "onRoute");
+	}
+	
+	public function onRoute()
+	{
+		$this->methodCalled = true;
+		$this->argsPassed = func_get_args();
+	}
+}
+
+/**
  * PHPUnit Test suite for Router class
  *
  * Tests for individual class methods following this naming
@@ -187,6 +219,45 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue($this->router->methodCalled);
 		$this->assertCount(1, $this->router->argsPassed);
 		$this->assertEquals($this->router->argsPassed[0], "abc12");
+	}
+	
+	public function testBehavior_httpMethodRoutes()
+	{
+	    $router = new TestMethodRouter(); 
+		$_SERVER['REQUEST_URI'] = "/path/";
+		$_SERVER['REQUEST_METHOD'] = "GET";
+		$this->assertTrue($router->route());
+		$this->assertEquals($router->getMatchedPattern(), "/path/");
+		$this->assertTrue($router->methodCalled);
+		$this->assertEmpty($router->argsPassed);
+		
+		$_SERVER['REQUEST_METHOD'] = "POST";
+		$this->assertTrue($router->route());
+		$resp = $router->getResponse();
+		$this->assertEquals($resp->status(), 405);
+		
+		$_SERVER['REQUEST_URI'] = "/another/path/";
+		$_SERVER['REQUEST_METHOD'] = "PUT";
+		$this->assertTrue($router->route());
+		$this->assertEquals($router->getMatchedPattern(), "/another/path/");
+		$this->assertTrue($router->methodCalled);
+		$this->assertEmpty($router->argsPassed);
+		
+		$_SERVER['REQUEST_METHOD'] = "DELETE";
+		$this->assertTrue($router->route());
+		$this->assertEquals($router->getMatchedPattern(), "/another/path/");
+		$this->assertTrue($router->methodCalled);
+		$this->assertEmpty($router->argsPassed);
+		
+		$_SERVER['REQUEST_URI'] = "/unmatched/path/";
+		$this->assertFalse($router->route());
+		
+		$_SERVER['REQUEST_URI'] = "/a/path/to/post/";
+		$_SERVER['REQUEST_METHOD'] = "POST";
+		$this->assertTrue($router->route());
+		$this->assertEquals($router->getMatchedPattern(), "/a/path/to/post/");
+		$this->assertTrue($router->methodCalled);
+		$this->assertEmpty($router->argsPassed);
 	}
 	
 	/** Testing route hook methods */

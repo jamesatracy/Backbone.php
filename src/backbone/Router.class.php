@@ -10,6 +10,64 @@
 
 /**
  * Base class for all Backbone.php routers.
+ * 
+ * Router allows you to map one request url endpoint to one
+ * function implementation if you pass a string along with
+ * the pattern to match:
+ * 
+ * 		public function __construct()
+ *		{
+ *			parent::__construct(array(
+ *				"/about/" => "aboutPage",
+ *				"/about/careers/" => "careersPage"
+ *				)
+ *			));
+ *		}
+ * 
+ * As of 0.2.4, you can also implement a RESTful interface by mapping
+ * one request url endpoint to one or more function implementations
+ * based on the request method.
+ *
+ * Example:
+ *		I want to implement GET, POST, PUT, and DELETE methods for the
+ *		the following endpoints:
+ *
+ *		GET		/api/dept/engineering/employee/:integer/
+ *		POST	/api/dept/engineering/employee/
+ *		PUT		/api/dept/engineering/employee/:integer/
+ *		DELETE	/api/dept/engineering/employee/:integer/
+ *
+ * 		Here is what the code in the constructor would look like in
+ *		the child class:
+ *
+ *		public function __construct()
+ *		{
+ *			parent::__construct(array(
+ *				"/api/dept/engineering/employee/:integer/" => array(
+ *					"GET" => "getEmployee",
+ *					"PUT" => "updateEmployee",
+ *					"DELETE" => "deleteEmployee"
+ *				),
+ *				"/api/dept/engineering/employee/" => array(
+ *					"POST" => "createEmployee"
+ *				)
+ *			));
+ *		}
+ *
+ *	You can map as many HTTP methods as you want. If an endpoint is called
+ * 	with an unsupported method, Router will return a 405 Method Not
+ *	Allowed response with a list of Allowed methods.
+ * 
+ *  You can also use these convenience methods as an alternative syntax:
+ * 
+ *      public function __construct()
+ *      {
+ *          parent::__construct();
+ *          $this->get("/api/dept/engineering/employee/:integer/", "getEmployee");
+ *          $this->put("/api/dept/engineering/employee/:integer/", "updateEmployee");
+ *          $this->post("/api/dept/engineering/employee/", "createEmployee");
+ *          $this->delete("/api/dept/engineering/employee/:integer/", "deleteEmployee");
+ *      }
  *
  * @since 0.1.0
  */
@@ -84,6 +142,54 @@ class Router
 	}
 	
 	/**
+	 * Add a HTTP GET method route.
+	 * 
+	 * @since 0.2.4
+	 * @param string $pattern The pattern to match
+	 * @param string $callback The function to call when matched
+	 */
+	protected function get($pattern, $callback)
+	{
+	    $this->addMethodRoute("GET", $pattern, $callback);
+	}
+	
+	/**
+	 * Add a HTTP POST method route.
+	 * 
+	 * @since 0.2.4
+	 * @param string $pattern The pattern to match
+	 * @param string $callback The function to call when matched
+	 */
+	public function post($pattern, $callback)
+	{
+	    $this->addMethodRoute("POST", $pattern, $callback);
+	}
+	
+	/**
+	 * Add a HTTP PUT method route.
+	 * 
+	 * @since 0.2.4
+	 * @param string $pattern The pattern to match
+	 * @param string $callback The function to call when matched
+	 */
+	public function put($pattern, $callback)
+	{
+	    $this->addMethodRoute("PUT", $pattern, $callback);
+	}
+	
+	/**
+	 * Add a HTTP DELETE method route.
+	 * 
+	 * @since 0.2.4
+	 * @param string $pattern The pattern to match
+	 * @param string $callback The function to call when matched
+	 */
+	public function delete($pattern, $callback)
+	{
+	    $this->addMethodRoute("DELETE", $pattern, $callback);
+	}
+	
+	/**
 	 * Checks the lists of routes against the given request.
 	 * If there is a match, then the callback method is invoked.
 	 *
@@ -108,12 +214,29 @@ class Router
 				return false; // skip these routes
 		}
 		
-		foreach($this->_routes as $pattern => $callback) {
+		foreach($this->_routes as $pattern => $route) {
 			if($this->routeMatches($uri, $pattern)) {
 				// url match
+				if(is_array($route)) {
+				    // get the http method
+		            $method = strtoupper(Backbone::$request->method());
+		            if(isset($route[$method])) {
+		                $callback = $route[$method];
+		            } else {
+		                // no method match...
+		                $this->response = new Response();
+            			$this->response->status(405);
+            			$this->response->header("Allow", strtoupper(join(", ", array_keys($route))));
+            			return true;
+		            }
+				} else {
+				    // route is the callback method
+				    $callback = $route;
+				}
 				if(method_exists($this, $callback)) {
 					// check pre route hook
 					if($this->onPreRouteHook($uri)) {
+					    // routeMatches stores args in $this->arguments
 						$this->invokeRouteCallback(array($this, $callback), $this->arguments);
 					}
 					$success = true;
@@ -172,7 +295,7 @@ class Router
 	}
 	
 	/**
-	 * Get the matched pattern string
+	 * Get the matched pattern string.
 	 * 
 	 * @since 0.1.1
 	 * @return string The last matched pattern or an empty string if none.
@@ -180,6 +303,17 @@ class Router
 	public function getMatchedPattern()
 	{
 		return $this->pattern;
+	}
+	
+	/**
+	 * Get the active response object.
+	 * 
+	 * @since 0.2.4
+	 * @return Response The active response object.
+	 */
+	public function getResponse()
+	{
+	    return $this->response;
 	}
 	
 	/**
@@ -261,6 +395,27 @@ class Router
 	protected function createView()
 	{
 		return new View();
+	}
+	
+	/**
+	 * Adds a route based on a given HTTP method.
+	 * 
+	 * @since 0.2.4
+	 * @param string $method The HTTP method.
+	 * @param string $pattern The pattern to match
+	 * @param string $callback The function to call when matched
+	 */
+	public function addMethodRoute($method, $pattern, $callback)
+	{
+	    if(isset($this->_routes[$pattern])) {
+	        $route = $this->_routes[$pattern];
+	        if(is_array($route)) {
+	            $route[$method] = $callback;
+	        }
+	    } else {
+	        $this->_routes[$pattern] = array();
+	        $this->_routes[$pattern][$method] = $callback;
+	    }
 	}
 	
 	/**
