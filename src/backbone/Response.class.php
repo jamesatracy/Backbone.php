@@ -74,6 +74,18 @@ class Response
 		505 => 'Unsupported Version'
 	);
 	
+	/**
+	 * Send a 302 redirect.
+	 * 
+	 * @since 0.2.4
+	 * @param string $url The full url to redirect to.
+	 */
+	public function redirect($url)
+	{
+		$this->status(302);
+		$this->header("Location", $url);
+	}
+	
 	/** 
 	 * Sends the complete response, including headers and content.
 	 *

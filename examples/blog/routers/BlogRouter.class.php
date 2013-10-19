@@ -7,10 +7,7 @@ class BlogRouter extends Router
 	{
 		parent::__construct();
 		
-		$this->add(array(
-			"/" => "index"
-		));
-		
+		$this->get("/", "index");
 		$this->get("/create/", "create");
 		$this->post("/create/", "createSubmit");
 		
@@ -48,7 +45,6 @@ class BlogRouter extends Router
 	 */
 	public function createSubmit()
 	{
-		echo "hello";
 		if(Backbone::$request->post()) {
 			if(Backbone::$request->post("cancel")) {
 				// cancelled, redirect back to home page
@@ -72,11 +68,13 @@ class BlogRouter extends Router
 					$post->set(Backbone::$request->post());
 					$post->save();
 					// after successful submit, redirect to home page
-					$this->response->header("Location", Backbone::$request->link("/"));
+					$this->response->redirect(Backbone::$request->link("/"));
 					return;
 				}
 			}
 		}
+		
+		$this->create();
 	}
 	
 	public function error404()
