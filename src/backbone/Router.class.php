@@ -29,16 +29,17 @@
  * based on the request method.
  *
  * Example:
- *		I want to implement GET, POST, PUT, and DELETE methods for the
- *		the following endpoints:
  *
- *		GET		/api/dept/engineering/employee/:integer/
- *		POST	/api/dept/engineering/employee/
- *		PUT		/api/dept/engineering/employee/:integer/
- *		DELETE	/api/dept/engineering/employee/:integer/
+ * I want to implement GET, POST, PUT, and DELETE methods for the
+ * the following endpoints:
  *
- * 		Here is what the code in the constructor would look like in
- *		the child class:
+ * GET		/api/dept/engineering/employee/:integer/
+ * POST	/api/dept/engineering/employee/
+ * PUT		/api/dept/engineering/employee/:integer/
+ * DELETE	/api/dept/engineering/employee/:integer/
+ *
+ * Here is what the code in the constructor would look like in
+ * the child class:
  *
  *		public function __construct()
  *		{
@@ -160,7 +161,7 @@ class Router
 	 * @param string $pattern The pattern to match
 	 * @param string $callback The function to call when matched
 	 */
-	public function post($pattern, $callback)
+	protected function post($pattern, $callback)
 	{
 	    $this->addMethodRoute("POST", $pattern, $callback);
 	}
@@ -172,7 +173,7 @@ class Router
 	 * @param string $pattern The pattern to match
 	 * @param string $callback The function to call when matched
 	 */
-	public function put($pattern, $callback)
+	protected function put($pattern, $callback)
 	{
 	    $this->addMethodRoute("PUT", $pattern, $callback);
 	}
@@ -184,7 +185,7 @@ class Router
 	 * @param string $pattern The pattern to match
 	 * @param string $callback The function to call when matched
 	 */
-	public function delete($pattern, $callback)
+	protected function delete($pattern, $callback)
 	{
 	    $this->addMethodRoute("DELETE", $pattern, $callback);
 	}
@@ -351,7 +352,7 @@ class Router
 	 * @since 0.1.0
 	 * @return bool
 	 */
-	public function onPreMatchHook($url)
+	protected function onPreMatchHook($url)
 	{
 		return true;
 	}
@@ -365,7 +366,7 @@ class Router
 	 * @since 0.1.0
 	 * @return bool
 	 */
-	public function onPreRouteHook($url)
+	protected function onPreRouteHook($url)
 	{
 		return true;
 	}
@@ -378,7 +379,7 @@ class Router
 	 * @since 0.1.0
 	 * @param bool $response The return value of the router method that was invoked.
 	 */
-	public function onPostRouteHook($response)
+	protected function onPostRouteHook($response)
 	{
 		return true;
 	}
