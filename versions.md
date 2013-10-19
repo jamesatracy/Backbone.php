@@ -5,6 +5,7 @@ Version History
 * Added Router->stop() method.
 * Added Router->routeMatches (protected method).
 * Added HTTP Method mapping support in Router for REST implementations.
+* Added Response->redirect() method.
 
 *0.2.3*
 
