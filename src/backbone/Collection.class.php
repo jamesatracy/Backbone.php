@@ -302,7 +302,7 @@ class Collection implements Iterator
 		if(!class_exists($classname)) {
 			throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
 		}
-		$model = new $classname($this->_table, $this->_db);
+		$model = new $classname($this->_db);
 		return $model;
 	}
 	

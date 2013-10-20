@@ -410,7 +410,7 @@ class MySQL extends DataSource
 		
 		// gather up all the rows
 		$rows = array();
-		if($this->_result !== false) {
+		if(!is_bool($this->_result)) {
 			while($current = mysql_fetch_array($this->_result, MYSQL_ASSOC)) {
 				$rows[] = $current;
 			}
