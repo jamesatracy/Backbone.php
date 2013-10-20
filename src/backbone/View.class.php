@@ -304,15 +304,16 @@ class View
 	public function end()
 	{
 		if(isset($this->_blocks[$this->_active_block])) {
+			$ob = ob_get_clean();
 			if($this->_active_mode == "append") {
 				// append
-				$this->_blocks[$this->_active_block] .= ob_get_clean();
+				$this->_blocks[$this->_active_block] .= $ob;
 			} else if($this->_active_mode == "prepend") {
 				// append
-				$this->_blocks[$this->_active_block] = ob_get_clean() . $this->_blocks[$this->_active_block];
+				$this->_blocks[$this->_active_block] = $ob . $this->_blocks[$this->_active_block];
 			} else {
 				// overwrite
-				$this->_blocks[$this->_active_block] = ob_get_clean();
+				$this->_blocks[$this->_active_block] = $ob;
 			}
 		}
 	}
