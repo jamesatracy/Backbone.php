@@ -462,13 +462,15 @@ class Router
 	
 	/**
 	 * Handles an internal exception by sending a HTTP 500.
-	 * 
-	 * When custom error pages is turned on, an uncaught exception error
-	 * page will be shown. This should not be enabled in production.
 	 *
 	 * Applications can capture a 500 error and show a custom error page by
 	 * binding an action to the "response.500" global event through the Events
 	 * object.
+	 *
+	 * Applications can capture an uncaught exception more specificaly by
+	 * binding an action to the "router.uncaught-exception" global event
+	 * through the Events object. Alternatively, this method may be
+	 * overridden in any child class implementation.
 	 *
 	 * @since 0.2.0
 	 * @param Exception $e The Exception object
@@ -476,6 +478,7 @@ class Router
 	protected function handleException($e)
 	{
 		ob_end_clean();
+		Events::trigger("router.uncaught-exception", $e);
 		$resp = $this->response;
 		$resp->status(500);
 		$resp->send();
