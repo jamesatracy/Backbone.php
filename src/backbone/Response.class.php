@@ -28,7 +28,10 @@ class Response
 	protected $_headers = array();
 	
 	/** @var string The response body */
-	protected $_body = null;
+	protected $_body = null; 
+	
+	/** @var bool True if the response headers/body was sent */
+	protected $_sent = false;
 	
 	/** @var array Holds HTTP status codes */
 	protected $_status_codes = array(
@@ -97,6 +100,8 @@ class Response
 		if($status !== null) {
 			$this->status($status);
 		}
+		// trigger pre response status code event
+		Events::trigger("response.pre.".$this->_status, $this);
 		// send protocol and status
 		$code_message = $this->_status_codes[$this->_status];
 		$this->sendHeader($this->_protocol." ".$this->_status." ".$code_message);
@@ -110,8 +115,9 @@ class Response
 		if($this->_body !== null) {
 			echo $this->_body;
 		}
-		// trigger status code event
-		Events::trigger("response.".$this->_status);
+		$this->_sent = true;
+		// trigger post response status code event
+		Events::trigger("response.".$this->_status, $this);
 	}
 	
 	/**
@@ -188,6 +194,18 @@ class Response
 		}
 		$this->_body = $body;
 		return $this->_body;
+	}
+	
+	/**
+	 * Whether or not the response has been sent. This includes both
+	 * the headers and the body content.
+	 *
+	 * @since 0.2.5
+	 * @return bool True if the response was sent
+	 */
+	public function isSent()
+	{
+		return $this->_sent;
 	}
 	
 	/**

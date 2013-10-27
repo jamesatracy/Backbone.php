@@ -463,7 +463,8 @@ class Router
 	/**
 	 * Handles an internal exception by sending a HTTP 500.
 	 * 
-	 * The error message will be included in the custom header X-Backbone-Exception.
+	 * When custom error pages is turned on, an uncaught exception error
+	 * page will be shown. This should not be enabled in production.
 	 *
 	 * Applications can capture a 500 error and show a custom error page by
 	 * binding an action to the "response.500" global event through the Events
@@ -474,11 +475,10 @@ class Router
 	 */
 	protected function handleException($e)
 	{
+		ob_end_clean();
 		$resp = $this->response;
 		$resp->status(500);
-		$resp->header("X-Backbone-Exception", get_class($e).": ".$e->getMessage()." in ".$e->getFile()."(".$e->getLine().")");
 		$resp->send();
-		ob_end_clean();
 		exit();
 	}
 };

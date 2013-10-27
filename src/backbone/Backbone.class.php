@@ -47,7 +47,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.2.3";
+	protected static $version = "0.2.5";
 	
 	/**
 	 * Initialize Backbone.php 
@@ -269,5 +269,4 @@ class Backbone
 		}
 	}
 };
-
 ?>

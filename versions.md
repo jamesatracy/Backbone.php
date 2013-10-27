@@ -1,6 +1,11 @@
 Version History
 ---------------
 
+*0.2.5*
+* Added pre response sent events to Response ("response.pre.200").
+* Response events now pass the response object as the parameter.
+* Added Response->isSent() method.
+
 *0.2.4*
 * Added Router->stop() method.
 * Added Router->routeMatches (protected method).
