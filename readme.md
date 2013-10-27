@@ -23,41 +23,25 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 	class MyRouter extends Router
 	{
 		public function __construct() {
-			// map url paths to implementation methods
+			// map url paths to class methods
 			$this->get("/", "index");
 			$this->get("/about/", "about");
 			$this->post("/contact/", "contactSubmit");
 			$this->put("/settings/update/:alpha/:number", "update");
 		}
 		
-		// GET /
-		public function index() {
-			$this->view->load("home-page");
-			...
-		}
-		
-		// GET /about/
-		public function about() {
-			$this->view->load("about-page");
-			...
-		}
-		
-		// POST /contact/
-		public function contactSubmit() {
-			$formInput = Backbone::$request->getArgs();
-			...
-			$this->response->redirect(Backbone::$request->link('/thank-you/'));
-		}
-		
-		// PUT /settings/update/:alpha/:number
-		// $key The first url param
-		// $value The second url param
-		public function update($key, $value) {
-			...
-		}
+		// implementations go here
 	}
 
 That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a MySQL database (or other data source) in the form of Models and Collections.
+
+	$dog = new DogModel();
+	$dog->name = "Spot";
+	$dog->breed = "Collie";
+	if($dog->save()) {
+		// good to go
+		$id = $dog->id;
+	}
 
 Classes
 -------
