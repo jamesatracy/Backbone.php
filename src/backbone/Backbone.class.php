@@ -101,6 +101,7 @@ class Backbone
 	 * 
 	 * For framework code, the $name parameter should be the classname.
 	 * For non-framework code, the $name parameter should begin with "/"
+	 * and be relative to the root directory.
 	 * 
 	 * @since 0.1.0
 	 * @param string|array $name The class name or an array of class names
@@ -111,8 +112,9 @@ class Backbone
 			$name = explode(",", $name);
 		}
 
-		foreach($name as $classname)
+		foreach($name as $classname) {
 			self::loadModule($classname);
+		}
 	}
 	
 	/**
@@ -259,12 +261,14 @@ class Backbone
 			if(substr($name, 0, 1) == "/") {
 				// load app specific code
 				$name = substr($name, 1);
-				if(file_exists(ABSPATH.$name.".class.php"))
+				if(file_exists(ABSPATH.$name.".class.php")) {
 					require_once(ABSPATH.$name.".class.php");
+				}
 			} else {
 				// load framework code
-				if(file_exists(FRAMEWORK.$name.".class.php"))
+				if(file_exists(FRAMEWORK.$name.".class.php")) {
 					require_once(FRAMEWORK.$name.".class.php");
+				}
 			}
 		}
 	}
