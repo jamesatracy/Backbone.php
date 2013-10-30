@@ -9,6 +9,7 @@
  */
 
 Backbone::uses("Events");
+use Backbone\Events as Events;
 
 /**
  * PHPUnit Test suite for Events class

@@ -10,6 +10,8 @@
 
 Backbone::uses("DataSource");
 
+use Backbone\DataSource as Datasource;
+
 // DataSource is abstract, so need a class extension
 class MockDataSource extends DataSource
 {

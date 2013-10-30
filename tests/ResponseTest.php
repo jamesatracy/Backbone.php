@@ -10,6 +10,9 @@
 
 Backbone::uses("Response");
 
+use Backbone\Response as Response;
+use Backbone\Events as Events;
+
 /**
  * PHPUnit Test suite for Response class
  *

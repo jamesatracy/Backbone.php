@@ -8,7 +8,10 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses(array("Model", "/tests/fixtures/MockModel"));
+Backbone::uses(array("Model", "/tests/helpers/MockModel"));
+
+use Backbone\Connections as Connections;
+use Backbone\Model as Model;
 
 /**
  * PHPUnit Test suite for Model class

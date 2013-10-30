@@ -36,7 +36,7 @@ Backbone::uses("DataSource");
  *  NOTE that you can pass an array of arrays to MockDatabase and
  *	thereby simulate fetching multiple rows of data.
  */
-class MockDatabase extends DataSource
+class MockDatabase extends Backbone\DataSource
 {
 	/** @var array Holds the mock data */
 	protected $data = array();

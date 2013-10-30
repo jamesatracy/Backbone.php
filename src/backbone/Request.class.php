@@ -8,6 +8,9 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
+namespace Backbone;
+use \Backbone as Backbone;
+
 /**
  * Convenience class for accessing the request URI, generating links, and working with $_POST, $_GET, and $_FILES.
  *

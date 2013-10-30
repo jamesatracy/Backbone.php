@@ -47,7 +47,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.2.5";
+	protected static $version = "0.3.0";
 	
 	/**
 	 * Initialize Backbone.php 
@@ -255,9 +255,8 @@ class Backbone
 	protected static function loadModule($name)
 	{
 		$classname = self::getClassName($name);
-		//if(!isset(self::$modules[$name]))
-		if(!class_exists($classname)) {
-			//self::$modules[$name] = true;
+		if(!isset(self::$modules[$name])) {
+			self::$modules[$name] = true;
 			if(substr($name, 0, 1) == "/") {
 				// load app specific code
 				$name = substr($name, 1);

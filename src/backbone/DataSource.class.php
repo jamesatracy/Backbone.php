@@ -7,7 +7,10 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
- 
+
+namespace Backbone;
+use \Backbone as Backbone;
+
 /**
  * Abstract base class for data sources, like a database.
  *

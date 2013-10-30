@@ -10,6 +10,10 @@
 
 Backbone::uses(array("Model", "Collection", "/tests/helpers/MockCollection"));
 
+use Backbone\Connections as Connections;
+use Backbone\Model as Model;
+use Backbone\Collection as Collection;
+
 /**
  * PHPUnit Test suite for Collection class
  *

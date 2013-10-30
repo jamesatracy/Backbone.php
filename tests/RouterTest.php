@@ -10,6 +10,10 @@
 
 Backbone::uses("Router, View");
 
+use Backbone\Router as Router;
+use Backbone\Request as Request;
+use Backbone\View as View;
+
 /**
  * Test View class
  */

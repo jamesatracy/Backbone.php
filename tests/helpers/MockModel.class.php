@@ -2,7 +2,7 @@
 /**
  * A mock model class for testing purposes.
  */
-class MockModel extends Model
+class MockModel extends Backbone\Model
 {
 	public function __construct()
 	{
