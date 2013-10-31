@@ -13,5 +13,5 @@ if(!defined('FRAMEWORK'))
 	define('FRAMEWORK', ABSPATH.'src/backbone/');
 
 require_once(FRAMEWORK.'Backbone.class.php');
-Backbone::$config = new DataMap();  
+//Backbone::$config = new DataMap();  
 ?>

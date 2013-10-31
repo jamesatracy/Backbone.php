@@ -33,7 +33,7 @@ class Backbone
 	public static $root = "/";
 	
 	/** @var DataMap Global configuration object for application specific configurations */
-	public static $config = null;
+	//public static $config = null;
 	
 	/** @var array List of registered routers */
 	public static $routers = array();
@@ -51,7 +51,7 @@ class Backbone
 	 */
 	public static function initialize()
 	{
-		self::$config = new DataMap();
+		//self::$config = new DataMap();
 		return;
 	}
 	

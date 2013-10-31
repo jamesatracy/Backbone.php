@@ -66,7 +66,7 @@ class MySQL extends DataSource
 		$this->_name = $name;
 		$this->_connection = mysql_connect($options['server'], $options['user'], $options['pass']);
 		if(!$this->_connection) {
-			throw new RuntimeException(mysql_error());
+			throw new \RuntimeException(mysql_error());
 		}
 	}
 	
@@ -160,12 +160,12 @@ class MySQL extends DataSource
 	 * @since 0.2.0
 	 * @param string $table The table name
 	 * @return array The schema structure
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function schema($table)
 	{
 		if(!$this->isConnected()) {
-			throw new RuntimeException("MySql: Invalid connection");
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		
 		$id = 0;
@@ -308,12 +308,12 @@ class MySQL extends DataSource
 	 * @param string $table The table name
 	 * @param array $data An array of key => value pairs to insert
 	 * @return bool True if the creation succeeded.
+	 * @throws \RuntimeException
 	 */
 	public function create($table, $data)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($table)) {
 			return array();
@@ -337,12 +337,12 @@ class MySQL extends DataSource
 	 * @param array $data An array of key => value pairs to update
 	 * @param array $options An array of options, such as a where clause
 	 * @return bool True if the creation succeeded.
+	 * @throws \RuntimeException
 	 */
 	public function update($table, $data, $options)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($table)) {
 			return array();
@@ -365,12 +365,12 @@ class MySQL extends DataSource
 	 * @param string $table The table name
 	 * @param array $options An array of options, such as a where clause
 	 * @return bool True if the delete succeeded.
+	 * @throws \RuntimeException
 	 */
 	public function delete($table, $options)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($table)) {
 			return array();
@@ -388,28 +388,35 @@ class MySQL extends DataSource
 	 * @since 0.1.0
 	 * @param string $query The SQL query to execute
 	 * @return array An array of results.
+	 * @throws \RuntimeException
 	 */
 	public function query($query)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($query)) {
 			return array();
 		}
 		
-		$t = microtime(true);
+		//$t = microtime(true);
+		Events::trigger("MySQL:query:begin", array("query" => $query, "connection" => $this->_connection));
 		$this->_result = mysql_query($query, $this->_connection);
+		Events::trigger("MySQL:query:end", array(
+		    "server" => $this->_options['server'],
+		    "name" => $this->_name,
+		    "query" => $query,
+		    "result" => $this->_result
+		));
 		$this->_error = mysql_error();
 		$this->_query = $query;
 
 		// do logging?
-		if(Backbone::$config->get("mysql.log")) {
-			$duration = round((microtime(true) - $t), 4);
-			$num_rows = mysql_numrows($this->_result);
-			MySQL_Logger::logQuery($this->_options['server'], $query, $duration, $num_rows, $this->_name);
-		}
+// 		if(Backbone::$config->get("mysql.log")) {
+// 			$duration = round((microtime(true) - $t), 4);
+// 			$num_rows = mysql_numrows($this->_result);
+// 			MySQL_Logger::logQuery($this->_options['server'], $query, $duration, $num_rows, $this->_name);
+// 		}
 		
 		// gather up all the rows
 		$rows = array();
@@ -840,8 +847,8 @@ class MySQL extends DataSource
 };
 
 // Default configurations
-Backbone::$config->set("mysql.log", false);
-Backbone::$config->set("mysql.logfile", "mysql.log");
+// Backbone::$config->set("mysql.log", false);
+// Backbone::$config->set("mysql.logfile", "mysql.log");
 
 /**
  * Class for logging MySQL queries.
