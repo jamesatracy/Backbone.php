@@ -8,6 +8,9 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
+namespace Backbone;
+use \Backbone as Backbone;
+
 Backbone::uses("Model");
 
 /**
@@ -15,7 +18,7 @@ Backbone::uses("Model");
  *
  * @since 0.1.0
  */
-class Collection implements Iterator
+class Collection implements \Iterator
 {
 	/** @var MySQL The database connection */
 	protected $_db = null;
@@ -23,8 +26,11 @@ class Collection implements Iterator
 	/** @var string The table associated with this collection */
 	protected $_table = "";
 	
-	/** @var string The class name of the model class contained by the collection */
+	/** @var string The model contained by the collection */
 	protected $_model = "Model";
+	
+	/** @var string The class name of the model class contained by the collection */
+	protected $_classname = null;
 	
 	/** @var array The array of raw model data */
 	protected $_models = array();
@@ -48,10 +54,12 @@ class Collection implements Iterator
 		}
 		$options = array_merge(array(
 			"model" => "Model",
+			"classname" => null,
 			"db" => "default"
 		), $options);
 		$this->_table = $table;
 		$this->_model = $options['model'];
+		$this->_classname = $options['classname'];
 		$this->_db = (is_string($options['db']) ? Connections::get($options['db']) : $options['db']);
 	}
 	
@@ -298,11 +306,15 @@ class Collection implements Iterator
 	public function createModel()
 	{
 		Backbone::uses($this->_model);
-		$classname = Backbone::getClassName($this->_model);
+		if($this->_classname) {
+		    $classname = $this->_classname;
+		} else {
+		    $classname = Backbone::getClassName($this->_model);
+		}
 		if(!class_exists($classname)) {
 			throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
 		}
-		$model = new $classname($this->_table, $this->_db);
+		$model = new $classname($this->_db);
 		return $model;
 	}
 	

@@ -47,7 +47,7 @@ class Backbone
 	public static $request = null;
 	
 	/** @var string Version info */
-	protected static $version = "0.2.3";
+	protected static $version = "0.3.0";
 	
 	/**
 	 * Initialize Backbone.php 
@@ -57,6 +57,7 @@ class Backbone
 	public static function initialize()
 	{
 		self::$config = new DataMap();
+		self::$request = new Backbone\Request();
 		return;
 	}
 	
@@ -101,6 +102,7 @@ class Backbone
 	 * 
 	 * For framework code, the $name parameter should be the classname.
 	 * For non-framework code, the $name parameter should begin with "/"
+	 * and be relative to the root directory.
 	 * 
 	 * @since 0.1.0
 	 * @param string|array $name The class name or an array of class names
@@ -111,8 +113,9 @@ class Backbone
 			$name = explode(",", $name);
 		}
 
-		foreach($name as $classname)
+		foreach($name as $classname) {
 			self::loadModule($classname);
+		}
 	}
 	
 	/**
@@ -211,11 +214,11 @@ class Backbone
 	 * Dispatches the request by trying to find a matching route among the registered routers.
 	 * 
 	 * @since 0.1.0
-	 * @param Request $request The active request object
 	 * @return bool Returns true if the request was successfully routed, false otherwise
 	*/
-	public static function dispatch($request)
+	public static function dispatch()
 	{
+	    $request = self::$request;
 		$success = false;
 		foreach(self::$routers as $router) {
 			if($router->route()) {
@@ -253,22 +256,22 @@ class Backbone
 	protected static function loadModule($name)
 	{
 		$classname = self::getClassName($name);
-		//if(!isset(self::$modules[$name]))
-		if(!class_exists($classname)) {
-			//self::$modules[$name] = true;
+		if(!isset(self::$modules[$name])) {
+			self::$modules[$name] = true;
 			if(substr($name, 0, 1) == "/") {
 				// load app specific code
 				$name = substr($name, 1);
-				if(file_exists(ABSPATH.$name.".class.php"))
+				if(file_exists(ABSPATH.$name.".class.php")) {
 					require_once(ABSPATH.$name.".class.php");
+				}
 			} else {
 				// load framework code
-				if(file_exists(FRAMEWORK.$name.".class.php"))
+				if(file_exists(FRAMEWORK.$name.".class.php")) {
 					require_once(FRAMEWORK.$name.".class.php");
+				}
 			}
 		}
 	}
 };
-
 ?>
 

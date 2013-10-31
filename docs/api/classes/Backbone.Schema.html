@@ -139,19 +139,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-910863690"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2025600454"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-910863690" class="accordion-body collapse in">
+            <div id="namespace-2025600454" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1392164107"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1958236366"></a>
                                 <a href="../namespaces/Backbone.html" style="margin-left: 30px; padding-left: 0">Backbone</a>
             </div>
-            <div id="namespace-1392164107" class="accordion-body collapse ">
+            <div id="namespace-1958236366" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -194,13 +194,49 @@
             <div class="row-fluid">
                 <div class="span8 content class">
                     <nav>
-                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                                <a href="../namespaces/Backbone.html">\Backbone</a> <i class="icon-level-up"></i>
                                             </nav>
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
-                    <h1><small>\</small>Backbone</h1>
-                    <p><em></em></p>
-                    
+                    <h1><small>\Backbone</small>Schema</h1>
+                    <p><em>Schema represents the definition of a data resource and
+is the base class for Backbone.php&#039;s Model class.</em></p>
+                    <p>Schema is responsible for providing information about a model's
+definition and for validation of data against that definition.
+This provides a layer of security between data input and the
+database itself. Schema itself is database agnostic - it depends
+on the database object to implement a "schmea" method that converts
+the resource's schmea into the definition outlined below. The
+database object should be an extension of DataSource.</p>
+
+<p>The schema is also used to populate new model's with default data.</p>
+
+<p>Schema data structure format, as a JSON string:</p>
+
+<pre><code>{
+    // the name of the primary key
+    "id" : "ID",
+    // an array of column definitions. the key is the column name.
+    "schema" : {
+        "ID" : {
+            // true if primary key
+            "primary" : true,
+            // see below for supported types
+            "type" : "integer|float|string|char|timesstamp",
+            // for integer types only. determines the range.
+            "size" : "tinyint|smallint|mediumint|int|bigint",
+            // for string and char types. determines max size.
+            "length" : "255",
+            // for integer types. may be 0 (signed) or 1
+            "unsigned" : "0|1",
+            // can this field accept null? 1 true, 0 false
+            "acceptNULL" : "0|1",
+            // the default value for this field
+            "default" : "0|1"
+        },
+    ...
+}
+</code></pre>
 
 
                     <section id="summary">
@@ -218,22 +254,21 @@
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.html#method_initialize" class="">initialize()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_version" class="">version()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_dump" class="">dump()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_uses" class="">uses()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_addRouter" class="">addRouter()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_loadRouter" class="">loadRouter()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_resolvePath" class="">resolvePath()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_getClassName" class="">getClassName()</a><br />
-                                                                    <a href="../classes/Backbone.html#method_dispatch" class="">dispatch()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_initialize" class="">initialize()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_isInitialized" class="">isInitialized()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_rules" class="">rules()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_getID" class="">getID()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_hasField" class="">hasField()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_schemaToJSON" class="">schemaToJSON()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_export" class="">export()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_getErrors" class="">getErrors()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_hasErrors" class="">hasErrors()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_validate" class="">validate()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_defaultValues" class="">defaultValues()</a><br />
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.html#property_root" class="">$root</a><br />
-                                                                    <a href="../classes/Backbone.html#property_config" class="">$config</a><br />
-                                                                    <a href="../classes/Backbone.html#property_routers" class="">$routers</a><br />
-                                                                    <a href="../classes/Backbone.html#property_modules" class="">$modules</a><br />
-                                                                    <a href="../classes/Backbone.html#property_request" class="">$request</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#property_schemaFile" class="">$schemaFile</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No constants found</em>
@@ -241,10 +276,14 @@
                         </section>
                         <section class="row-fluid protected">
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.html#method_loadModule" class="">loadModule()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method__validateField" class="">_validateField()</a><br />
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.html#property_version" class="">$version</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#property__schema_cache" class="">$_schema_cache</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#property__db" class="">$_db</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#property__fields" class="">$_fields</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#property__id" class="">$_id</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#property__errors" class="">$_errors</a><br />
                                                             </section>
                             <section class="span4">
                                 <em>N/A</em>
@@ -268,12 +307,12 @@
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/backbone.Backbone.class.php.html"><div class="path-wrapper">backbone/Backbone.class.php</div></a></dd>
+                            <dd><a href="../files/backbone.Schema.class.php.html"><div class="path-wrapper">backbone/Schema.class.php</div></a></dd>
                                                 <dt>Package</dt>
                             <dd><div class="namespace-wrapper">\Default</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
-                                                                                                                                                                    <div class="namespace-wrapper">\Backbone</div>
+                                                                                                                                                                    <div class="namespace-wrapper">\Backbone\Schema</div>
                             </dd>
 
                         
@@ -282,7 +321,15 @@
                                                                         </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                            <tr>
+                            <th>
+                                since
+                            </th>
+                            <td>
+                                                                    
+
+                                                            </td>
+                        </tr>
                                         </table>
                 </aside>
             </div>
@@ -298,117 +345,17 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_root" name="property_root" class="anchor"></a>
+            <a id="property_schemaFile" name="property_schemaFile" class="anchor"></a>
             <article class="property">
-                <h3 class="public ">$root</h3>
-                <pre class="signature">$root : string</pre>
+                <h3 class="public ">$schemaFile</h3>
+                <pre class="signature">$schemaFile : string</pre>
                 <p><em></em></p>
                 
 
 
                                 <h4>Type</h4>
                 string
-                &mdash; Defines the root URI directory                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_config" name="property_config" class="anchor"></a>
-            <article class="property">
-                <h3 class="public ">$config</h3>
-                <pre class="signature">$config : \DataMap</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                <a href="../classes/DataMap.html">\DataMap</a>
-                &mdash; Global configuration object for application specific configurations                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_routers" name="property_routers" class="anchor"></a>
-            <article class="property">
-                <h3 class="public ">$routers</h3>
-                <pre class="signature">$routers : array</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                array
-                &mdash; List of registered routers                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_modules" name="property_modules" class="anchor"></a>
-            <article class="property">
-                <h3 class="public ">$modules</h3>
-                <pre class="signature">$modules : array</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                array
-                &mdash; List of loaded modules                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_request" name="property_request" class="anchor"></a>
-            <article class="property">
-                <h3 class="public ">$request</h3>
-                <pre class="signature">$request : \Request</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                \Request
-                &mdash; Global request object                            </article>
+                &mdash; Optional pointer to schema file name                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -423,17 +370,117 @@
 
                                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_version" name="property_version" class="anchor"></a>
+            <a id="property__schema_cache" name="property__schema_cache" class="anchor"></a>
             <article class="property">
-                <h3 class="protected ">$version</h3>
-                <pre class="signature">$version : string</pre>
+                <h3 class="protected ">$_schema_cache</h3>
+                <pre class="signature">$_schema_cache : array</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                array
+                &mdash; A central cache for schema definitions                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__db" name="property__db" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_db</h3>
+                <pre class="signature">$_db : object</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                object
+                &mdash; Database connection                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__fields" name="property__fields" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_fields</h3>
+                <pre class="signature">$_fields : array</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                array
+                &mdash; Associated array of field definitions                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__id" name="property__id" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_id</h3>
+                <pre class="signature">$_id : string</pre>
                 <p><em></em></p>
                 
 
 
                                 <h4>Type</h4>
                 string
-                &mdash; Version info                            </article>
+                &mdash; The primary key                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__errors" name="property__errors" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_errors</h3>
+                <pre class="signature">$_errors : array</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                array
+                &mdash; An array of error messages                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -455,309 +502,84 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(string <span class="argument">$connection</span>)</pre>
+                <p><em>Constructor</em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$connection</td>
+                                <td><p>The name of the database connection.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Backbone\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            constructor
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
             <a id="method_initialize" name="method_initialize" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">initialize()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">initialize()</pre>
-                <p><em>Initialize Backbone.php</em></p>
+                <pre class="signature" style="margin-right: 54px;">initialize(string <span class="argument">$table</span>, bool <span class="argument">$cacheable</span>) : array</pre>
+                <p><em>Initialize the schema</em></p>
                 
-
-
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_version" name="method_version" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">version()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">version() : string</pre>
-                <p><em>Get the version info</em></p>
-                
-
-
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The version number</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_dump" name="method_dump" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">dump()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">dump(mixed <span class="argument">$var</span>) : string</pre>
-                <p><em>Wrapper for native var_dump() function that buffers the output
-and returns it back to you.</em></p>
-                <p>By default, this method handles arrays and objects differently than var_dump.
-For arrays, it prints out "(array)" plus the length of the array.
-For objects, it prints out "(object)" plust the class name.</p>
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>mixed</td>
-                                <td>$var</td>
-                                <td><p>The variable to dump</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>A string representation of the variable</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_uses" name="method_uses" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">uses()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">uses(string|array <span class="argument">$name</span>)</pre>
-                <p><em>Include a class module.</em></p>
-                <p>For framework code, the $name parameter should be the classname.
-For non-framework code, the $name parameter should begin with "/"
-and be relative to the root directory.</p>
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string|array</td>
-                                <td>$name</td>
-                                <td><p>The class name or an array of class names</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_addRouter" name="method_addRouter" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">addRouter()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">addRouter(\Router <span class="argument">$router</span>)</pre>
-                <p><em>Registers a router with Backbone.php</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>\Router</td>
-                                <td>$router</td>
-                                <td><p>An instance of the Router derived class</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_loadRouter" name="method_loadRouter" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">loadRouter()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">loadRouter(string <span class="argument">$name</span>)</pre>
-                <p><em>Loads a Router class.</em></p>
-                <p>Router must be located in one of the paths defined by the
-ROUTERPATH global system constant.</p>
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td>string</td>
-                                <td>$name</td>
-                                <td><p>The name of the router</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_resolvePath" name="method_resolvePath" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">resolvePath()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">resolvePath(string <span class="argument">$path</span>, string <span class="argument">$filename</span>) : string|null</pre>
-                <p><em>Resolves a path variable and a file name into a full path, if the file exists.</em></p>
-                <p>The path string may contain multiple paths relative to the application's root
-directory, separated by a semicolon (;)</p>
-
-<p>Example:</p>
-
-<p>Backbone::resolvePath("/abc/views/;/def/views/", "home.php");</p>
-
-<p>Might resolve to one of the following:</p>
-
-<p>/abc/views/home.php
-/def/views/home.php</p>
-
-<p>resolvePath() returns the first file that it finds, determined by the
-ordering in the path variable.</p>
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$path</td>
-                                <td><p>One or more paths to search relative to the application root
-    and separated by a semicolon</p>
+                                <td>$table</td>
+                                <td><p>The table name</p>
 </td>
                             </tr>
                                                     <tr>
-                                <td>string</td>
-                                <td>$filename</td>
-                                <td><p>The name of the file to search for.</p>
+                                <td>bool</td>
+                                <td>$cacheable</td>
+                                <td><p>Whether or not to cache the schema. Default is true.</p>
 </td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    string|null
-                                            &mdash; <p>Returns the full absolute path of the file, or null</p>
+                    array
+                                            &mdash; <p>The schema object as an associated array</p>
 
                                                 </article>
         </div>
@@ -782,22 +604,58 @@ ordering in the path variable.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_getClassName" name="method_getClassName" class="anchor"></a>
+            <a id="method_isInitialized" name="method_isInitialized" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">getClassName()</h3>
+                <h3 class="public ">isInitialized()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getClassName( <span class="argument">$path</span>)</pre>
-                <p><em>Get a class name from a relative path.</em></p>
-                <p>Ex:
-Backbone::className("/models/employees/Developer");
-// returns "Developer"</p>
+                <pre class="signature" style="margin-right: 54px;">isInitialized() : bool</pre>
+                <p><em>Checks if the schema is initialized</em></p>
+                
+
+
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>True if it is initialized</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_rules" name="method_rules" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">rules()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">rules( <span class="argument">$rules</span>)</pre>
+                <p><em>Add additional validation rules to a group of fields.</em></p>
+                
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td></td>
-                                <td>$path</td>
+                                <td>$rules</td>
                                 <td>
 </td>
                             </tr>
@@ -808,7 +666,298 @@ Backbone::className("/models/employees/Developer");
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getID" name="method_getID" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getID()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getID() : \Backbone\[string]</pre>
+                <p><em>Get the primary key</em></p>
+                
+
+
+                
+                
+                                    <h4>Returns</h4>
+                    \Backbone\[string]
+                                            &mdash; <p>The field name of the primary key</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hasField" name="method_hasField" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hasField()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hasField(string <span class="argument">$field</span>) : bool</pre>
+                <p><em>Checks for the existence of a field in the schema</em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$field</td>
+                                <td><p>The name of the field</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>True if the field exists</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_schemaToJSON" name="method_schemaToJSON" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">schemaToJSON()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">schemaToJSON() : string</pre>
+                <p><em>Convert the schema to a JSON array</em></p>
+                
+
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The JSON formatted schema array</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_export" name="method_export" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">export()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">export(string <span class="argument">$file</span>)</pre>
+                <p><em>Export this schema definition to a file</em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$file</td>
+                                <td><p>The file name relative to the ABSPATH
+Ex: '/path/to/file/name.schema'</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getErrors" name="method_getErrors" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getErrors()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getErrors() : string</pre>
+                <p><em>Gets the last error message(s)</em></p>
+                
+
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>The error message(s)</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_hasErrors" name="method_hasErrors" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">hasErrors()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">hasErrors() : boolean</pre>
+                <p><em>Returns true if the last operation produced any error messages</em></p>
+                
+
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>True if the last operation produced any error messages</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_validate" name="method_validate" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">validate()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">validate(array <span class="argument">$fields</span>)</pre>
+                <p><em>Validate one or more fields.</em></p>
+                <p>Error messages can be retrieved through getErrors()</p>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$fields</td>
+                                <td><p>An array of field => value pairs to validate</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Backbone\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                                                             </dl>
             <h2>Tags</h2>
@@ -827,7 +976,7 @@ Backbone::className("/models/employees/Developer");
                             returns
                         </th>
                         <td>
-                                                            <p>string The classname</p>
+                                                            <p>bool True if all fields validate, false otherwise.</p>
 
                                                     </td>
                     </tr>
@@ -837,26 +986,26 @@ Backbone::className("/models/employees/Developer");
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_dispatch" name="method_dispatch" class="anchor"></a>
+            <a id="method_defaultValues" name="method_defaultValues" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">dispatch()</h3>
+                <h3 class="public ">defaultValues()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">dispatch() : bool</pre>
-                <p><em>Dispatches the request by trying to find a matching route among the registered routers.</em></p>
+                <pre class="signature" style="margin-right: 54px;">defaultValues() : array</pre>
+                <p><em>Get an array initialized to the default values</em></p>
                 
 
 
                 
                 
                                     <h4>Returns</h4>
-                    bool
-                                            &mdash; <p>Returns true if the request was successfully routed, false otherwise</p>
+                    array
+                                            &mdash; <p>An associative array of key => value pairs set to the default values as defined
+in the active schema.</p>
 
                                                 </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
                                                             <dl>
                                                                             </dl>
             <h2>Tags</h2>
@@ -876,27 +1025,33 @@ Backbone::className("/models/employees/Developer");
 
                                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_loadModule" name="method_loadModule" class="anchor"></a>
+            <a id="method__validateField" name="method__validateField" class="anchor"></a>
             <article class="method">
-                <h3 class="protected ">loadModule()</h3>
+                <h3 class="protected ">_validateField()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">loadModule(string|array <span class="argument">$name</span>)</pre>
-                <p><em>Include a class module. Used internally by uses().</em></p>
-                <p>For framework code, the $name parameter should be the classname.</p>
-
-<p>For plugin code, the $name parameter should begin with "plugins/"
-followed by the classname.</p>
-
-<p>For non-framework code, the $name parameter should begin with "/" and be
-relative to the application's root directory.</p>
+                <pre class="signature" style="margin-right: 54px;">_validateField(array <span class="argument">$field</span>, string <span class="argument">$name</span>, mixed <span class="argument">$value</span>)</pre>
+                <p><em>Internal function for validating a field</em></p>
+                
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>string|array</td>
+                                <td>array</td>
+                                <td>$field</td>
+                                <td><p>The field schema object</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
                                 <td>$name</td>
-                                <td><p>The class name or an array of class names</p>
+                                <td><p>The name of the field</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$value</td>
+                                <td><p>The value of the field to validate against</p>
 </td>
                             </tr>
                                             </table>
@@ -906,7 +1061,6 @@ relative to the application's root directory.</p>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                            <span class="label label-info">static</span>
                                                             <dl>
                                                                             </dl>
             <h2>Tags</h2>
@@ -930,10 +1084,10 @@ relative to the application's root directory.</p>
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">Backbone.class.php</h3>
+            <h3 id="source-view-label">Schema.class.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/backbone/Backbone.class.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/backbone/Schema.class.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 

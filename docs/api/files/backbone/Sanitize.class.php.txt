@@ -8,6 +8,9 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
+namespace Backbone;
+use \Backbone as Backbone;
+
 /**
  * Class for sanitizing strings, including striping html and escpaing for database input.
  *

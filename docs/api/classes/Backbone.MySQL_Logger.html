@@ -139,19 +139,19 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-488067010"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-80069739"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-488067010" class="accordion-body collapse in">
+            <div id="namespace-80069739" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1640803943"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-454969052"></a>
                                 <a href="../namespaces/Backbone.html" style="margin-left: 30px; padding-left: 0">Backbone</a>
             </div>
-            <div id="namespace-1640803943" class="accordion-body collapse ">
+            <div id="namespace-454969052" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -194,16 +194,24 @@
             <div class="row-fluid">
                 <div class="span8 content class">
                     <nav>
-                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                                <a href="../namespaces/Backbone.html">\Backbone</a> <i class="icon-level-up"></i>
                                             </nav>
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
-                    <h1><small>\</small>DataMap</h1>
-                    <p><em>Utility class for working with a map of nested key, values.</em></p>
-                    <p>For example, it allows you to get and set values that can be expressed as:</p>
+                    <h1><small>\Backbone</small>MySQL_Logger</h1>
+                    <p><em>Class for logging MySQL queries.</em></p>
+                    <p>To set mysql logging to true, Backbone::$config->set("mysql.log", true)
+To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
+File name is relative to the application's web root and must be writable.</p>
 
-<p>"products.shirts.polos" which translates to:
-array("products" => array("shirts" => array("polos" => $value)))</p>
+<p>Make a call to MySQL_Logger::clearQueryLog() at the beginning of execution to
+flush the log file.</p>
+
+<p>Make a call to MySQL_Logger::tallyQueryLog() at the end of execution to flush
+the log file.</p>
+
+<p>You can pause and resume logging activities if you need to skip logging certain
+queries by calling MySQL_Logger::pause() and MySQL_Logger::resume().</p>
 
 
                     <section id="summary">
@@ -221,11 +229,13 @@ array("products" => array("shirts" => array("polos" => $value)))</p>
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/DataMap.html#method___construct" class="">__construct()</a><br />
-                                                                    <a href="../classes/DataMap.html#method_clear" class="">clear()</a><br />
-                                                                    <a href="../classes/DataMap.html#method_set" class="">set()</a><br />
-                                                                    <a href="../classes/DataMap.html#method_get" class="">get()</a><br />
-                                                                    <a href="../classes/DataMap.html#method_has" class="">has()</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#method_logQuery" class="">logQuery()</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#method_tallyQueryLog" class="">tallyQueryLog()</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#method_clearQueryLog" class="">clearQueryLog()</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#method_getQueryCount" class="">getQueryCount()</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#method_getQueryTime" class="">getQueryTime()</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#method_pause" class="">pause()</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#method_resume" class="">resume()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -239,7 +249,9 @@ array("products" => array("shirts" => array("polos" => $value)))</p>
                                                                     <em>No protected methods found</em>
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/DataMap.html#property__map" class="">$_map</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#property__queries_count" class="">$_queries_count</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#property__queries_time" class="">$_queries_time</a><br />
+                                                                    <a href="../classes/Backbone.MySQL_Logger.html#property__paused" class="">$_paused</a><br />
                                                             </section>
                             <section class="span4">
                                 <em>N/A</em>
@@ -263,12 +275,12 @@ array("products" => array("shirts" => array("polos" => $value)))</p>
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/backbone.DataMap.class.php.html"><div class="path-wrapper">backbone/DataMap.class.php</div></a></dd>
+                            <dd><a href="../files/backbone.MySQL.class.php.html"><div class="path-wrapper">backbone/MySQL.class.php</div></a></dd>
                                                 <dt>Package</dt>
                             <dd><div class="namespace-wrapper">\Default</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
-                                                                                                                                                                    <div class="namespace-wrapper">\DataMap</div>
+                                                                                                                                                                    <div class="namespace-wrapper">\Backbone\MySQL_Logger</div>
                             </dd>
 
                         
@@ -277,15 +289,7 @@ array("products" => array("shirts" => array("polos" => $value)))</p>
                                                                         </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                                            <tr>
-                            <th>
-                                since
-                            </th>
-                            <td>
-                                                                    
-
-                                                            </td>
-                        </tr>
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
                                         </table>
                 </aside>
             </div>
@@ -301,17 +305,67 @@ array("products" => array("shirts" => array("polos" => $value)))</p>
 
                                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property__map" name="property__map" class="anchor"></a>
+            <a id="property__queries_count" name="property__queries_count" class="anchor"></a>
             <article class="property">
-                <h3 class="protected ">$_map</h3>
-                <pre class="signature">$_map : array</pre>
+                <h3 class="protected ">$_queries_count</h3>
+                <pre class="signature">$_queries_count : int</pre>
                 <p><em></em></p>
                 
 
 
                                 <h4>Type</h4>
-                array
-                &mdash; The internal map                            </article>
+                int
+                &mdash; Number of quieries                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__queries_time" name="property__queries_time" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_queries_time</h3>
+                <pre class="signature">$_queries_time : int</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                int
+                &mdash; Cumulative query time                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property__paused" name="property__paused" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$_paused</h3>
+                <pre class="signature">$_paused : bool</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                bool
+                &mdash; Whether or not the logging is paused                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -333,151 +387,47 @@ array("products" => array("shirts" => array("polos" => $value)))</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <a id="method_logQuery" name="method_logQuery" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">__construct()</h3>
+                <h3 class="public ">logQuery()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(array <span class="argument">$set</span>)</pre>
-                <p><em>Constructor</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>array</td>
-                                <td>$set</td>
-                                <td><p>The initial set. Defaults to an empty array.</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_clear" name="method_clear" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">clear()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">clear()</pre>
-                <p><em>Clear the set.</em></p>
-                
-
-
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_set" name="method_set" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">set()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">set(string <span class="argument">$name</span>, string <span class="argument">$value</span>)</pre>
-                <p><em>Set a value for the given key.</em></p>
-                <p>Name can be array namespaced using the dot operator.
-If the namespace does not exist, it will be initialized as an empty array.</p>
-
-<p>Ex: "user.name" is equivalent to
-array("user" => array("name" => "John"))</p>
+                <pre class="signature" style="margin-right: 54px;">logQuery(string <span class="argument">$server</span>, string <span class="argument">$sql</span>, int <span class="argument">$duration</span>, int <span class="argument">$num_rows</span>, string <span class="argument">$name</span>)</pre>
+                <p><em>Log a mysql query</em></p>
+                <p>To set mysql logging to true, Backbone::$config->set("mysql.log", true)
+To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
+    File name is relative to the application's web root.</p>
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td>string</td>
-                                <td>$name</td>
-                                <td><p>The name of the variable.</p>
+                                <td>$server</td>
+                                <td><p>The mysql connection server name</p>
 </td>
                             </tr>
                                                     <tr>
                                 <td>string</td>
-                                <td>$value</td>
-                                <td><p>The value for the given key.</p>
+                                <td>$sql</td>
+                                <td><p>The query string</p>
 </td>
                             </tr>
-                                            </table>
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_get" name="method_get" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">get()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get(string <span class="argument">$name</span>)</pre>
-                <p><em>Get a value for a given variable name</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>int</td>
+                                <td>$duration</td>
+                                <td><p>The time, in seconds, that the query took to execute</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>int</td>
+                                <td>$num_rows</td>
+                                <td><p>The number of rows returned by the query</p>
+</td>
+                            </tr>
                                                     <tr>
                                 <td>string</td>
                                 <td>$name</td>
-                                <td><p>The name of the variable.</p>
+                                <td><p>Optional name for this db connection</p>
 </td>
                             </tr>
                                             </table>
@@ -487,6 +437,7 @@ array("user" => array("name" => "John"))</p>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
                                                             <dl>
                                                                             </dl>
             <h2>Tags</h2>
@@ -506,30 +457,199 @@ array("user" => array("name" => "John"))</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_has" name="method_has" class="anchor"></a>
+            <a id="method_tallyQueryLog" name="method_tallyQueryLog" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">has()</h3>
+                <h3 class="public ">tallyQueryLog()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">has(string <span class="argument">$name</span>)</pre>
-                <p><em>Whether a value for a given variable name exists</em></p>
+                <pre class="signature" style="margin-right: 54px;">tallyQueryLog()</pre>
+                <p><em>Writes the current running totals to the end of the query log.</em></p>
                 
 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$name</td>
-                                <td><p>The name of the variable.</p>
-</td>
-                            </tr>
-                                            </table>
                 
                 
                             </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_clearQueryLog" name="method_clearQueryLog" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">clearQueryLog()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">clearQueryLog()</pre>
+                <p><em>Clear the mysql log file if mysql logging is set to true.</em></p>
+                <p>To set mysql logging to true, Backbone::$config->set("mysql.log", true)
+To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
+File name is relative to the application's web root.</p>
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getQueryCount" name="method_getQueryCount" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getQueryCount()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getQueryCount()</pre>
+                <p><em>Get the current running total query count</em></p>
+                
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getQueryTime" name="method_getQueryTime" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getQueryTime()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getQueryTime()</pre>
+                <p><em>Get the current running total query time in milliseconds</em></p>
+                
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_pause" name="method_pause" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">pause()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">pause()</pre>
+                <p><em>Pause the query logging. Call resume() to recommence</em></p>
+                
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_resume" name="method_resume" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">resume()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">resume()</pre>
+                <p><em>Resume query logging</em></p>
+                
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
                                                             <dl>
                                                                             </dl>
             <h2>Tags</h2>
@@ -553,10 +673,10 @@ array("user" => array("name" => "John"))</p>
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">DataMap.class.php</h3>
+            <h3 id="source-view-label">MySQL.class.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/backbone/DataMap.class.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/backbone/MySQL.class.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 
