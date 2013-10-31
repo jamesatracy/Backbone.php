@@ -1,4 +1,4 @@
 <nav>
-	<a href="<?php echo Backbone::$request->link("/"); ?>">Home</a>&nbsp;|&nbsp;
-	<a href="<?php echo Backbone::$request->link("/create/"); ?>">Create Post</a>
+	<a href="<?php echo $this->url("/"); ?>">Home</a>&nbsp;|&nbsp;
+	<a href="<?php echo $this->url("/create/"); ?>">Create Post</a>
 </nav>

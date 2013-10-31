@@ -1,5 +1,5 @@
 <?php
-$this->extend("master-template");
+$this->extend("layout");
 ?>
 
 <?php $this->define("content"); ?>

@@ -1,5 +1,5 @@
 <?php
-$this->extend("master-template");
+$this->extend("layout");
 
 // Get the list of posts to display
 // Notice that this information is passed from the Router and not computed within this view.

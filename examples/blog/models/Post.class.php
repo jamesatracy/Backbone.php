@@ -3,6 +3,8 @@
 
 Backbone::uses("Model");
 
+use Backbone\Model as Model;
+
 class Post extends Model
 {
 	public $created = "post_created";

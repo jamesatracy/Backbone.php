@@ -57,6 +57,7 @@ class Backbone
 	public static function initialize()
 	{
 		self::$config = new DataMap();
+		self::$request = new Request();
 		return;
 	}
 	
@@ -213,11 +214,11 @@ class Backbone
 	 * Dispatches the request by trying to find a matching route among the registered routers.
 	 * 
 	 * @since 0.1.0
-	 * @param Request $request The active request object
 	 * @return bool Returns true if the request was successfully routed, false otherwise
 	*/
-	public static function dispatch($request)
+	public static function dispatch()
 	{
+	    $request = self::$request;
 		$success = false;
 		foreach(self::$routers as $router) {
 			if($router->route()) {

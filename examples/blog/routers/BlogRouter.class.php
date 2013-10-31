@@ -1,6 +1,10 @@
 <?php
 // BlogRouter.class.php
 
+use Backbone\Router as Router;
+use Backbone\Events as Events;
+use Backbone\Collection as Collection;
+
 class BlogRouter extends Router
 {
 	public function __construct()

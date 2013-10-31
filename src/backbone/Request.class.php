@@ -12,7 +12,8 @@ namespace Backbone;
 use \Backbone as Backbone;
 
 /**
- * Convenience class for accessing the request URI, generating links, and working with $_POST, $_GET, and $_FILES.
+ * Convenience class for accessing the request URI, generating links, and 
+ * working with $_POST, $_GET, and $_FILES.
  *
  * @since 0.1.0
  */
