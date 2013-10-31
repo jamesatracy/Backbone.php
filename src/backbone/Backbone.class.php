@@ -43,7 +43,7 @@ class Backbone
 	/** @var array List of loaded modules */
 	public static $modules = array();
 	
-	/** @var Request Global request object */
+	/** @var Backbone\Request Global request object */
 	public static $request = null;
 	
 	/** @var string Version info */
