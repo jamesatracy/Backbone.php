@@ -202,9 +202,8 @@ class Router
 	 */
 	public function route()
 	{
-		$request = Backbone::$request;
 		$success = false;
-		$uri = $request->here();
+		$uri = Request::here();
 		
 		// reset the last matched pattern and args
 		$this->pattern = "";
@@ -223,7 +222,7 @@ class Router
 				// url match
 				if(is_array($route)) {
 				    // get the http method
-		            $method = strtoupper(Backbone::$request->method());
+		            $method = strtoupper(Request::method());
 		            if(isset($route[$method])) {
 		                $callback = $route[$method];
 		            } else {

@@ -50,19 +50,19 @@ class BlogRouter extends Router
 	 */
 	public function createSubmit()
 	{
-		if(Backbone::$request->post()) {
-			if(Backbone::$request->post("cancel")) {
+		if(Backbone\Request::post()) {
+			if(Backbone\Request::post("cancel")) {
 				// cancelled, redirect back to home page
-				$this->response->header("Location", Backbone::$request->link("/"));
+				$this->response->header("Location", Backbone\Request::link("/"));
 			} else {
 				// do the submit
 				Backbone::uses("Validate");
 				$errors = array();
-				if(!Validate::required("post_title", Backbone::$request->post("post_title")))
+				if(!Validate::required("post_title", Backbone\Request::post("post_title")))
 					$errors[] = "*** Post Title is a Required Field.";
-				if(!Validate::required("post_author", Backbone::$request->post("post_author")))
+				if(!Validate::required("post_author", Backbone\Request::post("post_author")))
 					$errors[] = "*** Post Author is a Required Field.";
-				if(!Validate::required("post_body", Backbone::$request->post("post_body")))
+				if(!Validate::required("post_body", Backbone\Request::post("post_body")))
 					$errors[] = "*** Post Body is a Required Field.";
 				if(!empty($errors)) {
 					$this->view->set("errors", join("<br/>", $errors));
@@ -70,10 +70,10 @@ class BlogRouter extends Router
 					// save the post
 					Backbone::uses("/models/Post");
 					$post = new Post();
-					$post->set(Backbone::$request->post());
+					$post->set(Backbone\Request::post());
 					$post->save();
 					// after successful submit, redirect to home page
-					$this->response->redirect(Backbone::$request->link("/"));
+					$this->response->redirect(Backbone\Request::link("/"));
 					return;
 				}
 			}
@@ -84,6 +84,6 @@ class BlogRouter extends Router
 	
 	public function error404()
 	{
-		echo "Invalid URL (HTTP 404): ".Backbone::$request->here();
+		echo "Invalid URL (HTTP 404): ".Backbone\Request::here();
 	}
 }

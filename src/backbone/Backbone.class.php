@@ -14,8 +14,8 @@
  * Provides core functionality such as loading modules, loading routers, and
  * dispatching routes.
  * 
- * The Request object for the current request is also stored here and 
- * accessible through Backbone::$request.
+ * The Request object for the current request is accessible through the global
+ * static Request object and its methods.
  * 
  * @since 0.1.0
  */
@@ -41,9 +41,6 @@ class Backbone
 	/** @var array List of loaded modules */
 	public static $modules = array();
 	
-	/** @var Backbone\Request Global request object */
-	public static $request = null;
-	
 	/** @var string Version info */
 	protected static $version = "0.3.0";
 	
@@ -55,7 +52,6 @@ class Backbone
 	public static function initialize()
 	{
 		self::$config = new DataMap();
-		self::$request = new Backbone\Request();
 		return;
 	}
 	
