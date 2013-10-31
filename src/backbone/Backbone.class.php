@@ -57,7 +57,7 @@ class Backbone
 	public static function initialize()
 	{
 		self::$config = new DataMap();
-		self::$request = new Request();
+		self::$request = new Backbone\Request();
 		return;
 	}
 	

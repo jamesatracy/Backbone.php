@@ -4,6 +4,7 @@
 use Backbone\Router as Router;
 use Backbone\Events as Events;
 use Backbone\Collection as Collection;
+use Backbone\Validate as Validate;
 
 class BlogRouter extends Router
 {
