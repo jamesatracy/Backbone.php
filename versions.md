@@ -1,7 +1,9 @@
 Version History
 ---------------
 
-*0.2.5*
+*0.3.0*
+* Backbone classes now use namespace Backbone.
+* Consolidated backbone.php into index.php.
 * Added pre response sent events to Response ("response.pre.200").
 * Response events now pass the response object as the parameter.
 * Added Response->isSent() method.
