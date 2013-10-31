@@ -398,6 +398,7 @@ class Router
 	 */
 	protected function createView()
 	{
+	    Backbone::uses("View");
 		return new View();
 	}
 	

@@ -26,8 +26,6 @@ require_once(FRAMEWORK."Request.class.php");
 require_once(FRAMEWORK."Router.class.php");
 require_once(FRAMEWORK."Events.class.php");
 require_once(FRAMEWORK."DataMap.class.php");
-require_once(FRAMEWORK."View.class.php");
-require_once(FRAMEWORK."Html.class.php");
 
 class Backbone
 {	

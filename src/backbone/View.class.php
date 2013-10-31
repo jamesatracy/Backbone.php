@@ -40,6 +40,7 @@ class View
 	 */
 	public function __construct()
 	{
+	    Backbone::uses("Html");
 		$this->html = new Html();
 	}
 	

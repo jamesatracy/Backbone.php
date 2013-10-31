@@ -8,7 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses("Router, View");
+Backbone::uses("Router,Request,View");
 
 use Backbone\Router as Router;
 use Backbone\Request as Request;
