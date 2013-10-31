@@ -212,7 +212,6 @@ class Backbone
 	*/
 	public static function dispatch()
 	{
-	    $request = self::$request;
 		$success = false;
 		foreach(self::$routers as $router) {
 			if($router->route()) {
@@ -221,7 +220,7 @@ class Backbone
 			}
 		}
 		if(!$success) {
-			$here = trim($request->here(), "/");
+			$here = trim(Backbone\Request::here(), "/");
 			// No routes are defined.
 			// Auto route this page if we find a corresponding view that ends in '-page'
 			if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {
