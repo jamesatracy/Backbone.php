@@ -66,11 +66,12 @@ class Events
 	 * @since 0.1.0
 	 * @param string $event The event name
 	 * @param mixed $params Parameters to pass along with the event
+	 * @return bool False if the event was cancelled, True otherwise
 	 */
 	public static function trigger($event, $params = null)
 	{
 		if(isset(self::$_events[$event])) {
-			self::dispatch(self::$_events[$event], $params);
+			return self::dispatch(self::$_events[$event], $params);
 		}
 	}
 	
@@ -80,15 +81,19 @@ class Events
 	 * @since 0.1.0
 	 * @param array $callbacks The array of event callbacks
 	 * @param mixed $params Parameters to pass along with the event
+	 * @return bool False if the event was cancelled, True otherwise
 	 */
 	protected static function dispatch($callbacks, $params)
 	{
+	    $result = true;
 		foreach($callbacks as $callable) {
 			if(call_user_func($callable, $params) === false) {
 				// stop further propagation
+				$result = false;
 				break;
 			}
 		}
+		return $result;
 	}
 	
 };

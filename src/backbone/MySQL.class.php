@@ -399,24 +399,25 @@ class MySQL extends DataSource
 			return array();
 		}
 		
-		//$t = microtime(true);
-		Events::trigger("MySQL:query:begin", array("query" => $query, "connection" => $this->_connection));
+		Events::trigger("MySQL:query:begin", array(
+		    "server" => $this->_options['server'],
+		    "name" => $this->_name,
+		    "query" => $query, 
+		    "connection" => $this->_connection
+		));
+		
+		// execute the query
 		$this->_result = mysql_query($query, $this->_connection);
+		
 		Events::trigger("MySQL:query:end", array(
 		    "server" => $this->_options['server'],
 		    "name" => $this->_name,
 		    "query" => $query,
 		    "result" => $this->_result
 		));
+		
 		$this->_error = mysql_error();
 		$this->_query = $query;
-
-		// do logging?
-// 		if(Backbone::$config->get("mysql.log")) {
-// 			$duration = round((microtime(true) - $t), 4);
-// 			$num_rows = mysql_numrows($this->_result);
-// 			MySQL_Logger::logQuery($this->_options['server'], $query, $duration, $num_rows, $this->_name);
-// 		}
 		
 		// gather up all the rows
 		$rows = array();
@@ -728,7 +729,7 @@ class MySQL extends DataSource
 	}
 	
 	/**
-	 * Internal functino for building a delete statement.
+	 * Internal functionn for building a delete statement.
 	 *
 	 * @since 0.2.0
 	 * @param array $options The query options
@@ -845,10 +846,6 @@ class MySQL extends DataSource
 		return "(".join(" ".$op." ", $tmp).")";
 	}
 };
-
-// Default configurations
-// Backbone::$config->set("mysql.log", false);
-// Backbone::$config->set("mysql.logfile", "mysql.log");
 
 /**
  * Class for logging MySQL queries.
