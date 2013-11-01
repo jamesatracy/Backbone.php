@@ -46,9 +46,9 @@ That is essentially all that you need to get a Backbone.php application up and r
 Classes
 -------
 
-The Backbone.php framework consists of the following 16 modules: 
+The Backbone.php framework consists of the following 15 modules: 
 
-`Backbone`, `Collection`, `Connections`, `DataMap`, `DataSource`, `Events`, `Html`, `Model`, `MySQL`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `Validate`, and `View`
+`Backbone`, `Collection`, `Connections`, `DataSource`, `Events`, `Html`, `Model`, `MySQL`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `Validate`, and `View`
 
 Dependencies
 ------------
