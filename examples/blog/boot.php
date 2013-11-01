@@ -15,10 +15,4 @@ Backbone::uses(array("Connections", "MySQL"));
 
 // Database
 Backbone\Connections::create("default", "Backbone\MySQL", array("server" => DB_SERVER, "user" => DB_USER, "pass" => DB_PASS));
-
-// Mysql logging
-// Backbone::$config->set("mysql.log", false);
-// Backbone::$config->set("mysql.logfile", "mysql.log");
-
-//MySQL_Logger::clearQueryLog();
 ?>
