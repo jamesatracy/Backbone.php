@@ -2,6 +2,7 @@
 // BlogRouter.class.php
 
 use Backbone\Router as Router;
+use Backbone\Request as Request;
 use Backbone\Events as Events;
 use Backbone\Collection as Collection;
 use Backbone\Validate as Validate;
@@ -50,19 +51,19 @@ class BlogRouter extends Router
 	 */
 	public function createSubmit()
 	{
-		if(Backbone\Request::post()) {
-			if(Backbone\Request::post("cancel")) {
+		if(Request::post()) {
+			if(Request::post("cancel")) {
 				// cancelled, redirect back to home page
-				$this->response->header("Location", Backbone\Request::link("/"));
+				$this->response->header("Location", Request::link("/"));
 			} else {
 				// do the submit
 				Backbone::uses("Validate");
 				$errors = array();
-				if(!Validate::required("post_title", Backbone\Request::post("post_title")))
+				if(!Validate::required("post_title", Request::post("post_title")))
 					$errors[] = "*** Post Title is a Required Field.";
-				if(!Validate::required("post_author", Backbone\Request::post("post_author")))
+				if(!Validate::required("post_author", Request::post("post_author")))
 					$errors[] = "*** Post Author is a Required Field.";
-				if(!Validate::required("post_body", Backbone\Request::post("post_body")))
+				if(!Validate::required("post_body", Request::post("post_body")))
 					$errors[] = "*** Post Body is a Required Field.";
 				if(!empty($errors)) {
 					$this->view->set("errors", join("<br/>", $errors));
@@ -70,10 +71,10 @@ class BlogRouter extends Router
 					// save the post
 					Backbone::uses("/models/Post");
 					$post = new Post();
-					$post->set(Backbone\Request::post());
+					$post->set(Request::post());
 					$post->save();
 					// after successful submit, redirect to home page
-					$this->response->redirect(Backbone\Request::link("/"));
+					$this->response->redirect(Request::link("/"));
 					return;
 				}
 			}
@@ -84,6 +85,6 @@ class BlogRouter extends Router
 	
 	public function error404($response)
 	{
-		$response->body("Invalid URL (HTTP 404): ".Backbone\Request::here());
+		$response->body("Invalid URL (HTTP 404): ".Request::here());
 	}
 }
