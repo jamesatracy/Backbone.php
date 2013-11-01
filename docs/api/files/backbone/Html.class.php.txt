@@ -29,11 +29,9 @@ class Html
 	 */
 	public function link($url, $text, $attributes = array())
 	{
-		$request = Backbone::$request;
-
 		if(substr($url, 0, 1) == "/") {
 			// relative path
-			$url = $request->link($url);
+			$url = Request::link($url);
 		}
 		
 		$attributes["href"] = $url;
@@ -50,11 +48,9 @@ class Html
 	 */
 	public function image($url, $attributes = array())
 	{
-		$request = Backbone::$request;
-
 		if(substr($url, 0, 1) == "/") {
 			// relative path
-			$url = $request->link($url);
+			$url = Request::link($url);
 		}
 		
 		$attributes["src"] = $url;
@@ -73,8 +69,6 @@ class Html
 	 */
 	public function script($url, $attributes = array(), $inline = false)
 	{
-		$request = Backbone::$request;
-		
 		$attributes["type"] = "text/javascript";
 		
 		if($inline) {
@@ -88,7 +82,7 @@ class Html
 		} else {
 			if(substr($url, 0, 1) == "/") {
 				// relative path
-				$url = $request->link($url);
+				$url = Request::link($url);
 			}
 			
 			$attributes["src"] = $url;
@@ -107,11 +101,9 @@ class Html
 	 */
 	public function stylesheet($url, $attributes = array())
 	{
-		$request = Backbone::$request;
-
 		if(substr($url, 0, 1) == "/") {
 			// relative path
-			$url = $request->link($url);
+			$url = Request::link($url);
 		}
 		
 		$attributes["href"] = $url;

@@ -27,7 +27,7 @@ class Request
 	 * @since 0.1.0
 	 * @return string The base url of the request
 	 */
-	public function base()
+	public static function base()
 	{
 		$protocol = isset($_SERVER['HTTPS']) ? "https" : "http";
 		return $protocol . "://" . $_SERVER['HTTP_HOST'];
@@ -41,9 +41,9 @@ class Request
 	 * @since 0.1.0
 	 * @return string The full url of the request, including query strings
 	 */
-	public function url()
+	public static function url()
 	{
-		return $this->base() . $_SERVER['REQUEST_URI'];
+		return self::base() . $_SERVER['REQUEST_URI'];
 	}
 	
 	/**
@@ -54,9 +54,9 @@ class Request
 	 * @since 0.1.0
 	 * @return [string] The url path, excluding query strings
 	 */
-	public function path()
+	public static function path()
 	{
-		return str_replace("?".$this->queryString(), "", $_SERVER['REQUEST_URI']);
+		return str_replace("?".self::queryString(), "", $_SERVER['REQUEST_URI']);
 	}
 	
 	/**
@@ -66,12 +66,12 @@ class Request
 	 * 
 	 * @return string Trims the web root off of the path for the relative path and returns it
 	 */
-	public function here()
+	public static function here()
 	{
 		if(Backbone::$root != "/" ) {
-			$here = str_replace(Backbone::$root, "", $this->path());
+			$here = str_replace(Backbone::$root, "", self::path());
 		} else {
-			$here = $this->path();
+			$here = self::path();
 		}
 		
 		if(substr($here, 0, 1) != "/") {
@@ -88,7 +88,7 @@ class Request
 	 * @since 0.1.0
 	 * @return string The query string
 	 */
-	public function queryString()
+	public static function queryString()
 	{
 		return (isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "");
 	}
@@ -104,9 +104,9 @@ class Request
 	 * @since 0.1.0
 	 * @return string The query argument value or null
 	 */
-	public function query($arg)
+	public static function query($arg)
 	{
-		$queryString = $this->queryString();
+		$queryString = self::queryString();
 		if(empty($queryString)) {
 			return null;
 		}
@@ -128,7 +128,7 @@ class Request
 	 * @since 0.1.0
 	 * @return string The IP address
 	 */
-	public function ipaddress()
+	public static function ipaddress()
 	{
 		return $_SERVER["REMOTE_ADDR"];
 	}
@@ -144,16 +144,16 @@ class Request
 	 * @param bool $ssl Force the link to SSL, if not already
 	 * @return string The link if $print = false
 	 */
-	public function link($subpath, $print = false, $ssl = false)
+	public static function link($subpath, $print = false, $ssl = false)
 	{
 		$link = "";
 		if($subpath) {
 			if(substr($subpath, 0, 1) == "/") {
 				$subpath = substr($subpath, 1);
 			}
-			$link =  $this->base().Backbone::$root.$subpath;
+			$link =  self::base().Backbone::$root.$subpath;
 		} else {
-			$link =  $this->base().Backbone::$root;
+			$link =  self::base().Backbone::$root;
 		}
 		
 		if($ssl) {
@@ -182,9 +182,9 @@ class Request
 	 * 		"ssl"
 	 * @return [boolean] True if the request is $prop
 	 */
-	public function is($prop)
+	public static function is($prop)
 	{
-		if(strtolower($prop) == strtolower($this->method())) {
+		if(strtolower($prop) == strtolower(self::method())) {
 			return true;
 		}
 		if($prop == "ajax") {
@@ -207,7 +207,7 @@ class Request
 	 * @since 0.1.1
 	 * @return string The HTTP request method.
 	 */
-	public function method()
+	public static function method()
 	{
 		if (isset($_SERVER['REQUEST_METHOD'])) {
   			return $_SERVER['REQUEST_METHOD'];
@@ -222,7 +222,7 @@ class Request
 	 * @since 0.2.0
 	 * @return array The HTTP request headers.
 	 */
-	public function getHeaders()
+	public static function getHeaders()
 	{
 		$headers = array();
 		foreach($_SERVER as $key => $value) {
@@ -241,14 +241,14 @@ class Request
 	 * @since 0.1.1
 	 * @return array An array of key value pairs.
 	 */
-	public function getData()
+	public static function getData()
 	{
 		$arguments = array();
-		if($this->is("GET")) {
+		if(self::is("GET")) {
 			$arguments = $_GET;
-		} else if($this->is("POST")) {
+		} else if(self::is("POST")) {
 			$arguments = $_POST;
-		} else if($this->is("PUT") || Backbone::$request->is("DELETE")) {
+		} else if(self::is("PUT") || self::is("DELETE")) {
 			parse_str(file_get_contents('php://input'), $arguments);
 		}
 		
@@ -263,7 +263,7 @@ class Request
 	 * @return string|null|array The value of the key if $key is provided, null if the key does not exist, 
 	 * 	or the array of $_GET params if no $key is supplied
 	 */
-	public function get($key = null)
+	public static function get($key = null)
 	{
 		if($key) {
 			if(isset($_GET[$key])) {
@@ -283,7 +283,7 @@ class Request
 	 * @return string|null|array The value of the key if $key is provided, null if the key does not exist, 
 	 * 	or the array of $_POST params if no $key is supplied
 	 */
-	public function post($key = null)
+	public static function post($key = null)
 	{
 		if($key) {
 			if(isset($_POST[$key])) {
@@ -303,7 +303,7 @@ class Request
 	 * @return string|null|array The value of the key if $key is provided, null if the key does not exist, 
 	 * 	or the array of $_FILES params if no $key is supplied
 	 */
-	public function files($key = null)
+	public static function files($key = null)
 	{
 		if($key) {
 			if(isset($_FILES[$key])) {

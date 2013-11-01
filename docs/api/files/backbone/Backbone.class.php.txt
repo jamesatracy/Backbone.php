@@ -14,8 +14,8 @@
  * Provides core functionality such as loading modules, loading routers, and
  * dispatching routes.
  * 
- * The Request object for the current request is also stored here and 
- * accessible through Backbone::$request.
+ * The Request object for the current request is accessible through the global
+ * static Request object and its methods.
  * 
  * @since 0.1.0
  */
@@ -25,9 +25,6 @@ require_once(FRAMEWORK."Response.class.php");
 require_once(FRAMEWORK."Request.class.php");
 require_once(FRAMEWORK."Router.class.php");
 require_once(FRAMEWORK."Events.class.php");
-require_once(FRAMEWORK."DataMap.class.php");
-require_once(FRAMEWORK."View.class.php");
-require_once(FRAMEWORK."Html.class.php");
 
 class Backbone
 {	
@@ -35,16 +32,13 @@ class Backbone
 	public static $root = "/";
 	
 	/** @var DataMap Global configuration object for application specific configurations */
-	public static $config = null;
+	//public static $config = null;
 	
 	/** @var array List of registered routers */
 	public static $routers = array();
 	
 	/** @var array List of loaded modules */
 	public static $modules = array();
-	
-	/** @var Request Global request object */
-	public static $request = null;
 	
 	/** @var string Version info */
 	protected static $version = "0.3.0";
@@ -56,8 +50,6 @@ class Backbone
 	 */
 	public static function initialize()
 	{
-		self::$config = new DataMap();
-		self::$request = new Backbone\Request();
 		return;
 	}
 	
@@ -218,7 +210,6 @@ class Backbone
 	*/
 	public static function dispatch()
 	{
-	    $request = self::$request;
 		$success = false;
 		foreach(self::$routers as $router) {
 			if($router->route()) {
@@ -227,7 +218,7 @@ class Backbone
 			}
 		}
 		if(!$success) {
-			$here = trim($request->here(), "/");
+			$here = trim(Backbone\Request::here(), "/");
 			// No routes are defined.
 			// Auto route this page if we find a corresponding view that ends in '-page'
 			if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {

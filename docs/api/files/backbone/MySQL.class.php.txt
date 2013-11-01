@@ -66,7 +66,7 @@ class MySQL extends DataSource
 		$this->_name = $name;
 		$this->_connection = mysql_connect($options['server'], $options['user'], $options['pass']);
 		if(!$this->_connection) {
-			throw new RuntimeException(mysql_error());
+			throw new \RuntimeException(mysql_error());
 		}
 	}
 	
@@ -160,12 +160,12 @@ class MySQL extends DataSource
 	 * @since 0.2.0
 	 * @param string $table The table name
 	 * @return array The schema structure
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function schema($table)
 	{
 		if(!$this->isConnected()) {
-			throw new RuntimeException("MySql: Invalid connection");
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		
 		$id = 0;
@@ -308,12 +308,12 @@ class MySQL extends DataSource
 	 * @param string $table The table name
 	 * @param array $data An array of key => value pairs to insert
 	 * @return bool True if the creation succeeded.
+	 * @throws \RuntimeException
 	 */
 	public function create($table, $data)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($table)) {
 			return array();
@@ -337,12 +337,12 @@ class MySQL extends DataSource
 	 * @param array $data An array of key => value pairs to update
 	 * @param array $options An array of options, such as a where clause
 	 * @return bool True if the creation succeeded.
+	 * @throws \RuntimeException
 	 */
 	public function update($table, $data, $options)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($table)) {
 			return array();
@@ -365,12 +365,12 @@ class MySQL extends DataSource
 	 * @param string $table The table name
 	 * @param array $options An array of options, such as a where clause
 	 * @return bool True if the delete succeeded.
+	 * @throws \RuntimeException
 	 */
 	public function delete($table, $options)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($table)) {
 			return array();
@@ -388,28 +388,36 @@ class MySQL extends DataSource
 	 * @since 0.1.0
 	 * @param string $query The SQL query to execute
 	 * @return array An array of results.
+	 * @throws \RuntimeException
 	 */
 	public function query($query)
 	{
 		if(!$this->isConnected()) {
-			$this->_error = "Connection not valid";
-			return array();
+			throw new \RuntimeException("MySql: Invalid connection");
 		}
 		if(empty($query)) {
 			return array();
 		}
 		
-		$t = microtime(true);
+		Events::trigger("MySQL:query:begin", array(
+		    "server" => $this->_options['server'],
+		    "name" => $this->_name,
+		    "query" => $query, 
+		    "connection" => $this->_connection
+		));
+		
+		// execute the query
 		$this->_result = mysql_query($query, $this->_connection);
+		
+		Events::trigger("MySQL:query:end", array(
+		    "server" => $this->_options['server'],
+		    "name" => $this->_name,
+		    "query" => $query,
+		    "result" => $this->_result
+		));
+		
 		$this->_error = mysql_error();
 		$this->_query = $query;
-
-		// do logging?
-		if(Backbone::$config->get("mysql.log")) {
-			$duration = round((microtime(true) - $t), 4);
-			$num_rows = mysql_numrows($this->_result);
-			MySQL_Logger::logQuery($this->_options['server'], $query, $duration, $num_rows, $this->_name);
-		}
 		
 		// gather up all the rows
 		$rows = array();
@@ -721,7 +729,7 @@ class MySQL extends DataSource
 	}
 	
 	/**
-	 * Internal functino for building a delete statement.
+	 * Internal functionn for building a delete statement.
 	 *
 	 * @since 0.2.0
 	 * @param array $options The query options
@@ -838,148 +846,4 @@ class MySQL extends DataSource
 		return "(".join(" ".$op." ", $tmp).")";
 	}
 };
-
-// Default configurations
-Backbone::$config->set("mysql.log", false);
-Backbone::$config->set("mysql.logfile", "mysql.log");
-
-/**
- * Class for logging MySQL queries.
- * 
- * To set mysql logging to true, Backbone::$config->set("mysql.log", true)
- * To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
- * File name is relative to the application's web root and must be writable.
- *
- * Make a call to MySQL_Logger::clearQueryLog() at the beginning of execution to
- * flush the log file.
- *
- * Make a call to MySQL_Logger::tallyQueryLog() at the end of execution to flush
- * the log file.
- *
- * You can pause and resume logging activities if you need to skip logging certain
- * queries by calling MySQL_Logger::pause() and MySQL_Logger::resume().
- */
-class MySQL_Logger
-{
-	/** @var int Number of quieries */
-	protected static $_queries_count = 0;
-	
-	/** @var int Cumulative query time */
-	protected static $_queries_time = 0;
-	
-	/** @var bool Whether or not the logging is paused */
-	protected static $_paused = false;
-	
-	/**
-	 * Log a mysql query
-	 *
-	 * To set mysql logging to true, Backbone::$config->set("mysql.log", true)
-	 * To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
-	 * 	File name is relative to the application's web root.
-	 *
-	 * @since 0.1.0
-	 * @param string $server The mysql connection server name
-	 * @param string $sql The query string
-	 * @param int $duration The time, in seconds, that the query took to execute
-	 * @param int $num_rows The number of rows returned by the query
-	 * @param string $name Optional name for this db connection
-	 */
-	public static function logQuery($server, $sql, $duration, $num_rows, $name = "")
-	{
-		if(self::$_paused) {
-			return;
-		}
-			
-		self::$_queries_count++;
-		self::$_queries_time += $duration;
-
-		$ob = "[".$server.($name ? " / ".$name : "")."]\r\n".$sql."\r\nNum Rows: ".$num_rows."\r\nDuration: ".$duration." seconds\r\n";
-		if(mysql_error()) {
-			$ob .= "Error: ".mysql_error()."\r\n";
-		}
-		$ob .= "\r\n";
-		file_put_contents(APPPATH.Backbone::$config->get("mysql.logfile"), $ob, FILE_APPEND);
-	}
-	
-	/**
-	 * Writes the current running totals to the end of the query log.
-	 *
-	 * @since 0.1.0
-	 */
-	public static function tallyQueryLog()
-	{
-		if(Backbone::$config->get("mysql.log") == true) {
-			if(file_exists(APPPATH.Backbone::$config->get("mysql.logfile"))) {
-				$ob = "----------------------------------------------------------------\r\n"; 
-				$ob .= "Total Queries: ".self::$_queries_count."\r\n";
-				$ob .= "Total Duration: ".self::$_queries_time." seconds\r\n";
-				$ob .= "----------------------------------------------------------------\r\n"; 
-				$ob .= "Active DB Connections: ".join(", ", Connections::enumerateConnections())."\r\n";
-				$ob .= "----------------------------------------------------------------\r\n\r\n"; 
-				file_put_contents(APPPATH.Backbone::$config->get("mysql.logfile"), $ob, FILE_APPEND);
-			}
-		}
-	}
-	
-	/**
-	 * Clear the mysql log file if mysql logging is set to true.
-	 *
-	 * To set mysql logging to true, Backbone::$config->set("mysql.log", true)
-	 * To change the log file, Backbone::$config->set("mysql.logfile", "mysql.log")
-	 *	File name is relative to the application's web root.
-	 *
-	 * @since 0.1.0
-	 */
-	public static function clearQueryLog()
-	{
-		self::$_queries_count = 0;
-		self::$_queries_time = 0;
-		
-		if(Backbone::$config->get("mysql.log") == true) {
-			if(file_exists(APPPATH.Backbone::$config->get("mysql.logfile"))) {
-				file_put_contents(APPPATH.Backbone::$config->get("mysql.logfile"), "");
-			}
-		}
-	}
-	
-	/**
-	 * Get the current running total query count 
-	 *
-	 * @since 0.1.0
-	 */
-	public static function getQueryCount()
-	{
-		return self::$_queries_count;
-	}
-	
-	/**
-	 * Get the current running total query time in milliseconds 
-	 *
-	 * @since 0.1.0
-	 */
-	public static function getQueryTime()
-	{
-		return self::$_queries_time;
-	}
-	
-	/**
-	 * Pause the query logging. Call resume() to recommence 
-	 *
-	 * @since 0.1.0
-	 */
-	public static function pause()
-	{
-		self::$_paused = true;
-	}
-	
-	/**
-	 * Resume query logging 
-	 *
-	 * @since 0.1.0
-	 */
-	public static function resume()
-	{
-		self::$_paused = false;
-	}
-}
 ?>
