@@ -25,7 +25,6 @@ require_once(FRAMEWORK."Response.class.php");
 require_once(FRAMEWORK."Request.class.php");
 require_once(FRAMEWORK."Router.class.php");
 require_once(FRAMEWORK."Events.class.php");
-require_once(FRAMEWORK."DataMap.class.php");
 
 class Backbone
 {	
@@ -51,7 +50,6 @@ class Backbone
 	 */
 	public static function initialize()
 	{
-		//self::$config = new DataMap();
 		return;
 	}
 	
