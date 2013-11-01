@@ -17,7 +17,7 @@ class BlogRouter extends Router
 		$this->post("/create/", "createSubmit");
 		
 		// handle invalid urls (404 errors)
-		Events::bind("response.404", array($this, "error404"));
+		Events::bind("Response:404:before", array($this, "error404"));
 	}
 	
 	/**
@@ -82,8 +82,8 @@ class BlogRouter extends Router
 		$this->create();
 	}
 	
-	public function error404()
+	public function error404($response)
 	{
-		echo "Invalid URL (HTTP 404): ".Backbone\Request::here();
+		$response->body("Invalid URL (HTTP 404): ".Backbone\Request::here());
 	}
 }
