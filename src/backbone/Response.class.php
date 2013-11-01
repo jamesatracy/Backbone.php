@@ -33,9 +33,6 @@ class Response
 	/** @var string The response body */
 	protected $_body = null; 
 	
-	/** @var bool True if the response headers/body was sent */
-	protected $_sent = false;
-	
 	/** @var array Holds HTTP status codes */
 	protected $_status_codes = array(
 		100 => 'Continue',
@@ -81,6 +78,16 @@ class Response
 	);
 	
 	/**
+	 * Constructor. Optionally set the status.
+	 *
+	 * @param int The response status
+	 */
+	public function __construct($status = 200)
+	{
+		$this->status($status);
+	}
+	
+	/**
 	 * Send a 302 redirect.
 	 * 
 	 * @since 0.2.4
@@ -104,7 +111,7 @@ class Response
 			$this->status($status);
 		}
 		// trigger pre response status code event
-		Events::trigger("response.pre.".$this->_status, $this);
+		Events::trigger("Response:".$this->_status.":before", $this);
 		// send protocol and status
 		$code_message = $this->_status_codes[$this->_status];
 		$this->sendHeader($this->_protocol." ".$this->_status." ".$code_message);
@@ -118,9 +125,8 @@ class Response
 		if($this->_body !== null) {
 			echo $this->_body;
 		}
-		$this->_sent = true;
 		// trigger post response status code event
-		Events::trigger("response.".$this->_status, $this);
+		Events::trigger("Response:".$this->_status.":after", $this);
 	}
 	
 	/**
@@ -197,18 +203,6 @@ class Response
 		}
 		$this->_body = $body;
 		return $this->_body;
-	}
-	
-	/**
-	 * Whether or not the response has been sent. This includes both
-	 * the headers and the body content.
-	 *
-	 * @since 0.2.5
-	 * @return bool True if the response was sent
-	 */
-	public function isSent()
-	{
-		return $this->_sent;
 	}
 	
 	/**
