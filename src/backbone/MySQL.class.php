@@ -14,11 +14,7 @@ use \Backbone as Backbone;
 Backbone::uses("DataSource");
 
 /**
- * Classes for connecting and interacting with a MySQL database.
- *
- * This module consists of the following classes:
- *	- MySQL				(MySQL implementation of DataSource)
- *	- MySQL_Logger		(Utility for logging MySQL quries to a log file)
+ * Class for connecting and interacting with a MySQL database.
  *
  * @since 0.1.0
  */
