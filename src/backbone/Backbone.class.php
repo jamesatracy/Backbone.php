@@ -222,7 +222,7 @@ class Backbone
 			// No routes are defined.
 			// Auto route this page if we find a corresponding view that ends in '-page'
 			if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {
-				$router = new Router();
+				$router = new Backbone\Router();
 				$router->invokeRouteCallback(array($router, "loadView"), array($here."-page"));
 				$success = true;
 			}

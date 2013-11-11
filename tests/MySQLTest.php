@@ -10,7 +10,7 @@
 
 Backbone::uses("MySQL");
 
-use Backbone\MySQL as MySQL;
+use Backbone\MySQL;
 
 /**
  * Mock MySQL class for spoofing a connection.
