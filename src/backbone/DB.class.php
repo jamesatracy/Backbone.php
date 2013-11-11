@@ -105,5 +105,26 @@ class DB
 	{
 		return new Query($name);
 	}
+	
+	/**
+	 * Set up a raw query string to execute.
+	 *
+	 * Example:
+	 * 	DB::raw("SELECT * FROM users)->exec();
+	 *
+	 * @since 0.3.0
+	 * @param string $query The raw query string.
+	 * @return array The result set.
+	 * @throws RuntimeException
+	 */
+	public static function raw($query)
+	{
+		if(!self::isConnected()) {
+			throw new \RuntimeException("DB: No valid DB connection");
+		}
+		$smt = self::$_pdo->query($query, \PDO::FETCH_ASSOC);
+		$rows = $smt->fetchAll();
+		return $rows;
+	}
 }
 ?>

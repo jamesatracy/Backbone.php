@@ -31,6 +31,9 @@ class Query
 	/** @var array For update statements, the key / values to update. */
 	protected $_updates = array();
 	
+	/** @var array For insert statements, the key / values to insert. */
+	protected $_inserts = array();
+	
 	/** @var string The order by clause for the current query. */
 	protected $_order_by = null;
 	
@@ -66,7 +69,7 @@ class Query
 	 *
 	 * @since 0.3.0
 	 * @param mixed 0 or more column names.
-	 * @returns The Query object.
+	 * @return Query The active query object.
 	 */
 	public function select()
 	{
@@ -84,7 +87,7 @@ class Query
 	 *
 	 * @since 0.3.0
 	 * @param array $fields An array of key value pairs to update.
-	 * @returns The Query object.
+	 * @return Query The active query object.
 	 * @throws InvalidArgumentException
 	 */
 	public function update($fields)
@@ -98,6 +101,41 @@ class Query
 	}
 	
 	/**
+	 * Build an insert query.
+	 *
+	 * Sets the current command to 'insert'. Requires at least
+	 * one set of key - value pairs to insert.
+	 *
+	 * @since 0.3.0
+	 * @param array $fields An array of key value pairs to insert.
+	 * @return Query The active query object.
+	 * @throws InvalidArgumentException
+	 */
+	public function insert($fields)
+	{
+		if(empty($fields)) {
+			throw new \InvalidArgumentException("Query: Missing fields to update");
+		}
+		$this->_inserts = $fields;
+		$this->_command = "insert";
+		return $this;
+	}
+	
+	/**
+	 * Build a delete query.
+	 *
+	 * Sets the current command to 'delete'.
+	 *
+	 * @since 0.3.0
+	 * @return Query The active query object.
+	 */
+	public function delete()
+	{
+		$this->_command = "delete";
+		return $this;
+	}
+	
+	/**
 	 * Build a count (select) query.
 	 *
 	 * Sets the current command to 'count' and optionally
@@ -106,7 +144,7 @@ class Query
 	 *
 	 * @since 0.3.0
 	 * @param mixed 0 or more column names.
-	 * @returns The Query object.
+	 * @return Query The active query object.
 	 */
 	public function count()
 	{
@@ -121,7 +159,7 @@ class Query
 	 *
 	 * @since 0.3.0
 	 * @param int $limit The limit.
-	 * @return The Query object.
+	 * @return Query The active query object.
 	 */
 	public function limit($limit)
 	{
@@ -138,7 +176,7 @@ class Query
 	 *
 	 * @since 0.3.0
 	 * @param int $limit The limit.
-	 * @return The Query object.
+	 * @return Query The active query object.
 	 */
 	public function orderBy($order)
 	{
@@ -151,7 +189,7 @@ class Query
 	 *
 	 * @since 0.3.0
 	 * @param int $offset The offset.
-	 * @return The Query object.
+	 * @return Query The active query object.
 	 */
 	public function offset($offset)
 	{
@@ -167,7 +205,7 @@ class Query
 	 * @param string $field The field name
 	 * @param string $op The operator, = is implied
 	 * @param string $value The value to compare to.
-	 * @return The Query object.
+	 * @return Query The active query object.
 	 * @throws InvalidArgumentException
 	 */
 	public function where()
@@ -199,7 +237,7 @@ class Query
 	 * @param string $field The field name
 	 * @param string $op The operator, = is implied
 	 * @param string $value The value to compare to.
-	 * @return The Query object.
+	 * @return Query The active query object.
 	 * @throws InvalidArgumentException
 	 */
 	public function orWhere()
@@ -224,6 +262,94 @@ class Query
 	}
 	
 	/**
+	 * Adds a where clause to the current query comparing the field
+	 * to NULL. Will be conjoined with an AND to previous expressions.
+	 *
+	 * Example:
+	 *	->whereNull("name");
+	 *
+	 *	WHERE name IS NULL
+	 *
+	 * @since 0.3.0
+	 * @param string $field The name of the field to compare with NULL
+	 * @return Query The active query object.
+	 */
+	public function whereNull($field)
+	{
+		$this->_whereExpr[] = $field." IS NULL";
+		if(count($this->_whereExpr) > 1) {
+			$this->_whereOps[] = "AND";
+		}
+		return $this;
+	}
+	
+	/**
+	 * Adds a where clause to the current query comparing the field
+	 * to NULL. Will be conjoined with an OR to previous expressions.
+	 *
+	 * Example:
+	 *	->whereNull("name");
+	 *
+	 *	WHERE name IS NULL
+	 *
+	 * @since 0.3.0
+	 * @param string $field The name of the field to compare with NULL
+	 * @return Query The active query object.
+	 */
+	public function orWhereNull($field)
+	{
+		$this->_whereExpr[] = $field." IS NULL";
+		if(count($this->_whereExpr) > 1) {
+			$this->_whereOps[] = "OR";
+		}
+		return $this;
+	}
+	
+	/**
+	 * Adds a where clause to the current query comparing the field
+	 * to NOT NULL. Will be conjoined with an AND to previous expressions.
+	 *
+	 * Example:
+	 *	->whereNotNull("name");
+	 *
+	 *	WHERE name IS NOT NULL
+	 *
+	 * @since 0.3.0
+	 * @param string $field The name of the field to compare with NULL
+	 * @return Query The active query object.
+	 */
+	public function whereNotNull($field)
+	{
+		$this->_whereExpr[] = $field." IS NOT NULL";
+		if(count($this->_whereExpr) > 1) {
+			$this->_whereOps[] = "AND";
+		}
+		return $this;
+	}
+	
+	/**
+	 * Adds a where clause to the current query comparing the field
+	 * to NOT NULL. Will be conjoined with an OR to previous expressions.
+	 *
+	 * Example:
+	 *	->orWhereNotNull("name");
+	 *
+	 *	WHERE name IS NOT NULL
+	 *
+	 * @since 0.3.0
+	 * @param string $field The name of the field to compare with NULL
+	 * @return Query The active query object.
+	 */
+	public function orWhereNotNull($field)
+	{
+		$this->_whereExpr[] = $field." IS NOT NULL";
+		if(count($this->_whereExpr) > 1) {
+			$this->_whereOps[] = "OR";
+		}
+		return $this;
+	}
+	
+	/**
 	 * Adds an IN statement to the current query's where clause
 	 * and conjoins it with an AND to previous expressions.
 	 *
@@ -233,7 +359,7 @@ class Query
 	 * @since 0.3.0
 	 * @param string $field The name of the field
 	 * @param array $values An array of values to test
-	 * @return The Query object
+	 * @return Query The active query object.
 	 */
 	public function whereIn($type, $values)
 	{
@@ -256,7 +382,7 @@ class Query
 	 * @since 0.3.0
 	 * @param string $field The name of the field
 	 * @param array $values An array of values to test
-	 * @return The Query object
+	 * @return Query The active query object.
 	 */
 	public function whereNotIn($type, $values)
 	{
@@ -279,7 +405,7 @@ class Query
 	 * @since 0.3.0
 	 * @param string $field The name of the field
 	 * @param array $values An array of values to test
-	 * @return The Query object
+	 * @return Query The active query object.
 	 */
 	public function orWhereIn($type, $values)
 	{
@@ -302,7 +428,7 @@ class Query
 	 * @since 0.3.0
 	 * @param string $field The name of the field
 	 * @param array $values An array of values to test
-	 * @return The Query object
+	 * @return Query The active query object.
 	 */
 	public function orWhereNotIn($type, $values)
 	{
@@ -328,10 +454,19 @@ class Query
 		if(!$this->_table) {
 			return "";
 		}
-		if($this->_command === "select" || $this->_command === "count") {
-			return $this->_buildSelect();
-		} else if($this->_command === "update") {
+		switch($this->_command) {
+			case "select":
+			case "count":
+				return $this->_buildSelect();
+			
+			case "update":
 			return $this->_buildUpdate();
+			
+			case "insert":
+			return $this->_buildInsert();
+			
+			case "delete":
+			return $this->_buildDelete();
 		}
 		return "";
 	}
@@ -400,6 +535,7 @@ class Query
 			$row = $smt->fetch();
 			return $row[0];
 		}
+		$this->reset();
 		return $pdo->exec($query);
 	}
 	
@@ -431,9 +567,11 @@ class Query
 	 */
 	public function reset()
 	{
+		$this->_rawQuery = null;
 		$this->_command = null;
 		$this->_select = array();
 		$this->_updates = array();
+		$this->_inserts = array();
 		$this->_order_by = null;
 		$this->_limit = 0;
 		$this->_offset = 0;
@@ -492,6 +630,37 @@ class Query
 		}
 			
 		$sql = sprintf("UPDATE %s SET %s", $this->_table, join(", ", $updates));
+		
+		// where
+		if(!empty($this->_whereExpr)) {
+			$sql .= " WHERE ".$this->getWhere();
+		}
+		
+		return $sql;
+	}
+	
+	protected function _buildInsert()
+	{
+		$pdo = DB::getPDO();
+		
+		$keys = array_keys($this->_inserts);
+		$values = array_values($this->_inserts);
+		
+		// values
+		foreach($values as $i => $val) {
+			$values[$i] = $pdo->quote($val);
+		}
+			
+		$sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->_table, join(", ", $keys), join(", ", $values));
+		
+		return $sql;
+	}
+	
+	protected function _buildDelete()
+	{
+		$pdo = DB::getPDO();
+		
+		$sql = "DELETE FROM ".$this->_table;
 		
 		// where
 		if(!empty($this->_whereExpr)) {

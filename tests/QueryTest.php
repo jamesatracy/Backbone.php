@@ -188,6 +188,49 @@ class QueryTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE author = 'John' OR type NOT IN ('News','Gossip')");
 	}
 	
+	public function testBehavior_whereNull()
+	{
+		$query = DB::table("blog_posts")
+		->select()
+		->whereNull("type")
+		->getQuery();
+		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE type IS NULL");
+		
+		$query = DB::table("blog_posts")
+		->select()
+		->whereNotNull("type")
+		->getQuery();
+		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE type IS NOT NULL");
+		
+		$query = DB::table("blog_posts")
+		->select()
+		->whereNull("type")
+		->whereNull("name")
+		->getQuery();
+		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE type IS NULL AND name IS NULL");
+		
+		$query = DB::table("blog_posts")
+		->select()
+		->whereNotNull("type")
+		->whereNotNull("name")
+		->getQuery();
+		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE type IS NOT NULL AND name IS NOT NULL");
+		
+		$query = DB::table("blog_posts")
+		->select()
+		->whereNull("type")
+		->orWhereNull("name")
+		->getQuery();
+		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE type IS NULL OR name IS NULL");
+		
+		$query = DB::table("blog_posts")
+		->select()
+		->whereNotNull("type")
+		->orWhereNotNull("name")
+		->getQuery();
+		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE type IS NOT NULL OR name IS NOT NULL");
+	}
+	
 	public function testBehavior_update()
 	{
 		$query = DB::table("blog_posts")
@@ -205,6 +248,37 @@ class QueryTest extends PHPUnit_Framework_TestCase
 		->where("ID", 10)
 		->getQuery();
 		$this->assertEquals($query, "UPDATE blog_posts SET type = 'news', title = 'Title' WHERE ID = '10'");
+	}
+	
+	public function testBehavior_insert()
+	{
+		$query = DB::table("blog_posts")
+		->insert(array("type" => "news"))
+		->getQuery();
+		$this->assertEquals($query, "INSERT INTO blog_posts (type) VALUES ('news')");
+		
+		$query = DB::table("blog_posts")
+		->insert(array("type" => "news", "title" => "Title"))
+		->getQuery();
+		$this->assertEquals($query, "INSERT INTO blog_posts (type, title) VALUES ('news', 'Title')");
+		
+		// escape string
+		$query = DB::table("posts")
+		->insert(array("first" => "John's", "last" => "Doe"))
+		->getQuery();
+		$this->assertEquals($query, "INSERT INTO posts (first, last) VALUES ('John\'s', 'Doe')");
+	}
+	
+	public function testBehavior_delete()
+	{
+		$query = DB::table("blog_posts")->delete()->getQuery();
+		$this->assertEquals($query, "DELETE FROM blog_posts");
+		
+		$query = DB::table("blog_posts")
+		->delete()
+		->where("ID", 10)
+		->getQuery();
+		$this->assertEquals($query, "DELETE FROM blog_posts WHERE ID = '10'");
 	}
 }
 ?>

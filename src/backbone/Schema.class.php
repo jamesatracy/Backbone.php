@@ -9,7 +9,7 @@
  */
 
 namespace Backbone;
-use \Backbone as Backbone;
+use \Backbone;
 
 Backbone::uses("Connections");
 

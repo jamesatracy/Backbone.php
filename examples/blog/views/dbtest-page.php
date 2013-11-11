@@ -9,8 +9,7 @@ use Backbone\DB;
 <?php
 DB::connect("mysql:dbname=blog;host=127.0.0.1", "root", "");
 $rows = DB::table("posts")
-->update(array("first" => "John", "last" => "Doe"))
-->where("ID", 5)
+->insert(array("first" => "John's", "last" => "Doe"))
 ->getQuery();
 if(is_array($rows)) {
 	foreach($rows as $i => $row) {
