@@ -4,13 +4,8 @@
  */
 class MockModel extends Backbone\Model
 {
-	public function __construct($data = null)
-	{
-		// automatically stamp created field
-		$this->created = "created";
-		// load a mock schema for testing
-		$this->schemaFile = "tests/fixtures/model_test_fixture.json";
-		parent::__construct($data);
-	}
+    public static $table = "mock";
+    public static $created = "created";
+    public static $schemaFile = "tests/fixtures/model_test_fixture.json";
 }
 ?>

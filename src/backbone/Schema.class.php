@@ -58,7 +58,7 @@ use \Backbone;
 class Schema
 {
 	/** @var string Optional pointer to schema file name */
-	public $schemaFile = null;
+	public static $schemaFile = null;
 	
 	/** @var array A central cache for schema definitions */
 	protected static $_schema_cache = array();
@@ -82,18 +82,9 @@ class Schema
 	 */
 	public function initialize($table, $cacheable = true)
 	{
-		
-		if($this->schemaFile) {
-			$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile), TRUE);
-			$this->_fields = $cache['schema'];
-			$this->_id = $cache['id'];
-			Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_fields);
-		} else {
-			$schema = self::loadSchema($table);
-			$this->_id = $schema['id'];
-			$this->_fields = $schema['schema'];
-		}
-
+		$schema = self::loadSchema($table);
+		$this->_id = $schema['id'];
+		$this->_fields = $schema['schema'];
 		return $this->_fields;
 	}
 	
@@ -397,6 +388,8 @@ class Schema
 	
 	/**
 	 * Loads a schema from an existing database table.
+	 * 
+	 * May also pull from a schema file or from the intrnal cache.
 	 *
 	 * @since 0.2.0
 	 * @param string $table The table name
@@ -405,12 +398,18 @@ class Schema
 	 */
 	public static function loadSchema($table)
 	{
-	    if(!DB::isConnected()) {
-			throw new \RuntimeException("Schema: Invalid connection");
+	    if(isset(Schema::$_schema_cache[$table])) {
+			return Schema::$_schema_cache[$table];
+		}
+
+	    if(static::$schemaFile) {
+			$cache = json_decode(file_get_contents(ABSPATH.static::$schemaFile), TRUE);
+			Schema::$_schema_cache[$table] = $cache;
+			return $cache;
 		}
 		
-		if(isset(Schema::$_schema_cache[$table])) {
-			return Schema::$_schema_cache[$table];
+		if(!DB::isConnected()) {
+			throw new \RuntimeException("Schema: Invalid connection");
 		}
 		
 		$id = 0;

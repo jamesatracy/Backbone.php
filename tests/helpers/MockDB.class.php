@@ -10,8 +10,9 @@
 namespace Backbone; 
 use \Backbone;
 
-Backbone::uses("Query", "/tests/helpers/MockPDO");
+Backbone::uses("/tests/helpers/MockQuery", "/tests/helpers/MockPDO");
 use \MockPDO;
+use \MockQuery;
 
 /**
  * Mock DB class for testing db functions without a live db.
@@ -96,7 +97,7 @@ class DB
 	 */
 	public static function table($name)
 	{
-		return new Query($name);
+		return new MockQuery($name);
 	}
 	
 	/**

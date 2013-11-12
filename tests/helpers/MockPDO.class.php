@@ -16,6 +16,9 @@ class MockPDO
     /** @var array Holds the mock data */
 	protected $data = array();
 	
+	/** @var string Holds the last command executed */
+	protected $last_command = "";
+	
 	/** @var string Holds the last error message */
     protected $last_error = "";
     
@@ -39,13 +42,27 @@ class MockPDO
 		return $this->data;
 	}
 	
+	/** 
+	 * Get the last method called (select, insert, update, or delete)
+	 *
+	 * @return string The method name
+	 */
+	public function getMethodCalled()
+	{
+		return $this->last_command;
+	}
+	
     public function query($query, $mode)
     {
+        $tmp = explode(" ", $query);
+        $this->last_command = $tmp[0];
         return new MockPDOStatement($this->data);
     }
     
     public function exec($query)
     {
+        $tmp = explode(" ", $query);
+        $this->last_command = $tmp[0];
         return count($this->data);
     }
     

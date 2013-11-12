@@ -84,7 +84,7 @@ class Model extends Schema
 			if(!is_numeric($id) && $id < 1) {
 				throw new \InvalidArgumentException("Model: Invalid argument for fetch");
 			}
-			$schema = Schema::loadSchema(static::$table);
+			$schema = self::loadSchema(static::$table);
 			$result = DB::table(static::$table)
 				->select()
 				->where($schema['id'], $id)

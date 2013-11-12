@@ -129,13 +129,13 @@ class ModelTest extends PHPUnit_Framework_TestCase
 				"created" => "0000-00-00 00:00:00"
 			)
 		));
-// 		$model = MockModel::fetch(1);
-// 		$this->assertNotNull($model);
-// 		$this->assertEquals($model->ID, 1);
-// 		$this->assertEquals($model->first, "John");
-// 		$this->assertEquals($model->last, "Doe");
-// 		$this->assertEquals($model->age, 21);
-// 		$this->assertEquals($model->gender, "Male");
+ 		$model = MockModel::fetch(1);
+ 		$this->assertNotNull($model);
+ 		$this->assertEquals($model->ID, 1);
+ 		$this->assertEquals($model->first, "John");
+ 		$this->assertEquals($model->last, "Doe");
+ 		$this->assertEquals($model->age, 21);
+ 		$this->assertEquals($model->gender, "Male");
 		
 		// simulate no result
 		$pdo->setResultsData(array());
@@ -144,6 +144,27 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// simulate invalid result
 		$pdo->setResultsData(null);
 		$this->assertNull(MockModel::fetch(1));
+	}
+	
+	// Test the save() method
+	public function testMethod_save()
+	{
+	    $pdo = DB::getPDO();
+		$model = new MockModel();
+		
+		// save a new model with defaults
+		$this->assertTrue($model->save());
+		$this->assertEquals($pdo->getMethodCalled(), "INSERT");
+		$this->assertFalse($model->isNew());
+		$this->assertEquals($model->ID, 1);
+		$this->assertEquals($model->age, 13);
+		$this->assertEquals($model->gender, "Male");
+		
+		// update the model; only changed field is updated
+ 		$model->set("age", 21);
+ 		$this->assertTrue($model->save());
+ 		$this->assertEquals($pdo->getMethodCalled(), "UPDATE");
+ 		$this->assertEquals($pdo->getResultsData(), array(array("age" => 21)));
 	}
 }
 ?>
