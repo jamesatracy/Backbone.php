@@ -107,6 +107,55 @@ class DB
 	}
 	
 	/**
+	 * Retreive the last insert ID.
+	 * 
+	 * @since 0.3.0
+	 * @return int The last insert ID
+	 * @throws \RuntimeException
+	 */
+	public static function lastInsertID()
+	{
+	    if(!self::isConnected()) {
+			throw new \RuntimeException("DB: No valid DB connection");
+		}
+		
+		return self::$_pdo->lastInsertId();
+	}
+	
+	/**
+	 * Retreive error info on the last executed statement.
+	 * 
+	 * @since 0.3.0
+	 * @return array Array of error info
+	 * @throws \RuntimeException
+	 */
+	public static function errorInfo()
+	{
+	    if(!self::isConnected()) {
+			throw new \RuntimeException("DB: No valid DB connection");
+		}
+		
+		return self::$_pdo->errorInfo();
+	}
+	
+	/**
+	 * Retreive a string formatted error message on the last executed statement.
+	 * 
+	 * @since 0.3.0
+	 * @return string The error message
+	 * @throws \RuntimeException
+	 */
+	public static function errorMessage()
+	{
+	    if(!self::isConnected()) {
+			throw new \RuntimeException("DB: No valid DB connection");
+		}
+		
+		$info = self::$_pdo->errorInfo();
+		return "Database Error: ".$info[0]." ".$info[2];
+	}
+	
+	/**
 	 * Set up a raw query string to execute.
 	 *
 	 * Example:
@@ -115,7 +164,7 @@ class DB
 	 * @since 0.3.0
 	 * @param string $query The raw query string.
 	 * @return array The result set.
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public static function raw($query)
 	{

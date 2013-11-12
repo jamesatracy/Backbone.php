@@ -136,6 +136,20 @@ class Query
 	}
 	
 	/**
+	 * Build a describe query.
+	 *
+	 * Sets the current command to 'describe'.
+	 *
+	 * @since 0.3.0
+	 * @return Query The active query object.
+	 */
+	public function describe()
+	{
+		$this->_command = "describe";
+		return $this;
+	}
+	
+	/**
 	 * Build a count (select) query.
 	 *
 	 * Sets the current command to 'count' and optionally
@@ -467,6 +481,9 @@ class Query
 			
 			case "delete":
 			return $this->_buildDelete();
+			
+			case "describe":
+			return $this->_buildDescribe();
 		}
 		return "";
 	}
@@ -522,7 +539,7 @@ class Query
 			return array();
 		}
 		$pdo = DB::getPDO();
-		if($this->_command === "select") {
+		if($this->_command === "select" || $this->_command === "describe") {
 			// return the result set
 			$results = array();
 			foreach($pdo->query($query, \PDO::FETCH_ASSOC) as $column) {
@@ -667,6 +684,15 @@ class Query
 			$sql .= " WHERE ".$this->getWhere();
 		}
 		
+		return $sql;
+	}
+	
+	protected function _buildDescribe()
+	{
+		$pdo = DB::getPDO();
+		
+		$sql = "DESCRIBE ".$this->_table;
+
 		return $sql;
 	}
 	

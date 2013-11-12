@@ -47,6 +47,12 @@ class QueryTest extends PHPUnit_Framework_TestCase
 		DB::setPDO($pdo);
 	}
 	
+	public function testBehavior_describe()
+	{
+		$query = DB::table("blog_posts")->describe()->getQuery();
+		$this->assertEquals($query, "DESCRIBE blog_posts");
+	}
+	
 	public function testBehavior_select()
 	{
 		$query = DB::table("blog_posts")->select()->getQuery();
