@@ -7,26 +7,9 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
-
-Backbone::uses("DB");
+Backbone::uses("/tests/helpers/MockDB", "/tests/helpers/MockPDO");
 use Backbone\DB;
 use Backbone\Query;
-
-/**
- * Mock PDO
- */
-class MockPDO
-{
-	public function quote($string)
-	{
-		return "'".$this->escape($string)."'";
-	}
-	
-	public function escape($string)
-	{
-		return addslashes($string);
-	}
-}
 
 /**
  * PHPUnit Test suite for Query class
@@ -43,8 +26,7 @@ class QueryTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{
-		$pdo = new MockPDO();
-		DB::setPDO($pdo);
+		DB::connect("", "", "");
 	}
 	
 	public function testBehavior_describe()
