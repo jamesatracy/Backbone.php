@@ -102,8 +102,11 @@ class Backbone
 	public static function uses()
 	{
 		$args = func_get_args();
-		if(count($args) === 1 && is_string($args[0])) {
+		$argsc = count($args);
+		if($argsc === 1 && is_string($args[0])) {
 			$names = explode(",", $args[0]);
+		} else if($argsc === 1 && is_array($args[0])) {
+		    $names = $args[0];
 		} else {
 			$names = $args;
 		}
@@ -249,7 +252,7 @@ class Backbone
 	 */
 	protected static function loadModule($name)
 	{
-		$classname = self::getClassName($name);
+		//$classname = self::getClassName($name);
 		if(!isset(self::$modules[$name])) {
 			self::$modules[$name] = true;
 			if(substr($name, 0, 1) == "/") {

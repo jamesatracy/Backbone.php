@@ -89,8 +89,8 @@ class Model extends Schema
 				->select()
 				->where($schema['id'], $id)
 				->first();
-			if(empty($result)) {
-				return false;
+			if(!$result || empty($result)) {
+				return null;
 			}
 			$classname = get_called_class();
 			return new $classname($result);
@@ -511,6 +511,28 @@ class ModelQuery extends Query
 		$this->_model = $model;
 		parent::__construct($table);
 	}
+	
+	/**
+	 * Executes the query and returns the first row in the result set
+	 * as a new Model object.
+	 *
+	 * Note that this only works on SELECT queries and it will 
+	 * automatically set the limit for the query to 1.
+	 *
+	 * @since 0.3.0
+	 * @return array The first row of the result set.
+	 * @throws RuntimeException
+	 */
+	public function first()
+	{
+		if($this->_command !== "select") {
+			return array();
+		}
+		$this->_limit = 1;
+		$results = $this->exec();
+		return $results->getAt(0);
+	}
+	
 	/**
 	 * Executes the current query based on data passed to any
 	 * of the various query builder methods.

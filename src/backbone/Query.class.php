@@ -541,11 +541,13 @@ class Query
 		$pdo = DB::getPDO();
 		if($this->_command === "select" || $this->_command === "describe") {
 			// return the result set
-			$results = array();
-			foreach($pdo->query($query, \PDO::FETCH_ASSOC) as $column) {
-				$results[] = $column;
-			}
-			return $results;
+			//$results = array();
+			$smt = $pdo->query($query, \PDO::FETCH_ASSOC);
+			return $smt->fetchAll();
+			//foreach($pdo->query($query, \PDO::FETCH_ASSOC) as $column) {
+			//	$results[] = $column;
+			//}
+			//return $results;
 		} else if($this->_command === "count") {
 			// return the count
 			$smt = $pdo->query($query, \PDO::FETCH_NUM);
@@ -573,7 +575,10 @@ class Query
 		}
 		$this->_limit = 1;
 		$results = $this->exec();
-		return $results[0];
+		if(!empty($results)) {
+		    return $results[0];
+		}
+		return false;
 	}
 	
 	/**

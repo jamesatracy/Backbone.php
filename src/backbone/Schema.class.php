@@ -11,7 +11,7 @@
 namespace Backbone;
 use \Backbone;
 
-Backbone::uses("DB");
+//Backbone::uses("DB");
 
 /**
  * Schema represents the definition of a data resource and
