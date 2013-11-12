@@ -7,12 +7,12 @@
 // Set the web root path
 Backbone::$root = "/Backbone.php/examples/blog/";
 
+// Include modules
+Backbone::uses("DB");
+
 // Load routers
 Backbone::loadRouter("BlogRouter");
 
-// Include modules
-Backbone::uses(array("Connections", "MySQL"));
-
 // Database
-Backbone\Connections::create("default", "Backbone\MySQL", array("server" => DB_SERVER, "user" => DB_USER, "pass" => DB_PASS));
+Backbone\DB::connect("mysql:dbname=".DATABASE_NAME.";host=".DB_SERVER, DB_USER, DB_PASS);
 ?>

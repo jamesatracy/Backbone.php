@@ -1,11 +1,10 @@
 <?php
 // BlogRouter.class.php
 
-use Backbone\Router as Router;
-use Backbone\Request as Request;
-use Backbone\Events as Events;
-use Backbone\Collection as Collection;
-use Backbone\Validate as Validate;
+use Backbone\Router;
+use Backbone\Request;
+use Backbone\Events;
+use Backbone\Validate;
 
 class BlogRouter extends Router
 {
@@ -27,9 +26,8 @@ class BlogRouter extends Router
 	 */
 	public function index()
 	{
-		Backbone::uses("Collection");
-		$posts = new Collection(DATABASE_NAME.".posts", array("model" => "/models/Post"));
-		$posts->fetch(array("order_by" => array("post_created", "DESC"), "limit" => "10"));
+		Backbone::uses("/models/Post");
+		$posts = Post::fetch()->limit(10)->orderBy("post_created DESC")->exec();
 		$this->view->set("title", "Blog Example");
 		$this->view->set("posts", $posts);
 		$this->view->load("home");
@@ -54,7 +52,7 @@ class BlogRouter extends Router
 		if(Request::post()) {
 			if(Request::post("cancel")) {
 				// cancelled, redirect back to home page
-				$this->response->header("Location", Request::link("/"));
+				$this->response->redirect(Request::link("/"));
 			} else {
 				// do the submit
 				Backbone::uses("Validate");
@@ -70,9 +68,7 @@ class BlogRouter extends Router
 				} else {
 					// save the post
 					Backbone::uses("/models/Post");
-					$post = new Post();
-					$post->set(Request::post());
-					$post->save();
+					Post::create(Request::post());
 					// after successful submit, redirect to home page
 					$this->response->redirect(Request::link("/"));
 					return;

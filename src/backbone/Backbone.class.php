@@ -99,13 +99,16 @@ class Backbone
 	 * @since 0.1.0
 	 * @param string|array $name The class name or an array of class names
 	 */
-	public static function uses($name)
+	public static function uses()
 	{
-		if(is_string($name)) {
-			$name = explode(",", $name);
+		$args = func_get_args();
+		if(count($args) === 1 && is_string($args[0])) {
+			$names = explode(",", $args[0]);
+		} else {
+			$names = $args;
 		}
 
-		foreach($name as $classname) {
+		foreach($names as $classname) {
 			self::loadModule($classname);
 		}
 	}

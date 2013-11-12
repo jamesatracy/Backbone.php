@@ -19,9 +19,18 @@ Backbone::uses("Model");
  * @since 0.1.0
  */
 class Collection implements \Iterator
-{	
+{
+	/** @var MySQL The database connection */
+	protected $_db = null;
+	
+	/** @var string The table associated with this collection */
+	protected $_table = "";
+	
 	/** @var string The model contained by the collection */
 	protected $_model = "Model";
+	
+	/** @var string The class name of the model class contained by the collection */
+	protected $_classname = null;
 	
 	/** @var array The array of raw model data */
 	protected $_models = array();
@@ -37,31 +46,99 @@ class Collection implements \Iterator
 	
 	/**
 	 * Constructor 
-	 * 
-	 * @param string $model The name of the model class
-	 * @param array $data The raw attribute data
 	 */
-	public function __construct($model, $data)
+	public function __construct($table, $options = array())
 	{
-		$this->_model = $model;
-		$this->_models = $data;
-		$this->length = count($data);
+		if(!$table || empty($table)) {
+			return; // bad
+		}
+		$options = array_merge(array(
+			"model" => "Model",
+			"classname" => null,
+			"db" => "default"
+		), $options);
+		$this->_table = $table;
+		$this->_model = $options['model'];
+		$this->_classname = $options['classname'];
+		$this->_db = (is_string($options['db']) ? Connections::get($options['db']) : $options['db']);
 	}
 	
 	/**
-	 * Get a model by index.
+	 * Get the number of items in a collection without performing a fetch().
 	 * 
-	 * @since 0.3.0
+	 * @since 0.1.0
+	 * @param array $options Fetch options.
+	 * 	"where" => array()
+	 * 	"order_by" => array("field", ["ASC"/"DESC"])
+	 * 	"limit" => integer
+	 * @return int The number of items.
+ 	 */
+	public function count($options = array())
+	{
+		if(!$this->_db) {
+			throw new RuntimeException("Collection: Invalid Database Connection");
+		}
+		return $this->_db->count($this->_table, $options);
+	}
+	
+	/**
+	 * Fetch a collection from the database
+	 * 
+	 * @since 0.1.0
+	 * @param array $options Fetch options.
+	 * 	"where" => array()
+	 * 	"order_by" => array("field", ["ASC"/"DESC"])
+	 * 	"limit" => integer
+	 * 	"offset" => integer
+	 * @return bool True if successful.	
+	 * @throws RuntimeException
+	 */
+	public function fetch($options = array())
+	{
+		$this->reset();
+		if(!$this->_db) {
+			throw new RuntimeException("Collection: Invalid Database Connection");
+		}
+		
+		$this->_models = $this->_db->read(
+			$this->_table,
+			$options
+		);
+		if($this->_db->hasError()) {
+			$this->errors[] = $this->_db->getError();
+			return false;
+		}
+		
+		$this->length = count($this->_models);
+		$this->rewind();
+		return true;
+	}
+	
+	/**
+	 * Get a model by ID (primary key).
+	 * 
+	 * Uses the results returned by a call to fetch().
+	 * 
+	 * @since 0.1.0
 	 * @param string $id The model's ID
 	 * @return Model The model, or null if not found
 	 * @throws RuntimeException
 	 */
-	public function getAt($index)
+	public function get($id)
 	{
-		if(isset($this->_models[$index])) {
-			$model = new $this->_model($this->_models[$index]);
-			$model->clearChanged();
-			return $model;
+		if(!$this->_db) {
+			throw new RuntimeException("Collection: Invalid Database Connection");
+		}
+
+		$model = $this->createModel();
+		$key = $model->getID();
+		
+		// loop over models
+		foreach($this->_models as $data) {
+			if(isset($data[$key]) && $data[$key] == $id) {
+				$model->set($data);
+				return $model;
+			}
 		}
 		return null;
 	}
@@ -77,7 +154,8 @@ class Collection implements \Iterator
    	public function current() 
 	{
 		if(isset($this->_models[$this->_position])) {
-			$model = new $this->_model($this->_models[$this->_position]);
+			$model = $this->createModel();
+			$model->set($this->_models[$this->_position]);
 			$model->clearChanged();
 			return $model;
 		}
@@ -169,10 +247,18 @@ class Collection implements \Iterator
 	 * Return the raw model data.
 	 * 
 	 * @since 0.1.0
+	 * @param bool $compact Whether or not to include the model keys in the representation.
 	 * @return array Returns an array of raw model data
 	 */
-	public function toJSON()
+	public function toJSON($compact = false)
 	{
+		if($compact) {
+			$collection = array();
+			foreach($this->_models as $attributes) {
+				$collection[] = array_values($attributes);
+			}
+			return $collection;
+		}
 		return $this->_models;
 	}
 	
@@ -185,6 +271,17 @@ class Collection implements \Iterator
 	public function getModelName()
 	{
 		return $this->_model;
+	}
+	
+	/**
+	 * Get the associated model table
+	 * 
+	 * @since 0.1.0
+	 * @return string The associated model's table name.
+	 */
+	public function getTableName()
+	{
+		return $this->_table;
 	}
 			
 	/**
@@ -200,6 +297,28 @@ class Collection implements \Iterator
 	}
 	
 	/**
+	 * Create a new instance of the Collection's model class
+	 *
+	 * @since 0.2.1
+	 * @return mixed The model object
+	 * @throws RuntimeException
+	 */
+	public function createModel()
+	{
+		Backbone::uses($this->_model);
+		if($this->_classname) {
+		    $classname = $this->_classname;
+		} else {
+		    $classname = Backbone::getClassName($this->_model);
+		}
+		if(!class_exists($classname)) {
+			throw new RuntimeException("Collection: Could not find model of type ".$this->_model);
+		}
+		$model = new $classname($this->_db);
+		return $model;
+	}
+	
+	/**
 	 * Retrieve the last errors
 	 * 
 	 * @since 0.1.0
@@ -210,4 +329,5 @@ class Collection implements \Iterator
 		return $this->_errors;
 	}
 };
+
 ?>

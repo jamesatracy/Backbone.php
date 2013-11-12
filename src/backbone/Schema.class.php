@@ -11,7 +11,7 @@
 namespace Backbone;
 use \Backbone;
 
-Backbone::uses("Connections");
+Backbone::uses("DB");
 
 /**
  * Schema represents the definition of a data resource and
@@ -63,9 +63,6 @@ class Schema
 	/** @var array A central cache for schema definitions */
 	protected static $_schema_cache = array();
 	
-	/** @var object Database connection */
-	protected $_db = null;
-	
 	/** @var array Associated array of field definitions */
 	protected $_fields = array();
 	
@@ -74,27 +71,6 @@ class Schema
 	
 	/** @var array An array of error messages */
 	protected $_errors = array();
-	
-	/**
-	 * Constructor
-	 *
-	 * @constructor
-	 * @param string $connection The name of the database connection.
-	 * @throws RuntimeException
-	 */
-	public function __construct($connection = "default")
-	{
-		if(is_string($connection)) {
-			// string name of the connection
-			$this->_db = Connections::get($connection);
-		} else {
-			// assume database object instance
-			$this->_db = $connection;
-		}
-		if(!$this->_db) {
-			throw new RuntimeException("Error: Invalid connection supplied to Schema");
-		}
-	}
 	
 	/**
 	 * Initialize the schema
@@ -106,28 +82,18 @@ class Schema
 	 */
 	public function initialize($table, $cacheable = true)
 	{
-		if($this->_db && $this->_db->isConnected()) {
-			if($cacheable) {
-				if(isset(Schema::$_schema_cache[$table])) {
-					$cache = Schema::$_schema_cache[$table];
-					$this->_fields = $cache['schema'];
-					$this->_id = $cache['id'];
-					return $this->_fields;
-				}
-			}
-			if($this->schemaFile) {
-				$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile), TRUE);
-				$this->_fields = $cache['schema'];
-				$this->_id = $cache['id'];
-			} else {
-				$schema = $this->_db->schema($table);
-				$this->_id = $schema['id'];
-				$this->_fields = $schema['schema'];
-			}
-			if($cacheable) {
-				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_fields);
-			}
+		
+		if($this->schemaFile) {
+			$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile), TRUE);
+			$this->_fields = $cache['schema'];
+			$this->_id = $cache['id'];
+			Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_fields);
+		} else {
+			$schema = self::loadSchema($table);
+			$this->_id = $schema['id'];
+			$this->_fields = $schema['schema'];
 		}
+
 		return $this->_fields;
 	}
 	
@@ -427,6 +393,98 @@ class Schema
 				$this->_errors[] = "Expecting timestamp `".$name."`: ".Backbone::dump($value);
 			}
 		}
+	}
+	
+	/**
+	 * Loads a schema from an existing database table.
+	 *
+	 * @since 0.2.0
+	 * @param string $table The table name
+	 * @return array The schema structure
+	 * @throws \RuntimeException
+	 */
+	public static function loadSchema($table)
+	{
+	    if(!DB::isConnected()) {
+			throw new \RuntimeException("Schema: Invalid connection");
+		}
+		
+		if(isset(Schema::$_schema_cache[$table])) {
+			return Schema::$_schema_cache[$table];
+		}
+		
+		$id = 0;
+		$fields = array();
+		$result = DB::table($table)->describe()->exec();
+		foreach($result as $row) {
+			$attrs = array();
+			$field = $row['Field'];
+			$type = $row['Type'];
+			$null = $row['Null'];
+			$default = $row['Default'];
+			
+			if($row['Key'] == "PRI") {
+				// set the primary key
+				$id = $field;
+				$attrs['primary'] = true;
+			}
+			
+			// format type
+			if(substr($type, 0, 3) == "int" || substr($type, 0, 7) == "tinyint" || substr($type, 0, 8) == "smallint" || substr($type, 0, 9) == "mediumint" || substr($type, 0, 6) == "bigint") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "integer";
+				$attrs["size"] = substr($type, 0, strpos($type, "("));
+				$attrs["length"] = $matches[1][0];
+				
+				if(stripos($type, "unsigned") !== false) {
+					$attrs["unsigned"] = "1";
+				} else {
+					$attrs["unsigned"] = "0";
+				}
+				
+				if($default == null && $null == "NO") {
+					$default = "0";
+				}
+			} else if(substr($type, 0, 5) == "float" || substr($type, 0, 6) == "double") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "float";
+				$attrs["size"] = substr($type, 0, strpos($type, "("));
+				$attrs["length"] = $matches[1][0];
+			} else if(substr($type, 0, 7) == "varchar") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "string";
+				$attrs["length"] = $matches[1][0];
+			} else if(substr($type, 0, 4) == "char") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "char";
+				$attrs["length"] = $matches[1][0];
+			} else if(substr($type, 0, 4) == "text" || substr($type, 0, 8) == "longtext") {
+				// get size
+				$attrs["type"] = "string";
+				$attrs["length"] = null;
+			} else {
+				$attrs["type"] = $type;
+			}
+			
+			// null
+			if($null == "NO") {
+				$attrs["acceptNULL"] = '0';
+			} else {
+				$attrs["acceptNULL"] = '1';
+			}
+			
+			// default
+			$attrs["default"] = ($default == null ? "" : ($default == "NULL" ? null : $default));
+			
+			$fields[$field] = $attrs;
+		}
+		$schema = array("id" => $id, "schema" => $fields);
+		Schema::$_schema_cache[$table] = $schema;
+		return $schema;
 	}
 };
 
