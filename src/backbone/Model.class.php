@@ -554,19 +554,19 @@ class ModelQuery extends Query
 			throw new \RuntimeException("Query: No valid DB connection");
 		}
 		if($this->_command !== "select") {
+			// use the default exec method
 			return parent::exec();
 		}
+		
 		$query = $this->getQuery();
 		if(empty($query)) {
 			return array();
 		}
 		$pdo = DB::getPDO();
 		
-		// return the result set
-		$results = array();
-		foreach($pdo->query($query, \PDO::FETCH_ASSOC) as $column) {
-			$results[] = $column;
-		}
+		// for selects, wrap the results in a collection object
+		$smt = $pdo->query($query, \PDO::FETCH_ASSOC);
+		$results = $smt->fetchAll();
 		Backbone::uses("Collection");
 		return new Collection($this->_model, $results);
 	}

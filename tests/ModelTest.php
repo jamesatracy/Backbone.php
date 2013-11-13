@@ -166,5 +166,96 @@ class ModelTest extends PHPUnit_Framework_TestCase
  		$this->assertEquals($pdo->getMethodCalled(), "UPDATE");
  		$this->assertEquals($pdo->getResultsData(), array(array("age" => 21)));
 	}
+	
+	// Test the delete() method
+	public function testMethod_delete()
+	{
+	    $pdo = DB::getPDO();
+		$model = new MockModel();
+		
+		// cannot delete new model
+		$this->assertFalse($model->delete());
+		$model->set("ID", 1);
+		$model->save();
+		$this->assertTrue($model->delete());
+		$this->assertEquals($pdo->getMethodCalled(), "DELETE");
+	}
+	
+	// Test the clearChanged() method
+	public function testMethod_clearChanged()
+	{
+		$model = new MockModel();
+		
+		$model->clearChanged();
+		$this->assertEquals(count($model->changedAttributes()), 0);
+		$model->set("first", "Tom");
+		$this->assertEquals(count($model->changedAttributes()), 1);
+		$model->clearChanged();
+		$this->assertEquals(count($model->changedAttributes()), 0);
+	}
+	
+	// Test the changedAttributes() method
+	public function testMethod_changedAttributes()
+	{
+		$model = new MockModel();
+		
+		$model->clearChanged();
+		$this->assertEquals(count($model->changedAttributes()), 0);
+		$model->set("first", "Tom");
+		$changed = $model->changedAttributes();
+		$this->assertTrue(isset($changed['first']));
+	}
+	
+	// Test the change() attributes method
+	public function testMethod_changed()
+	{
+		$model = new MockModel();
+		
+		// On a new model, every field is marked as changed
+		$model->set("first", "Tom");
+		$this->assertTrue($model->changed("first"));
+		$this->assertTrue($model->changed("last"));
+		$model->clearChanged();
+		// set the first name to the same value, no changed
+		$model->set("first", "Tom");
+		$this->assertFalse($model->changed("first"));
+		// set the first name to a new value, triggers changed
+		$model->set("first", "John");
+		$this->assertTrue($model->changed("first"));
+		// test an attribute that has not changed
+		$this->assertFalse($model->changed("last"));
+		
+		// Invalid field name
+		$this->assertFalse($model->changed("xyz"));	
+	}
+	
+	// Test the hasChanged() method
+	public function testMethod_hasChanged()
+	{
+		$model = new MockModel();
+		$model->clearChanged();
+		$this->assertFalse($model->hasChanged());
+		$model->set("first", "John");
+		$this->assertTrue($model->hasChanged());
+	}
+	
+	// Test the model's validation on save
+	public function testBehavior_validation()
+	{
+		$model = new MockModel();
+		
+		$model->rules(array(
+			"first" => array("required" => true, "maxlength" => 10)
+		));
+		$model->set("first", "");
+		$this->assertFalse($model->save());
+		$this->assertTrue(count($model->getErrors()) > 0);
+		$model->set("first", "abcdefghijklmnop");
+		$this->assertFalse($model->save());
+		$this->assertTrue(count($model->getErrors()) > 0);
+		$model->set("first", "abc");
+		$this->assertTrue($model->save());
+		$this->assertTrue(count($model->getErrors()) == 0);
+	}
 }
 ?>
