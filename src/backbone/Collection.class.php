@@ -14,7 +14,7 @@ use \Backbone;
 Backbone::uses("Model");
 
 /**
- * Base Collection class for representing an ordered list of model objects.
+ * Collection class for representing an ordered list of model objects.
  *
  * @since 0.1.0
  */

@@ -219,6 +219,34 @@ class QueryTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($query, "SELECT * FROM blog_posts WHERE type IS NOT NULL OR name IS NOT NULL");
 	}
 	
+// 	public function testBehavior_selectJoin()
+// 	{
+// 		// default left join
+// 		$query = $this->db->buildQuery("select", array(
+// 			"table" => "blog_posts",
+// 			"fields" => "*",
+// 			"join" => array(
+// 				"blog_authors" => array(
+// 					"fields" => array("blog_posts.author_id","blog_authors.id")
+// 				)
+// 			)
+// 		));
+// 		$this->assertEquals($query, "SELECT * FROM `blog_posts` LEFT JOIN `blog_authors` ON `blog_posts`.`author_id` = `blog_authors`.`id` ");
+		
+// 		// inner join
+// 		$query = $this->db->buildQuery("select", array(
+// 			"table" => "blog_posts",
+// 			"fields" => "*",
+// 			"join" => array(
+// 				"blog_authors" => array(
+// 					"type" => "INNER",
+// 					"fields" => array("blog_posts.author_id","blog_authors.id")
+// 				)
+// 			)
+// 		));
+// 		$this->assertEquals($query, "SELECT * FROM `blog_posts` INNER JOIN `blog_authors` ON `blog_posts`.`author_id` = `blog_authors`.`id` ");
+// 	}
+	
 	public function testBehavior_update()
 	{
 		$query = DB::table("blog_posts")

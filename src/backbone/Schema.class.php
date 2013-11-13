@@ -11,8 +11,6 @@
 namespace Backbone;
 use \Backbone;
 
-//Backbone::uses("DB");
-
 /**
  * Schema represents the definition of a data resource and
  * is the base class for Backbone.php's Model class. 
@@ -20,10 +18,7 @@ use \Backbone;
  * Schema is responsible for providing information about a model's
  * definition and for validation of data against that definition.
  * This provides a layer of security between data input and the 
- * database itself. Schema itself is database agnostic - it depends
- * on the database object to implement a "schmea" method that converts
- * the resource's schmea into the definition outlined below. The
- * database object should be an extension of DataSource.
+ * database itself. 
  *
  * The schema is also used to populate new model's with default data.
  *
