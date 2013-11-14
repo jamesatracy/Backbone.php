@@ -244,9 +244,9 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	{
 		$model = new MockModel();
 		
-		$model->rules(array(
+		$model::$rules = array(
 			"first" => array("required" => true, "maxlength" => 10)
-		));
+		);
 		$model->set("first", "");
 		$this->assertFalse($model->save());
 		$this->assertTrue(count($model->getErrors()) > 0);

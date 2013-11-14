@@ -260,9 +260,9 @@ class Schema
 		}
 		
 		// check for custom validation rules
-		if(!empty(static::$rules) && isset(static::$rules[$field])) {
+		if(!empty(static::$rules) && isset(static::$rules[$name])) {
 			Backbone::uses("Validate");
-			foreach(static::$rules[$field] as $rule => $args) {
+			foreach(static::$rules[$name] as $rule => $args) {
 				if(Validate::invoke($rule, $name, $value, $args) === false) {
 					$this->_errors[] = Validate::$last_error;
 					return;
