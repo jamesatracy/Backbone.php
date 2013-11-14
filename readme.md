@@ -4,7 +4,7 @@ Backbone.php
 [![Build Status](https://travis-ci.org/jamesatracy/Backbone.php.png?branch=master)](https://travis-ci.org/jamesatracy/Backbone.php?branch=master)
 
 * [Download Latest](https://github.com/jamesatracy/Backbone.php/archive/master.zip)
-* [Download 0.2.4](https://github.com/jamesatracy/Backbone.php/releases/tag/0.2.4)
+* [Download 0.3.0](https://github.com/jamesatracy/Backbone.php/releases/tag/0.3.0)
 
 Backbone.php, much like its javascript namesake, is a small collection of PHP classes that provide structure or scaffolding for a PHP application or PHP powered website. It follows the Model-View-Controller (MVC) convention and includes classes for handling routes, database backed models, and HTML views. Applications or websites built using Backbone.php can be up and running very quickly because it removes the necessity of writing much boilerplate code.
 
@@ -33,22 +33,29 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 		// implementations go here
 	}
 
-That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a MySQL database (or other data source) in the form of Models and Collections.
+That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a SQL database in the form of Models and Collections.
 
-	$dog = new DogModel();
+	$id = Dog::create({
+		"name" => "Spot",
+		"breed" => "Collie"
+	});
+	
+	$dog = Dog::fetch(1);
 	$dog->name = "Spot";
-	$dog->breed = "Collie";
-	if($dog->save()) {
-		// good to go
-		$id = $dog->id;
+	$dog->save();
+	
+	$dogs = Dog::fetch()->where("breed", "Collie")->limit(10)->exec();
+	while($dog->valid()) {
+		$dog = $dog->next();
+		...
 	}
 
 Classes
 -------
 
-The Backbone.php framework consists of the following 15 modules: 
+The Backbone.php framework consists of the following 14 modules: 
 
-`Backbone`, `Collection`, `Connections`, `DataSource`, `Events`, `Html`, `Model`, `MySQL`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `Validate`, and `View`
+`Backbone`, `Collection`, `DB`, `Events`, `Html`, `Model`, `Query`, `Response`, `Request`, `Router`, `Sanitize`, `Schema`, `Validate`, and `View`
 
 Dependencies
 ------------
