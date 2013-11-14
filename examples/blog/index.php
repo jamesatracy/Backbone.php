@@ -34,7 +34,6 @@ if(!defined('ROUTERPATH')) {
 
 // load the framework
 require_once(FRAMEWORK."Backbone.class.php");
-Backbone::initialize();
 
 //  load boot file
 if(!file_exists("boot.php")) {

@@ -29,14 +29,14 @@ class Model extends Schema
 	/** @var string The field name of the created timestamp, if any */
 	public static $created = "created";
 	
+	/** @var array Hash map of field sanitations */
+	protected static $_sanitations = array();
+	
 	/** @var array Hash map of model attributes */
 	protected $_attributes = array();
 	
 	/** @var array Hash map of changed model attributes */
 	protected $_changed = array();
-	
-	/** @var array Hash map of field sanitations */
-	protected $_sanitations = array();
 	
 	/**
 	 * Constructs a new model with an optional set of initial values.
@@ -427,22 +427,6 @@ class Model extends Schema
 	}
 	
 	/**
-	 * Set the model's field sanitation rules
-	 *
-	 * array(
-	 *	"field1" => array(callable, ...),
-	 *	"field2" => array(callable, ...)
-	 * )
-	 *
-	 * @since 0.1.0
-	 * @param array $sanitations Hash map of sanitation rules
-	 */
-	public function sanitations($sanitations)
-	{
-		$this->_sanitations = $sanitations;
-	}
-	
-	/**
 	 * Magic __get method that internally calls get() 
 	 *
 	 * @since 0.1.0
@@ -481,8 +465,8 @@ class Model extends Schema
 	 */
 	protected function _applySanitation($key, $val)
 	{
-		if(isset($this->_sanitations[$key])) {
-			foreach($this->_sanitations[$key] as $index => $callable) {
+		if(isset(static::$_sanitations[$key])) {
+			foreach(static::$_sanitations[$key] as $index => $callable) {
 				$val = call_user_func_array($callable, array($val));
 			}
 		}

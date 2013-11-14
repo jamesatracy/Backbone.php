@@ -44,16 +44,6 @@ class Backbone
 	protected static $version = "0.3.0";
 	
 	/**
-	 * Initialize Backbone.php 
-	 * 
-	 * @since 0.1.0
-	 */
-	public static function initialize()
-	{
-		return;
-	}
-	
-	/**
 	 * Get the version info 
 	 * 
 	 * @since 0.1.0

@@ -55,6 +55,16 @@ class Schema
 	/** @var string Optional pointer to schema file name */
 	public static $schemaFile = null;
 	
+	/** 
+	 * @var array Optional additional validation rules 
+	 * 
+	 *	Ex:
+	 *	    public static $rules = array(
+	 *		    array("email" => array("email" => true))
+	 *	    );
+	 */
+	public static $rules = array();
+	
 	/** @var array A central cache for schema definitions */
 	protected static $_schema_cache = array();
 	
@@ -92,29 +102,6 @@ class Schema
 	public function isInitialized()
 	{
 		return (!empty($this->_fields));
-	}
-	
-	/**
-	 * Add additional validation rules to a group of fields.
-	 *
-	 * @since 0.1.0
-	 * @param array An array of key => value pairs, where the value corresponds to
-	 *	a rule or an array of rules to add to the field.
-	 *	
-	 *	Ex:
-	 *		$schema->rules(
-	 *			array("email" => array("email" => true))
-	 *		);
-	 */
-	public function rules($rules)
-	{
-		if($this->_fields && is_array($rules)) {
-			foreach($rules as $key => $values) {
-				if(isset($this->_fields[$key])) {
-					$this->_fields[$key]['rules'] = $values;
-				}
-			}
-		}
 	}
 	
 	/**
@@ -202,12 +189,12 @@ class Schema
 	 * @since 0.1.0
 	 * @param array $fields An array of field => value pairs to validate
 	 * @returns bool True if all fields validate, false otherwise.
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function validate($fields)
 	{
 		if(!$this->_fields) {
-			throw new RuntimeException("Error: Schema has not been initialized.");
+			throw new \RuntimeException("Error: Schema has not been initialized.");
 		}
 		
 		$this->_errors = array();
@@ -273,9 +260,9 @@ class Schema
 		}
 		
 		// check for custom validation rules
-		if(isset($field['rules'])) {
+		if(!empty(static::$rules) && isset(static::$rules[$field])) {
 			Backbone::uses("Validate");
-			foreach($field['rules'] as $rule => $args) {
+			foreach(static::$rules[$field] as $rule => $args) {
 				if(Validate::invoke($rule, $name, $value, $args) === false) {
 					$this->_errors[] = Validate::$last_error;
 					return;
