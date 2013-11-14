@@ -153,7 +153,7 @@ class Html
 	 * @param string $name The name of the tag (ex: "img")
 	 * @return string The open tag
 	 */
-	public function tagOpen($name)
+	public function tagClose($name)
 	{
 		return '</'.$name.'>';
 	}
