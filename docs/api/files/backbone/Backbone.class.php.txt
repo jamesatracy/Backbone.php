@@ -99,13 +99,19 @@ class Backbone
 	 * @since 0.1.0
 	 * @param string|array $name The class name or an array of class names
 	 */
-	public static function uses($name)
+	public static function uses()
 	{
-		if(is_string($name)) {
-			$name = explode(",", $name);
+		$args = func_get_args();
+		$argsc = count($args);
+		if($argsc === 1 && is_string($args[0])) {
+			$names = explode(",", $args[0]);
+		} else if($argsc === 1 && is_array($args[0])) {
+		    $names = $args[0];
+		} else {
+			$names = $args;
 		}
 
-		foreach($name as $classname) {
+		foreach($names as $classname) {
 			self::loadModule($classname);
 		}
 	}
@@ -222,7 +228,7 @@ class Backbone
 			// No routes are defined.
 			// Auto route this page if we find a corresponding view that ends in '-page'
 			if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {
-				$router = new Router();
+				$router = new Backbone\Router();
 				$router->invokeRouteCallback(array($router, "loadView"), array($here."-page"));
 				$success = true;
 			}
@@ -246,7 +252,7 @@ class Backbone
 	 */
 	protected static function loadModule($name)
 	{
-		$classname = self::getClassName($name);
+		//$classname = self::getClassName($name);
 		if(!isset(self::$modules[$name])) {
 			self::$modules[$name] = true;
 			if(substr($name, 0, 1) == "/") {
