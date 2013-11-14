@@ -3,10 +3,14 @@ Version History
 
 *0.3.0*
 * Backbone classes now use namespace Backbone.
+* Completely re-written database layer based on the PDO interface: DB and Query.
+* DB manages an active database connection.
+* Query builds sql queries programmatically.
+* Model::fetch($id), Model::fetch(), and Model::create(). 
+* Collection wraps data but performs no database actions.
 * Consolidated backbone.php into index.php.
-* Added pre response sent events to Response ("response.pre.200").
+* Added before and after response status events to Response ("Response:200:before").
 * Response events now pass the response object as the parameter.
-* Added Response->isSent() method.
 
 *0.2.4*
 * Added Router->stop() method.
