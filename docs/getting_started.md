@@ -36,8 +36,8 @@ Modify the `boot.php` file to set your web root's path (if not the top level dir
 	Backbone::loadRouter("BlogRouter");
 
 	// Include modules
-	Backbone::uses(array("Connections", "MySQL"));
+	Backbone::uses("DB");
 
 	// Database
-	Connections::create("default", "MySQL", array("server" => "localhost", "user" => "root", "pass" => ""));
+	Backbone\DB::connect("mysql:dbname=".DATABASE_NAME.";host=".DB_SERVER, DB_USER, DB_PASS);
 	?>
