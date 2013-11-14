@@ -35,12 +35,13 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 
 That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a SQL database in the form of Models and Collections.
 
-	$id = Dog::create({
+	$dog = Dog::create({
 		"name" => "Spot",
 		"breed" => "Collie"
 	});
+	$id = $dog->id;
 	
-	$dog = Dog::fetch(1);
+	$dog = Dog::fetch(1); // with id = 1
 	$dog->name = "Spot";
 	$dog->save();
 	
