@@ -134,6 +134,31 @@ class Html
 	}
 	
 	/**
+	 * Generic function used for constructing an open tag.
+	 * 
+	 * @since 0.3.0
+	 * @param string $name The name of the tag (ex: "img")
+	 * @param array $attributes Optional. A list of attributes defined as key => value pairs.
+	 * @return string The open tag
+	 */
+	public function tagOpen($name, $attributes)
+	{
+		return '<'.$name.$this->_buildAttributes($attributes).'>';
+	}
+	
+	/**
+	 * Generic function used for constructing a close tag.
+	 * 
+	 * @since 0.3.0
+	 * @param string $name The name of the tag (ex: "img")
+	 * @return string The open tag
+	 */
+	public function tagOpen($name)
+	{
+		return '</'.$name.'>';
+	}
+	
+	/**
 	 * Internal functinon for building a string of attributes from an associated array
 	 *
 	 * @since 0.1.0
