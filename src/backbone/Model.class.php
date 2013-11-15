@@ -33,7 +33,7 @@ class Model extends Schema
 	public static $queryClass = "\Backbone\ModelQuery";
 	
 	/** @var array Hash map of field sanitations */
-	protected static $_sanitations = array();
+	public static $sanitations = array();
 	
 	/** @var array Hash map of model attributes */
 	protected $_attributes = array();
@@ -468,8 +468,8 @@ class Model extends Schema
 	 */
 	protected function _applySanitation($key, $val)
 	{
-		if(isset(static::$_sanitations[$key])) {
-			foreach(static::$_sanitations[$key] as $index => $callable) {
+		if(isset(static::$sanitations[$key])) {
+			foreach(static::$sanitations[$key] as $index => $callable) {
 				$val = call_user_func_array($callable, array($val));
 			}
 		}

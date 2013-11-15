@@ -124,16 +124,18 @@ class Backbone
 	 * ROUTERPATH global system constant.
 	 * 
 	 * @since 0.1.0
-	 * @param string $name The name of the router
+	 * @param string $path Relative path to the router class
+	 * @param string $classname Optional classname, otherwise it is
+	 *	extracted from the $path parameter.
 	 */
-	public static function loadRouter($name)
+	public static function loadRouter($path, $classname = "")
 	{
-		$fullpath = self::resolvePath(ROUTERPATH, $name.".class.php");
-		if($fullpath) {
-			require_once($fullpath);
-			if(class_exists($name)) {
-				self::addRouter(new $name());
-			}
+		self::uses($path);
+		if(empty($classname)) {
+			$classname = self::getClassName($path);
+		}
+		if(class_exists($classname)) {
+			self::addRouter(new $classname());
 		}
 	}
 	

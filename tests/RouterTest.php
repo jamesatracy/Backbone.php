@@ -8,11 +8,11 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses("Router,Request,View");
-
-use Backbone\Router as Router;
-use Backbone\Request as Request;
-use Backbone\View as View;
+Backbone::uses("Events", "Router", "Request", "View");
+use Backbone\Events;
+use Backbone\Router;
+use Backbone\Request;
+use Backbone\View;
 
 /**
  * Test View class
@@ -266,6 +266,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	/** Testing route hook methods */
 	public function testMethod_onPreMatchHook()
 	{
+		Events::bind("Router:before:match", array($this->router, "onPreMatchHook"));
 		$_SERVER['REQUEST_URI'] = "/";
 		$this->router->route();
 		$this->assertTrue($this->router->preMatchHookCalled);
@@ -273,6 +274,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	
 	public function testMethod_onPreRouteHook()
 	{
+		Events::bind("Router:before:route", array($this->router, "onPreRouteHook"));
 		$_SERVER['REQUEST_URI'] = "/";
 		$this->router->route();
 		$this->assertTrue($this->router->preRouteHookCalled);
@@ -280,6 +282,7 @@ class RouterTest extends PHPUnit_Framework_TestCase
 	
 	public function testMethod_onPostRouteHook()
 	{
+		Events::bind("Router:after:route", array($this->router, "onPostRouteHook"));
 		$_SERVER['REQUEST_URI'] = "/";
 		$this->router->route();
 		$this->assertTrue($this->router->postRouteHookCalled);

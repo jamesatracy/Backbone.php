@@ -209,7 +209,7 @@ class Router
 		$this->pattern = "";
 		$this->arguments = array();
 		
-		if(!$this->onPreMatchHook($uri)) {
+		if(!Events::trigger("Router:before:match", $uri)) {
 			return true;
 		}
 		if($this->root != "") {
@@ -227,7 +227,7 @@ class Router
 		                $callback = $route[$method];
 		            } else {
 		                // no method match...
-		                $this->response = new Response();
+		                $this->createResponse();
             			$this->response->status(405);
             			$this->response->header("Allow", strtoupper(join(", ", array_keys($route))));
             			return true;
@@ -238,7 +238,7 @@ class Router
 				}
 				if(method_exists($this, $callback)) {
 					// check pre route hook
-					if($this->onPreRouteHook($uri)) {
+					if(Events::trigger("Router:before:route", $uri)) {
 					    // routeMatches stores args in $this->arguments
 						$this->invokeRouteCallback(array($this, $callback), $this->arguments);
 					}
@@ -262,8 +262,7 @@ class Router
 	{
 		// initialize the response and view objects
 		$this->view = $this->createView();
-		$this->response = new Response();
-		$this->response->header("X-Backbone-Version", Backbone::version());
+		$this->createResponse();
 		
 		// call the callback method
 		// if there is an uncaught application exception, then a 500 error is sent
@@ -274,7 +273,7 @@ class Router
 			} else {
 				$return = call_user_func($callback);
 			}
-			$this->onPostRouteHook($return);
+			Events::trigger("Router:after:route", $return);
 		} catch(Exception $e) {
 			// return a 500 error
 			$this->handleException($e);
@@ -309,6 +308,18 @@ class Router
 	}
 	
 	/**
+	 * Creates a new response object and stores it in
+	 * $this->response;
+	 *
+	 * @since 0.3.0
+	 */
+	public function createResponse()
+	{
+		$this->response = new Response();
+		$this->response->header("X-Backbone-Version", Backbone::version());
+	}
+	
+	/**
 	 * Get the active response object.
 	 * 
 	 * @since 0.2.4
@@ -338,52 +349,11 @@ class Router
 	        $body = "";
 	    }
 	    
-	    $resp = new Response();
-	    $resp->status($status);
-	    $resp->body($body);
-	    $resp->send();
+		$this->createResponse();
+	    $this->response->status($status);
+	    $this->response->body($body);
+	    $this->response->send();
 	    exit(0);
-	}
-	
-	/**
-	 * Stub function for providing a hook before a route is matched.
-	 *
-	 * You can prevent the route from being matched by returning false.
-	 * This allows you to bypass the default route matching mechanism.
-	 *
-	 * @since 0.1.0
-	 * @return bool
-	 */
-	protected function onPreMatchHook($url)
-	{
-		return true;
-	}
-	
-	/**
-	 * Stub function for providing a hook before a route is dispatched.
-	 *
-	 * You can prevent the route from being dispatched by returning false.
-	 * Useful for authentication logic.
-	 *
-	 * @since 0.1.0
-	 * @return bool
-	 */
-	protected function onPreRouteHook($url)
-	{
-		return true;
-	}
-	
-	/**
-	 * Stub function for providing a hook after a route is dispatched.
-	 *
-	 * It is past the return value of the router method that was invoked.
-	 *
-	 * @since 0.1.0
-	 * @param bool $response The return value of the router method that was invoked.
-	 */
-	protected function onPostRouteHook($response)
-	{
-		return true;
 	}
 	
 	/**
@@ -460,6 +430,9 @@ class Router
 	 */
 	protected function sendResponse()
 	{
+		if(!$this->response) {
+			$this->createResponse();
+		}
 		$this->response->send();
 	}
 	
@@ -481,7 +454,7 @@ class Router
 	protected function handleException($e)
 	{
 		ob_end_clean();
-		Events::trigger("router.uncaught-exception", $e);
+		Events::trigger("Router:uncaught:exception", $e);
 		$resp = $this->response;
 		$resp->status(500);
 		$resp->send();

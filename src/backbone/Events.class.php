@@ -73,6 +73,7 @@ class Events
 		if(isset(self::$_events[$event])) {
 			return self::dispatch(self::$_events[$event], $params);
 		}
+		return true;
 	}
 	
 	/**

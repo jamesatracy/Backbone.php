@@ -11,7 +11,7 @@ Backbone::$root = "/Backbone.php/examples/blog/";
 Backbone::uses("DB");
 
 // Load routers
-Backbone::loadRouter("BlogRouter");
+Backbone::loadRouter("/routers/BlogRouter");
 
 // Database
 Backbone\DB::connect("mysql:dbname=".DATABASE_NAME.";host=".DB_SERVER, DB_USER, DB_PASS);
