@@ -29,6 +29,9 @@ class Model extends Schema
 	/** @var string The field name of the created timestamp, if any */
 	public static $created = "created";
 	
+	/** @var string The query class name for this model */
+	public static $queryClass = "ModelQuery";
+	
 	/** @var array Hash map of field sanitations */
 	protected static $_sanitations = array();
 	
@@ -95,7 +98,7 @@ class Model extends Schema
 			$classname = get_called_class();
 			return new $classname($result);
 		} else {
-			$query = new ModelQuery(get_called_class(), static::$table);
+			$query = new static::$queryClass(get_called_class(), static::$table);
 			return $query->select();
 		}
 	}

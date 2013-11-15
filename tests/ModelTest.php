@@ -13,6 +13,17 @@ use Backbone\Model;
 use Backbone\DB;
 
 /**
+ * Custom query class
+ */
+class MockModelQuery extends Backbone\ModelQuery
+{
+    public function isMale()
+    {
+        return $this->where("gender", "Male");   
+    }
+}
+
+/**
  * PHPUnit Test suite for Model class
  *
  * Tests for individual class methods following this naming
@@ -144,6 +155,29 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// simulate invalid result
 		$pdo->setResultsData(null);
 		$this->assertNull(MockModel::fetch(1));
+	}
+	
+	// Test custom query filters
+	public function testbehavior_customQueries()
+	{
+		$pdo = DB::getPDO();
+		$pdo->setResultsData(array(
+			array(
+				"ID" => 1,
+				"first" => "John",
+				"last" => "Doe",
+				"age" => 21,
+				"gender" => "Male",
+				"modified" => "0000-00-00 00:00:00",
+				"created" => "0000-00-00 00:00:00"
+			)
+		));
+		MockModel::$queryClass = "MockModelQuery";
+		$collection = MockModel::fetch()->isMale()->exec();
+ 		$this->assertEquals(get_class($collection), "Backbone\Collection");
+ 		$this->assertEquals($collection->length, 1);
+ 		$this->assertEquals($collection->getAt(0)->gender, "Male");
+ 		MockModel::$queryClass = "ModelQuery";
 	}
 	
 	// Test the save() method
