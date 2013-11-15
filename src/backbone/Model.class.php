@@ -30,7 +30,7 @@ class Model extends Schema
 	public static $created = "created";
 	
 	/** @var string The query class name for this model */
-	public static $queryClass = "ModelQuery";
+	public static $queryClass = "\Backbone\ModelQuery";
 	
 	/** @var array Hash map of field sanitations */
 	protected static $_sanitations = array();
@@ -497,6 +497,47 @@ class ModelQuery extends Query
 	{
 		$this->_model = $model;
 		parent::__construct($table);
+	}
+	
+	/**
+	 * Allows for magic filter methods based on the Model's fields.
+	 * 
+	 * Example:
+	 *      Say that User has a field "name"
+	 * 
+	 *      I can filter by name:
+	 *      User::fetch()->name("John")->exec();
+	 *      
+	 *      This is equivalent to:
+	 *      User->fetch()->where("name", "John")->exec();
+	 * 
+	 *      You can also pass in operators:
+	 *      User::fetch()->name("LIKE", "Jon%")->exec();
+	 * 
+	 *      This is equivalent to:
+	 *      User->fetch()->where("name", "LIKE", "Jon%")->exec();
+	 * 
+	 * @param string $name The name of the method called
+	 * @param array $arguments The args passed to the method call
+	 * @return ModelQuery The query object
+	 */
+	public function __call($name, $arguments)
+	{
+	    $numArgs = count($arguments);
+	    
+	    // is name a model field?
+	    $schema = call_user_func_array(array($this->_model, "loadSchema"), array($this->_table));
+	    if($schema && $numArgs > 0) {
+	        $fields = $schema['schema'];
+	        if(isset($fields[$name])) {
+	            if($numArgs == 1) {
+	                return $this->where($name, $arguments[0]);
+	            } else {
+	                return $this->where($name, $arguments[0], $arguments[1]);
+	            }
+	        }
+	    }
+	    return $this;
 	}
 	
 	/**

@@ -96,7 +96,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse(isset($attrs['ID']));
 	}
 	
-		public function testMethod_set()
+	public function testMethod_set()
 	{
 		$model = new MockModel();
 		
@@ -155,6 +155,33 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		// simulate invalid result
 		$pdo->setResultsData(null);
 		$this->assertNull(MockModel::fetch(1));
+	}
+	
+	// Test magic query filters
+	public function testbehavior_magicQueries()
+	{
+		$pdo = DB::getPDO();
+		$pdo->setResultsData(array(
+			array(
+				"ID" => 1,
+				"first" => "John",
+				"last" => "Doe",
+				"age" => 21,
+				"gender" => "Male",
+				"modified" => "0000-00-00 00:00:00",
+				"created" => "0000-00-00 00:00:00"
+			)
+		));
+
+		$collection = MockModel::fetch()->gender("Male")->exec();
+ 		$this->assertEquals(get_class($collection), "Backbone\Collection");
+ 		$this->assertEquals($collection->length, 1);
+ 		$this->assertEquals($collection->getAt(0)->gender, "Male");
+ 		
+ 		$collection = MockModel::fetch()->age(">=", 21)->exec();
+ 		$this->assertEquals(get_class($collection), "Backbone\Collection");
+ 		$this->assertEquals($collection->length, 1);
+ 		$this->assertEquals($collection->getAt(0)->gender, "Male");
 	}
 	
 	// Test custom query filters
