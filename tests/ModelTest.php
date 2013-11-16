@@ -173,15 +173,35 @@ class ModelTest extends PHPUnit_Framework_TestCase
 			)
 		));
 
+        $query = MockModel::fetch()->gender("Male")->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE gender = 'Male'");
+        
 		$collection = MockModel::fetch()->gender("Male")->exec();
  		$this->assertEquals(get_class($collection), "Backbone\Collection");
  		$this->assertEquals($collection->length, 1);
  		$this->assertEquals($collection->getAt(0)->gender, "Male");
  		
+ 		$query = MockModel::fetch()->age(">=", 21)->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE age >= '21'");
+ 		
  		$collection = MockModel::fetch()->age(">=", 21)->exec();
  		$this->assertEquals(get_class($collection), "Backbone\Collection");
  		$this->assertEquals($collection->length, 1);
  		$this->assertEquals($collection->getAt(0)->gender, "Male");
+ 		
+ 		// AND conjunction
+ 		$query = MockModel::fetch()
+ 		->gender("Male")
+ 		->age(">=", 21)
+ 		->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE gender = 'Male' AND age >= '21'");
+        
+        // OR conjunction
+        $query = MockModel::fetch()
+ 		->gender("Male")
+ 		->or_age(">=", 21)
+ 		->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE gender = 'Male' OR age >= '21'");
 	}
 	
 	// Test custom query filters

@@ -513,9 +513,11 @@ class ModelQuery extends Query
 	 * 
 	 *      You can also pass in operators:
 	 *      User::fetch()->name("LIKE", "Jon%")->exec();
-	 * 
-	 *      This is equivalent to:
 	 *      User->fetch()->where("name", "LIKE", "Jon%")->exec();
+	 * 
+	 *      You can also have the clause conjoined with an OR:
+	 *      User::fetch()->name("John")->or_name("Mark")->exec();
+	 *      User::fetch()->where("name", "John")->orWhere("name", "Mark")->exec();
 	 * 
 	 * @param string $name The name of the method called
 	 * @param array $arguments The args passed to the method call
@@ -534,6 +536,18 @@ class ModelQuery extends Query
 	                return $this->where($name, $arguments[0]);
 	            } else {
 	                return $this->where($name, $arguments[0], $arguments[1]);
+	            }
+	        } else {
+	            if(substr($name, 0, 3) === "or_") {
+	                // this might be an or condition
+	                $realName = substr($name, 3);
+	                if(isset($fields[$realName])) {
+        	            if($numArgs == 1) {
+        	                return $this->orWhere($realName, $arguments[0]);
+        	            } else {
+        	                return $this->orWhere($realName, $arguments[0], $arguments[1]);
+        	            }
+        	        }
 	            }
 	        }
 	    }
