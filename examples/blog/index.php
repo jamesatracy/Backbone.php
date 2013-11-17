@@ -38,7 +38,7 @@ require_once(FRAMEWORK."Backbone.class.php");
 //  load boot file
 if(!file_exists("boot.php")) {
 	// The boot file defines Routers and other necessary start up includes.
-	$resp = new Backbone\Response();
+	$resp = new Response();
 	$resp->status(500);
 	$resp->body("Missing boot.php!");
 	$resp->send();
@@ -50,7 +50,7 @@ require("boot.php");
 // dispatch request
 if(!Backbone::dispatch()) {
 	// send 404 response
-	$resp = new Backbone\Response();
+	$resp = new Response();
 	$resp->status(404);
 	$resp->send();
 }

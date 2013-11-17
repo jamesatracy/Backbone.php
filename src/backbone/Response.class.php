@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
  * Handles sending HTTP response headers and content.
  *
@@ -143,7 +140,7 @@ class Response
 			return $this->_status;
 		}
 		if(!isset($this->_status_codes[$code])) {
-			throw new \InvalidArgumentException("Response: Invalid status code ".$code);
+			throw new InvalidArgumentException("Response: Invalid status code ".$code);
 		}
 		$this->_status = $code;
 		return $this->_status;

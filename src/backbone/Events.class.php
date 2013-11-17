@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
  * Class for triggering and delegating events and callbacks.
  *
@@ -98,5 +95,4 @@ class Events
 	}
 	
 };
-
 ?>

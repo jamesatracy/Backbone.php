@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone;
-
 Backbone::uses("Query","Schema");
 
 /**
@@ -30,7 +27,7 @@ class Model extends Schema
 	public static $created = "created";
 	
 	/** @var string The query class name for this model */
-	public static $queryClass = "\Backbone\ModelQuery";
+	public static $queryClass = "ModelQuery";
 	
 	/** @var array Hash map of field sanitations */
 	public static $sanitations = array();
@@ -76,16 +73,16 @@ class Model extends Schema
 	 * @since 0.3.0
 	 * @param int $id The primary key (optional)
 	 * @return Model|ModelQuery Returns the Model if a key is given.
-	 * @throws \InvalidArgumentException|\RuntimeException
+	 * @throws InvalidArgumentException|RuntimeException
 	 */
 	public static function fetch($id = null)
 	{
 		if(!DB::isConnected()) {
-			throw new \RuntimeException("Model: No valid DB connection");
+			throw new RuntimeException("Model: No valid DB connection");
 		}
 		if($id !== null) {
 			if(!is_numeric($id) && $id < 1) {
-				throw new \InvalidArgumentException("Model: Invalid argument for fetch");
+				throw new InvalidArgumentException("Model: Invalid argument for fetch");
 			}
 			$schema = self::loadSchema(static::$table);
 			$result = DB::table(static::$table)
@@ -113,12 +110,12 @@ class Model extends Schema
 	 * @since 0.3.0
 	 * @param array $data The attributes to set on the new model.
 	 * @return Model|bool The new model object or false if it failed.
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public static function create($data)
 	{
 		if(!DB::isConnected()) {
-			throw new \RuntimeException("Model: No valid DB connection");
+			throw new RuntimeException("Model: No valid DB connection");
 		}
 		
 		$classname = get_called_class();
@@ -197,12 +194,12 @@ class Model extends Schema
 	 *
 	 * @since 0.1.0
 	 * @return bool True on success
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public function save()
 	{
 		if(!DB::isConnected()) {
-			throw new \RuntimeException("Model: Invalid connection");
+			throw new RuntimeException("Model: Invalid connection");
 		}
 		$attributes = array();
 		foreach($this->_changed as $key => $value) {
@@ -254,12 +251,12 @@ class Model extends Schema
 	 *
 	 * @since 0.1.0
 	 * @return bool True if the operation succeeded, false otherwise
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public function delete()
 	{
 		if(!DB::isConnected()) {
-			throw new \RuntimeException("Model: Invalid connection");
+			throw new RuntimeException("Model: Invalid connection");
 		}
 		
 		// cannot delete if the model is new
@@ -593,7 +590,7 @@ class ModelQuery extends Query
 	public function exec()
 	{
 		if(!DB::isConnected()) {
-			throw new \RuntimeException("Query: No valid DB connection");
+			throw new RuntimeException("Query: No valid DB connection");
 		}
 		if($this->_command !== "select") {
 			// use the default exec method
@@ -607,7 +604,7 @@ class ModelQuery extends Query
 		$pdo = DB::getPDO();
 		
 		// for selects, wrap the results in a collection object
-		$smt = $pdo->query($query, \PDO::FETCH_ASSOC);
+		$smt = $pdo->query($query, PDO::FETCH_ASSOC);
 		$results = $smt->fetchAll();
 		Backbone::uses("Collection");
 		return new Collection($this->_model, $results);

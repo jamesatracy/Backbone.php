@@ -9,13 +9,11 @@
  */
 
 Backbone::uses("Model", "/tests/helpers/MockDB", "/tests/helpers/MockModel");
-use Backbone\Model;
-use Backbone\DB;
 
 /**
  * Custom query class
  */
-class MockModelQuery extends Backbone\ModelQuery
+class MockModelQuery extends ModelQuery
 {
     public function isMale()
     {
@@ -145,6 +143,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
  		$this->assertEquals($model->ID, 1);
  		$this->assertEquals($model->first, "John");
  		$this->assertEquals($model->last, "Doe");
+		
  		$this->assertEquals($model->age, 21);
  		$this->assertEquals($model->gender, "Male");
 		
@@ -177,7 +176,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($query, "SELECT * FROM mock WHERE gender = 'Male'");
         
 		$collection = MockModel::fetch()->gender("Male")->exec();
- 		$this->assertEquals(get_class($collection), "Backbone\Collection");
+ 		$this->assertEquals(get_class($collection), "Collection");
  		$this->assertEquals($collection->length, 1);
  		$this->assertEquals($collection->getAt(0)->gender, "Male");
  		
@@ -185,7 +184,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($query, "SELECT * FROM mock WHERE age >= '21'");
  		
  		$collection = MockModel::fetch()->age(">=", 21)->exec();
- 		$this->assertEquals(get_class($collection), "Backbone\Collection");
+ 		$this->assertEquals(get_class($collection), "Collection");
  		$this->assertEquals($collection->length, 1);
  		$this->assertEquals($collection->getAt(0)->gender, "Male");
  		
@@ -221,7 +220,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 		));
 		MockModel::$queryClass = "MockModelQuery";
 		$collection = MockModel::fetch()->isMale()->exec();
- 		$this->assertEquals(get_class($collection), "Backbone\Collection");
+ 		$this->assertEquals(get_class($collection), "Collection");
  		$this->assertEquals($collection->length, 1);
  		$this->assertEquals($collection->getAt(0)->gender, "Male");
  		MockModel::$queryClass = "ModelQuery";

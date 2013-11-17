@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
  * Base class for all Backbone.php routers.
  * 
@@ -454,12 +451,11 @@ class Router
 	protected function handleException($e)
 	{
 		ob_end_clean();
-		Events::trigger("Router:uncaught:exception", $e);
+		Events::trigger("Router:exception", $e);
 		$resp = $this->response;
 		$resp->status(500);
 		$resp->send();
 		exit();
 	}
 };
-
 ?>

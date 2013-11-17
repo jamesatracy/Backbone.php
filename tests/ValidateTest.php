@@ -10,8 +10,6 @@
 
 Backbone::uses("Validate");
 
-use Backbone\Validate as Validate;
-
 /**
  * PHPUnit Test suite for Validate class
  *

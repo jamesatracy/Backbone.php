@@ -2,7 +2,7 @@
 /**
  * A mock model class for testing purposes.
  */
-class MockModel extends Backbone\Model
+class MockModel extends Model
 {
     public static $table = "mock";
     public static $created = "created";

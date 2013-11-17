@@ -10,8 +10,6 @@
 
 Backbone::uses("Html");
 
-use Backbone\Html as Html;
-
 /**
  * PHPUnit Test suite for Html class
  *
@@ -28,7 +26,7 @@ class HtmlTest extends PHPUnit_Framework_TestCase
     public function testMethod_constructor()
     {
         $html = new Html();
-        $this->assertTrue(get_class($html) === "Backbone\Html");
+        $this->assertTrue(get_class($html) === "Html");
     }
 }
 ?>

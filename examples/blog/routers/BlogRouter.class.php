@@ -1,11 +1,6 @@
 <?php
 // BlogRouter.class.php
 
-use Backbone\Router;
-use Backbone\Request;
-use Backbone\Events;
-use Backbone\Validate;
-
 class BlogRouter extends Router
 {
 	public function __construct()

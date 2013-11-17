@@ -9,8 +9,6 @@
  */
 
 Backbone::uses("Query");
-use Backbone\Query;
-use Backbone\DB;
 
 /**
  * Mock Query

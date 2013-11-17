@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone;
-
 Backbone::uses("Model");
 
 /**
@@ -18,7 +15,7 @@ Backbone::uses("Model");
  *
  * @since 0.1.0
  */
-class Collection implements \Iterator
+class Collection implements Iterator
 {	
 	/** @var string The model contained by the collection */
 	protected $_model = "Model";

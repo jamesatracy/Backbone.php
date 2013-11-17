@@ -8,8 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 Backbone::uses("/tests/helpers/MockDB", "/tests/helpers/MockPDO");
-use Backbone\DB;
-use Backbone\Query;
 
 /**
  * PHPUnit Test suite for Query class

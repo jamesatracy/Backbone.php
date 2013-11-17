@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone;
-
 /**
  * Schema represents the definition of a data resource and
  * is the base class for Backbone.php's Model class. 
@@ -189,12 +186,12 @@ class Schema
 	 * @since 0.1.0
 	 * @param array $fields An array of field => value pairs to validate
 	 * @returns bool True if all fields validate, false otherwise.
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public function validate($fields)
 	{
 		if(!$this->_fields) {
-			throw new \RuntimeException("Error: Schema has not been initialized.");
+			throw new RuntimeException("Error: Schema has not been initialized.");
 		}
 		
 		$this->_errors = array();
@@ -376,7 +373,7 @@ class Schema
 	 * @since 0.2.0
 	 * @param string $table The table name
 	 * @return array The schema structure
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public static function loadSchema($table)
 	{
@@ -391,7 +388,7 @@ class Schema
 		}
 		
 		if(!DB::isConnected()) {
-			throw new \RuntimeException("Schema: Invalid connection");
+			throw new RuntimeException("Schema: Invalid connection");
 		}
 		
 		$id = 0;
@@ -468,5 +465,4 @@ class Schema
 		return $schema;
 	}
 };
-
 ?>

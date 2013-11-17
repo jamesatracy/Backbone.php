@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
  * Base class for all Backbone.php views.
  *
@@ -350,5 +347,4 @@ class View
 		}
 	}
 };
-
 ?>

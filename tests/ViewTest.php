@@ -10,8 +10,6 @@
 
 Backbone::uses("View");
 
-use Backbone\View as View;
-
 /**
  * PHPUnit Test suite for View class
  *
@@ -28,7 +26,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
     public function testMethod_constructor()
     {
         $view = new View();
-        $this->assertTrue(get_class($view) === "Backbone\View");
+        $this->assertTrue(get_class($view) === "View");
     }
 }
 ?>

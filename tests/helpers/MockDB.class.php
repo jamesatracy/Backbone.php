@@ -7,12 +7,8 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
-namespace Backbone; 
-use \Backbone;
 
 Backbone::uses("/tests/helpers/MockQuery", "/tests/helpers/MockPDO");
-use \MockPDO;
-use \MockQuery;
 
 /**
  * Mock DB class for testing db functions without a live db.

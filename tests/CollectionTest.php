@@ -10,9 +10,6 @@
 
 Backbone::uses("Model", "Collection", "/tests/helpers/MockModel", "/tests/helpers/MockCollection");
 
-use Backbone\Model;
-use Backbone\Collection;
-
 /**
  * PHPUnit Test suite for Collection class
  *

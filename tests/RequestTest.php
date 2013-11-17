@@ -10,8 +10,6 @@
  
 Backbone::uses("Request");
 
-use Backbone\Request as Request;
-
 /**
  * PHPUnit Test suite for Request class
  *

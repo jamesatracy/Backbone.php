@@ -2,7 +2,7 @@
 /**
  * A mock collection class for testing purposes.
  */
-class MockCollection extends Backbone\Collection
+class MockCollection extends Collection
 {
 	public function __construct()
 	{

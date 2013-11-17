@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
  * Helper class for formattign html tags.
  *
@@ -179,5 +176,4 @@ class Html
 		return $ob;
 	}
 };
-
 ?>

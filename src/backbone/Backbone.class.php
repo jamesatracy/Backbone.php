@@ -91,14 +91,14 @@ class Backbone
 	 */
 	public static function uses()
 	{
-		$args = func_get_args();
-		$argsc = count($args);
-		if($argsc === 1 && is_string($args[0])) {
-			$names = explode(",", $args[0]);
-		} else if($argsc === 1 && is_array($args[0])) {
-		    $names = $args[0];
+		$argsv = func_get_args();
+		$argsc = count($argsv);
+		if($argsc === 1 && is_string($argsv[0])) {
+			$names = explode(",", $argsv[0]);
+		} else if($argsc === 1 && is_array($argsv[0])) {
+		    $names = $argsv[0];
 		} else {
-			$names = $args;
+			$names = $argsv;
 		}
 
 		foreach($names as $classname) {
@@ -216,11 +216,11 @@ class Backbone
 			}
 		}
 		if(!$success) {
-			$here = trim(Backbone\Request::here(), "/");
+			$here = trim(Request::here(), "/");
 			// No routes are defined.
 			// Auto route this page if we find a corresponding view that ends in '-page'
 			if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {
-				$router = new Backbone\Router();
+				$router = new Router();
 				$router->invokeRouteCallback(array($router, "loadView"), array($here."-page"));
 				$success = true;
 			}

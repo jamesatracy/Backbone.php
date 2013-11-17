@@ -9,10 +9,6 @@
  */
 
 Backbone::uses("Events", "Router", "Request", "View");
-use Backbone\Events;
-use Backbone\Router;
-use Backbone\Request;
-use Backbone\View;
 
 /**
  * Test View class

@@ -14,5 +14,5 @@ Backbone::uses("DB");
 Backbone::loadRouter("/routers/BlogRouter");
 
 // Database
-Backbone\DB::connect("mysql:dbname=".DATABASE_NAME.";host=".DB_SERVER, DB_USER, DB_PASS);
+DB::connect("mysql:dbname=".DATABASE_NAME.";host=".DB_SERVER, DB_USER, DB_PASS);
 ?>
