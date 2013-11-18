@@ -21,11 +21,12 @@ class BlogRouter extends Router
 	 */
 	public function index()
 	{
+		$foo = "bar";
 		Backbone::uses("/models/Post");
 		$posts = Post::fetch()->limit(10)->orderBy("post_created DESC")->exec();
 		$this->view->set("title", "Blog Example");
 		$this->view->set("posts", $posts);
-		$this->view->load("home");
+		$this->view->load("home", $foo);
 	}
 	
 	/*

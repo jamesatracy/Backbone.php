@@ -8,7 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses("View");
+Backbone::uses("View", "Request");
 
 /**
  * PHPUnit Test suite for View class
@@ -25,8 +25,11 @@ class ViewTest extends PHPUnit_Framework_TestCase
 {
     public function testMethod_constructor()
     {
-        $view = new View();
+		$request = Request::create();
+        $view = new View($request, "home");
         $this->assertTrue(get_class($view) === "View");
+		$this->assertEquals($view->name, "home");
+		$this->assertTrue(get_class(View::create($request, "home")) === "View");
     }
 }
 ?>

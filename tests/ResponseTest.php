@@ -90,7 +90,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 		$resp = new Response();
 		
 		// test response event triggered
-		Events::bind("Response:200:after", array($this, "onResponse200"));
+		Events::bind("response.200", array($this, "onResponse200"));
 		
 		$this->expectOutputString("body content goes here");
 		$resp->body("body content goes here");
@@ -103,7 +103,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 		$resp = new Response();
 		
 		// test response event triggered
-		Events::bind("Response:404:after", array($this, "onResponse404"));
+		Events::bind("response.404", array($this, "onResponse404"));
 		
 		$this->expectOutputString("body content goes here");
 		$resp->body("body content goes here");
@@ -116,7 +116,7 @@ class ResponseTest extends PHPUnit_Framework_TestCase
 		$resp = new Response();
 		
 		// test response event for 500 status code
-		Events::bind("Response:500:after", array($this, "onResponse500"));
+		Events::bind("response.500", array($this, "onResponse500"));
 		
 		$resp->status(500);
 		$resp->send();

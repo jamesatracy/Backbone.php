@@ -4,6 +4,18 @@ $this->extend("layout");
 // Get the list of posts to display
 // Notice that this information is passed from the Router and not computed within this view.
 $posts = $this->get("posts");
+
+//echo preg_replace(array("/(:[a-z0-9_\-]+)/", "/(:[a-z0-9_\-]+)/"), array("user", 15), "/path/to/something/:model/:id/", 1);
+print_r($_SERVER);
+
+Backbone::uses("Request2");
+$request = Request2::create();
+echo "Scheme: ".$request->getScheme()."<br/>";
+echo "Host: ".$request->getHost()."<br/>";
+echo "URI: ".$request->getURI()."<br/>";
+echo "Query String: ".$request->getQueryString()."<br/>";
+echo "Base Path: ".$request->getBasePath()."<br/>";
+echo "Path: ".$request->getPath()."<br/>";
 ?>
 
 <?php $this->define("content"); ?>

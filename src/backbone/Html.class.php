@@ -9,7 +9,7 @@
  */
 
 /**
- * Helper class for formattign html tags.
+ * Helper class for formatting html tags.
  *
  * @since 0.1.0
 */
@@ -24,7 +24,7 @@ class Html
 	 * @param array $attributes A list of key => value pairs
 	 * @return string The html
 	 */
-	public function link($url, $text, $attributes = array())
+	public static function link($url, $text, $attributes = array())
 	{
 		if(substr($url, 0, 1) == "/") {
 			// relative path
@@ -32,7 +32,7 @@ class Html
 		}
 		
 		$attributes["href"] = $url;
-		return $this->tag("a", $text, $attributes);
+		return HTML::tag("a", $text, $attributes);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ class Html
 	 * @param array $attributes A list of key => value pairs
 	 * @return string The html
 	 */
-	public function image($url, $attributes = array())
+	public static function image($url, $attributes = array())
 	{
 		if(substr($url, 0, 1) == "/") {
 			// relative path
@@ -51,7 +51,7 @@ class Html
 		}
 		
 		$attributes["src"] = $url;
-		return $this->tag("img", null, $attributes);
+		return HTML::tag("img", null, $attributes);
 	}
 	
 	/**
@@ -64,7 +64,7 @@ class Html
 	 * @param bool $inline If true, the script is inserted inline. $url must be relative to the root.
 	 * @return string The html
 	 */
-	public function script($url, $attributes = array(), $inline = false)
+	public static function script($url, $attributes = array(), $inline = false)
 	{
 		$attributes["type"] = "text/javascript";
 		
@@ -72,7 +72,7 @@ class Html
 			if(substr($url, 0, 1) == "/") {
 				$url = substr($url, 1);
 				if(file_exists(ABSPATH.$url)) {
-					return $this->tag("script", "\n".file_get_contents(ABSPATH.$url)."\n", $attributes)."\n";
+					return HTML::tag("script", "\n".file_get_contents(ABSPATH.$url)."\n", $attributes)."\n";
 				}
 			}
 			return "";
@@ -83,7 +83,7 @@ class Html
 			}
 			
 			$attributes["src"] = $url;
-			return $this->tag("script", "", $attributes)."\n";
+			return HTML::tag("script", "", $attributes)."\n";
 		}
 	}
 	
@@ -96,7 +96,7 @@ class Html
 	 * @param array $attributes A list of key => value pairs
 	 * @return string The html
 	 */
-	public function stylesheet($url, $attributes = array())
+	public static function stylesheet($url, $attributes = array())
 	{
 		if(substr($url, 0, 1) == "/") {
 			// relative path
@@ -106,7 +106,7 @@ class Html
 		$attributes["href"] = $url;
 		$attributes["type"] = "text/css";
 		$attributes["rel"] = "stylesheet";
-		return $this->tag("link", null, $attributes)."\n";
+		return HTML::tag("link", null, $attributes)."\n";
 	}
 	
 	/**
@@ -119,9 +119,9 @@ class Html
 	 * @param array $attributes Optional. A list of attributes defined as key => value pairs.
 	 * @return string The tag's html
 	 */
-	public function tag($name, $inner = null, $attributes = array())
+	public static function tag($name, $inner = null, $attributes = array())
 	{
-		$ob = '<'.$name.$this->_buildAttributes($attributes);
+		$ob = '<'.$name.HTML::_buildAttributes($attributes);
 		if($inner === null) {
 			$ob .= ' />';
 		} else {
@@ -138,9 +138,9 @@ class Html
 	 * @param array $attributes Optional. A list of attributes defined as key => value pairs.
 	 * @return string The open tag
 	 */
-	public function tagOpen($name, $attributes)
+	public static function tagOpen($name, $attributes)
 	{
-		return '<'.$name.$this->_buildAttributes($attributes).'>';
+		return '<'.$name.HTML::_buildAttributes($attributes).'>';
 	}
 	
 	/**
@@ -150,7 +150,7 @@ class Html
 	 * @param string $name The name of the tag (ex: "img")
 	 * @return string The open tag
 	 */
-	public function tagClose($name)
+	public static function tagClose($name)
 	{
 		return '</'.$name.'>';
 	}
@@ -163,7 +163,7 @@ class Html
 	 * @param array $attributes Associated array of key => value pairs
 	 * @return string The string of attributes
 	 */
-	protected function _buildAttributes($attributes)
+	protected static function _buildAttributes($attributes)
 	{
 		$ob = '';
 		$attrs = array();

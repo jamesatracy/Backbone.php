@@ -9,12 +9,21 @@
  */
 
 /**
- * Base class for all Backbone.php views.
+ * View class implementation.
+ *
+ * Example:
+ *		$response = View::create("home");
  *
  * @since 0.1.0
  */
 class View
-{
+{	
+	/** @var Request The active request object */
+	public $request = null;
+	
+	/** @var string The name of this view */
+	public $name = "";
+	
 	/** @var array Array of view properties */
 	protected $_properties = array();
 	
@@ -31,46 +40,81 @@ class View
 	protected $_extensions = array();
 	
 	/**
-	 * Constructor
-	 * 
 	 * @constructor
+	 * @since 0.3.0
+	 * @param Request $request The request object.
+	 * @param string $name The name of the view file to load.
 	 */
-	public function __construct()
+	public function __construct($request, $name)
 	{
-	    Backbone::uses("Html");
-		$this->html = new Html();
+		$this->request = $request;
+		$this->name = $name;
+	}
+	
+	/**
+	 * Create a new view with the given view file and load it.
+	 * @since 0.3.0
+	 * @param Request $request The request object.
+	 * @param string $name The name of the view file to load.
+	 * @return Response The response object.
+	 */
+	public static function create($request, $name)
+	{
+		$view = new View($request, $name);
+		Events::trigger("view.create", $name, $view);
+		return $view->load($name);
 	}
 	
 	/**
 	 * Shortcut for view code to construct an internal URL. This method
 	 * will echo the fully resolved URL string.
 	 *
-	 * Wraps Request::link().
-	 *
 	 * @since 0.2.3
 	 * @param string $path The relative url path.
+	 * @param bool $ssl Force the url to be secure.
 	 */
-	public function url($path)
+	public function url($path, $ssl = false)
 	{
-		echo Request::link($path);
+		$request = $this->request;
+		$link = $request->getScheme()."://".$request->getHost();
+		if($path) {
+			if(substr($path, 0, 1) == "/") {
+				$path = substr($path, 1);
+			}
+			$link .= $request->getBasePath().$path;
+		} else {
+			$link .= $request->getBasePath();
+		}
+		
+		if($ssl) {
+			if(stripos($link, "http://") !== false) {
+				$link = str_replace("http://", "https://", $link);
+			}
+		}
 	}
 	
 	/**
 	 * Load a view to execute from the application's /views/ directory
 	 *
-	 * Exs: 
+	 * Examples: 
 	 *
-	 *	To load /views/about.php:	
-	 *  $view->load("about");
+	 *	To load /views/about.php:
+	 *  $view = new View($request, "about");
+	 *  $view->load();
 	 *	
 	 *	To load /views/products/hammer.php
-	 * 	$view->load("products/hammer");
+	 *  $view = new View($request, "products/hammer");
+	 * 	$view->load();
 	 *
 	 * @since 0.1.0
-	 * @param string name The name of the view
+	 * @param string name The name of the view.
+	 * @return Response The response object.
 	 */
-	public function load($name)
+	public function load()
 	{
+		$name = $this->name;
+		
+		ob_start();
 		if(substr($name, 0, 1) == "/") {
 			$name = substr($name, 1);
 		}
@@ -88,6 +132,8 @@ class View
 				require($fullpath);
 			}
 		}
+		$ob = ob_get_clean();
+		return Response::create(200, $ob);
 	}
 	
 	/**

@@ -25,8 +25,13 @@ class HtmlTest extends PHPUnit_Framework_TestCase
 {
     public function testMethod_constructor()
     {
-        $html = new Html();
-        $this->assertTrue(get_class($html) === "Html");
+        $this->assertTrue(class_exists("HTML"));
     }
+	
+	public function testMethod_tag()
+	{
+		$tag = HTML::tag("div", "Hello World", array("class" => "section"));
+		$this->assertEquals($tag, '<div class="section">Hello World</div>');
+	}
 }
 ?>

@@ -44,6 +44,45 @@ class Backbone
 	protected static $version = "0.3.0";
 	
 	/**
+	 * Start backbone. Creates a request and attempts to dispatch the route.
+	 * @since 0.3.0
+	 */
+	public static function start()
+	{
+		$request = Request::create();
+		try {
+			// (1) request
+			$response = Events::trigger("backbone.request", $request);
+			if($response && get_class($response) === "Response") {
+				Events::trigger("backbone.response", $response);
+				return $response->send();
+			}
+			// (2) dispatch
+			$response = Router::dispatch($request);
+			if($response && get_class($response) === "Response") {
+				Events::trigger("backbone.response", $response);
+				return $response->send();
+			}
+			// (3) 404
+			$response = Response::create(404, "");
+			Events::trigger("backbone.response", $response);
+			$response->send();
+		} catch(Exception $e) {
+			// uncaught exception
+			$response = Events::trigger("backbone.exception", $request, $e);
+			if($response && get_class($response) === "Response") {
+				Events::trigger("backbone.response", $response);
+				return $response->send();
+			}
+			// 500
+			$response = Response::create(500, "")
+			->header("X-Backbone-Exception", get_class($e).": ".$e->getMessage());
+			Events::trigger("backbone.response", $response);
+			$response->send();
+		}
+	}
+	 
+	/**
 	 * Get the version info 
 	 * 
 	 * @since 0.1.0
@@ -244,7 +283,6 @@ class Backbone
 	 */
 	protected static function loadModule($name)
 	{
-		//$classname = self::getClassName($name);
 		if(!isset(self::$modules[$name])) {
 			self::$modules[$name] = true;
 			if(substr($name, 0, 1) == "/") {
