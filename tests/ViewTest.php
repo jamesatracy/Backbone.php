@@ -29,7 +29,7 @@ class ViewTest extends PHPUnit_Framework_TestCase
         $view = new View($request, "home");
         $this->assertTrue(get_class($view) === "View");
 		$this->assertEquals($view->name, "home");
-		$this->assertTrue(get_class(View::create($request, "home")) === "View");
+		$this->assertTrue(get_class(View::create($request, "home")) === "Response");
     }
 }
 ?>

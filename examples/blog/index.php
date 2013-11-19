@@ -27,10 +27,6 @@ if(!defined('VIEWPATH')) {
 	echo "Backbone.php configuration error: VIEWPATH not defined.";
 	exit(1);
 }
-if(!defined('ROUTERPATH')) {
-	echo "Backbone.php configuration error: ROUTERPATH not defined.";
-	exit(1);
-}
 
 // load the framework
 require_once(FRAMEWORK."Backbone.class.php");
@@ -38,20 +34,11 @@ require_once(FRAMEWORK."Backbone.class.php");
 //  load boot file
 if(!file_exists("boot.php")) {
 	// The boot file defines Routers and other necessary start up includes.
-	$resp = new Response();
-	$resp->status(500);
-	$resp->body("Missing boot.php!");
-	$resp->send();
+	echo "Missing boot.php!";
 	exit(1);
 }
 
 require("boot.php");
 
-// dispatch request
-if(!Backbone::dispatch()) {
-	// send 404 response
-	$resp = new Response();
-	$resp->status(404);
-	$resp->send();
-}
+Backbone::start();
 ?>

@@ -177,6 +177,16 @@ class Request
 	}
 	
 	/**
+	 * Get the fully resolved base URL string.
+	 * @since 0.3.0
+	 * @return string The base URL.
+	 */
+	public function getBaseURL()
+	{
+		return ($this->getScheme()."://".$this->getHost().$this->getBasePath());
+	}
+	
+	/**
 	 * @since 0.3.0
 	 */
 	public function getMethod()

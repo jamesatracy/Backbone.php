@@ -100,6 +100,7 @@ class Response
 	{
 		$this->status(302);
 		$this->header("Location", $url);
+		return $this;
 	}
 	
 	/** 

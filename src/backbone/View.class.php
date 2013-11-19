@@ -91,6 +91,8 @@ class View
 				$link = str_replace("http://", "https://", $link);
 			}
 		}
+		
+		return $link;
 	}
 	
 	/**

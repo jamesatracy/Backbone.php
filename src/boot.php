@@ -4,10 +4,7 @@
  * That includes loading Routers and other resources (database connections, etc.).
  */
 
-// Set the web root path
-Backbone::$root = "/";
-
-// Load routers
+// Define routes
 
 // Application specifc bootstrapping
 ?>

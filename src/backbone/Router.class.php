@@ -14,10 +14,12 @@ class Router
 	 * @var array The array of route patterns to match the request against 
 	 *
 	 * Each Router pattern is stored as follows:
-	 *	$_routes['GET']['/path/to/:model/:id/'] = 
+	 *	$_routes['/path/to/:model/:id/'] = 
 	 *		array(
-	 *			'regex' => '/path/to/([a-z0-9_\-]+)/([a-z0-9_\-]+)/',
-	 *			'callback' => '/controllers/Controller@handleRoute;
+	 *			'get' => array(
+	 *				'regex' => '/path/to/([a-z0-9_\-]+)/([a-z0-9_\-]+)/',
+	 *				'callback' => '/controllers/Controller@handleRoute;
+	 *			)
 	 *		);
 	 */
 	protected static $_routes = array();
@@ -40,11 +42,14 @@ class Router
 	{
 		
 		$this->_route = $route;
-		if(!isset(self::$_routes[$method])) {
-			self::$_routes[$method] = array();
+		if(!isset(self::$_routes[$route])) {
+			self::$_routes[$route] = array();
 		}
-		
-		self::$_routes[$method][$route] = array(
+		$method = strtolower($method);
+		if(!isset(self::$_routes[$route][$method])) {
+			self::$_routes[$route][$method] = array();
+		}
+		self::$_routes[$route][$method] = array(
 			"regex" => preg_replace("/(:[a-z0-9_\-]+)/", "([a-z0-9_\-]+)", $route),
 			"callback" => $callback
 		);
@@ -94,23 +99,36 @@ class Router
 	public static function dispatch($request)
 	{
 		$response = false;
-		$method = $request->getMethod();
-		if(!isset(self::$_routes[$method])) {
-			return false;
-		}
-		// get all routes for this http method
-		$routes = self::$_routes[$method];
 		$path = $request->getPath();
+		$method = strtolower($request->getMethod());
+		
+		// get all routes
+		$routes = self::$_routes;
+		
 		if(isset($routes[$path])) {
 			// exact match
-			$route = $routes[$path];
+			$methods = $routes[$path];
+			if(!isset($methods[$method])) {
+				// in this case the route exists but does not suppor the given
+				// method.
+				return Response::create(405)
+				->header("Allow", strtoupper(join(", ", array_keys($methods))));
+			}
+			$route = $methods[$method];
 			$callback = $route['callback'];
 			Events::trigger("router.match", $request, $path);
 			// invoke the callback method
-			$response = self::invokeCallback($callback);
+			$response = self::invokeCallback($callback, array($request));
 		} else {
 			// may container route parameters
-			foreach($routes as $pattern => $route) {
+			foreach($routes as $pattern => $methods) {
+				if(!isset($methods[$method])) {
+					// in this case the route exists but does not suppor the given
+					// method.
+					return Response::create(405)
+					->header("Allow", strtoupper(join(", ", array_keys($methods))));
+				}
+				$route = $methods[$method];
 				$regex = $route['regex'];
 				$callback = $route['callback'];
 				$params = array();
@@ -118,7 +136,10 @@ class Router
 					// we have a match
 					Events::trigger("router.match", $request, $path);
 					if(count($params) > 0) {
-						$params = array_slice($params, 1);
+						//$params = array_slice($params, 1);
+						$params[0] = $request;
+					} else {
+						$params = array($request);
 					}
 					// invoke the callback method
 					$response = self::invokeCallback($callback, $params);
