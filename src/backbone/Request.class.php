@@ -68,7 +68,9 @@ class Request
 	}
 	
 	/**
+	 * Constructs a new Request object based on the current PHP super globals.
 	 * @since 0.3.0
+	 * @return Request A new request object.
 	 */
 	public static function create()
 	{
