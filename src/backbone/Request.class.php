@@ -15,30 +15,43 @@
  */
 class Request
 {	
+    /** @var array The request (post) parameters. */
 	public $request = array();
 	
+	/** @var array The query (get) parameters. */
 	public $query = array();
 	
+	/** @var array The file (files) parameters. */
 	public $files = array();
 	
+	/** @var array Wraps the $_SERVER superglobal. */
 	public $server = array();
 	
+	/** @var array The request headers. */
 	public $headers = array();
 	
+	/** @var string The request method, uppercase. This is a variable cache. */
 	protected $method = null;
 	
+	/** @var string The request scheme (http or https). This is a variable cache. */
 	protected $scheme = null;
 	
+	/** @var string The request host name. This is a variable cache. */
 	protected $host = null;
 	
+	/** @var string The request URI. This is a variable cache. */
 	protected $uri = null;
 	
+	/** @var string The request port number. This is a variable cache. */
 	protected $port = null;
 	
+	/** @var string The request query string. This is a variable cache. */
 	protected $query_string = null;
 	
+	/** @var string The root path for this request. */
 	protected $root = null;
 	
+	/** @var string The relative (to root) path for this request. */
 	protected $path = null;
 	
 	/**
