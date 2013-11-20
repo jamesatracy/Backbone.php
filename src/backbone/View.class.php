@@ -121,9 +121,11 @@ class View
 			$name = substr($name, 1);
 		}
 		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
-		if($fullpath) {
-			require($fullpath);
+		if(!$fullpath) {
+		    throw new InvalidArgumentException("View: Not found: ".$name);
 		}
+		
+		require($fullpath);
 		
 		// load extensions
 		$count = count($this->_extensions);
