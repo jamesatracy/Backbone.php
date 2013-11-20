@@ -111,6 +111,7 @@ class View
 	 * @since 0.1.0
 	 * @param string name The name of the view.
 	 * @return Response The response object.
+	 * @throws RuntimeException
 	 */
 	public function load()
 	{
@@ -122,7 +123,7 @@ class View
 		}
 		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
 		if(!$fullpath) {
-		    throw new InvalidArgumentException("View: Not found: ".$name);
+		    throw new RuntimeException("View: Not found: ".$name);
 		}
 		
 		require($fullpath);
