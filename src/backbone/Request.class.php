@@ -192,6 +192,35 @@ class Request
 	}
 	
 	/**
+	 * Makes a fully resolved URL string given a path relative to the
+	 * base path.
+	 *
+	 * @since 0.2.3
+	 * @param string $path The relative url path.
+	 * @param bool $ssl Force the url to be secure.
+	 */
+	public function makeURL($path, $ssl = false)
+	{
+		$link = $this->getScheme()."://".$this->getHost();
+		if($path) {
+			if(substr($path, 0, 1) == "/") {
+				$path = substr($path, 1);
+			}
+			$link .= $this->getBasePath().$path;
+		} else {
+			$link .= $this->getBasePath();
+		}
+		
+		if($ssl) {
+			if(stripos($link, "http://") !== false) {
+				$link = str_replace("http://", "https://", $link);
+			}
+		}
+		
+		return $link;
+	}
+	
+	/**
 	 * Get the fully resolved base URL string.
 	 * @since 0.3.0
 	 * @return string The base URL.

@@ -26,10 +26,10 @@ class Html
 	 */
 	public static function link($url, $text, $attributes = array())
 	{
-		if(substr($url, 0, 1) == "/") {
-			// relative path
-			$url = Request::link($url);
-		}
+		// if(substr($url, 0, 1) == "/") {
+			// // relative path
+			// $url = Request::link($url);
+		// }
 		
 		$attributes["href"] = $url;
 		return HTML::tag("a", $text, $attributes);
@@ -45,10 +45,10 @@ class Html
 	 */
 	public static function image($url, $attributes = array())
 	{
-		if(substr($url, 0, 1) == "/") {
-			// relative path
-			$url = Request::link($url);
-		}
+		// if(substr($url, 0, 1) == "/") {
+			// // relative path
+			// $url = Request::link($url);
+		// }
 		
 		$attributes["src"] = $url;
 		return HTML::tag("img", null, $attributes);
@@ -77,10 +77,10 @@ class Html
 			}
 			return "";
 		} else {
-			if(substr($url, 0, 1) == "/") {
-				// relative path
-				$url = Request::link($url);
-			}
+			// if(substr($url, 0, 1) == "/") {
+				// // relative path
+				// $url = Request::link($url);
+			// }
 			
 			$attributes["src"] = $url;
 			return HTML::tag("script", "", $attributes)."\n";
@@ -98,10 +98,10 @@ class Html
 	 */
 	public static function stylesheet($url, $attributes = array())
 	{
-		if(substr($url, 0, 1) == "/") {
-			// relative path
-			$url = Request::link($url);
-		}
+		// if(substr($url, 0, 1) == "/") {
+			// // relative path
+			// $url = Request::link($url);
+		// }
 		
 		$attributes["href"] = $url;
 		$attributes["type"] = "text/css";

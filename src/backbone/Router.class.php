@@ -154,6 +154,26 @@ class Router
 	}
 	
 	/**
+	 * Manually invoke a controller callback method.
+	 *
+	 * The first argument must be the controller. You can pass parameters
+	 * in subsequent arguments.
+	 *
+	 * @since 0.3.0
+	 * @return Response The response object.
+	 * @throws InvalidArgumentException
+	 */
+	public static function route()
+	{
+		if(func_num_args() == 0) {
+			throw new InvalidArgumentException("Router: Missing controller argument");
+		}
+		$args = func_get_args();
+		$callback = $args[0];
+		$args = array_shift($args, 1);
+		self::invokeCallback($callback, $args);
+	}
+	/**
 	 * Returns a route for a given alias, if one exists. Any parameter
 	 * placeholders in the route will be replaced by the given array
 	 * of arguments.

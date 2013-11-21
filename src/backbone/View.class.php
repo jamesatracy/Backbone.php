@@ -8,6 +8,8 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
+Backbone::uses("Html");
+ 
 /**
  * View class implementation.
  *
@@ -45,10 +47,11 @@ class View
 	 * @param Request $request The request object.
 	 * @param string $name The name of the view file to load.
 	 */
-	public function __construct($request, $name)
+	public function __construct($request, $name, $properties = array())
 	{
 		$this->request = $request;
 		$this->name = $name;
+		$this->_properties = $properties;
 	}
 	
 	/**
@@ -58,7 +61,7 @@ class View
 	 * @param string $name The name of the view file to load.
 	 * @return Response The response object.
 	 */
-	public static function create($request, $name)
+	public static function create($request, $name, $properties = array())
 	{
 		$view = new View($request, $name);
 		Events::trigger("view.create", $name, $view);
@@ -67,7 +70,9 @@ class View
 	
 	/**
 	 * Shortcut for view code to construct an internal URL. This method
-	 * will echo the fully resolved URL string.
+	 * will return the fully resolved URL string.
+	 *
+	 * Wraps $request->makeURL()
 	 *
 	 * @since 0.2.3
 	 * @param string $path The relative url path.
@@ -75,24 +80,20 @@ class View
 	 */
 	public function url($path, $ssl = false)
 	{
-		$request = $this->request;
-		$link = $request->getScheme()."://".$request->getHost();
-		if($path) {
-			if(substr($path, 0, 1) == "/") {
-				$path = substr($path, 1);
-			}
-			$link .= $request->getBasePath().$path;
-		} else {
-			$link .= $request->getBasePath();
-		}
-		
-		if($ssl) {
-			if(stripos($link, "http://") !== false) {
-				$link = str_replace("http://", "https://", $link);
-			}
-		}
-		
-		return $link;
+		return $this->request->makeURL($path, $ssl);
+	}
+	
+	/**
+	 * Shortcut for view code to construct an internal URL from an alias.
+	 * This method will return the fully resolved URL string.
+	 *
+	 * @since 0.2.3
+	 * @param string $alias The name of the alias.
+	 * @param bool $ssl Force the url to be secure.
+	 */
+	public function urlAlias($alias, $ssl = false)
+	{
+		return $this->url(Router::getRouteFromAlias($alias), $ssl);
 	}
 	
 	/**
@@ -396,6 +397,39 @@ class View
 		if(isset($this->_blocks[$key])) {
 			echo $this->_blocks[$key];
 		}
+	}
+	
+	/**
+	 * Wraps the get() method.
+	 * @since 0.3.0
+	 * @param string $key The property name.
+	 * @return Mixed The value of the property.
+	 */
+	public function __get($key)
+	{
+		return $this->get($key);
+	}
+	
+	/**
+	 * Wraps the set() method.
+	 * @since 0.3.0
+	 * @param string $key The property name.
+	 * @param Mixed $value The property value.
+	 */
+	public function __set($key, $value)
+	{
+		return $this->set($key, $value);
+	}
+	
+	/**
+	 * Returns true if a property exists.
+	 * @since 0.3.0
+	 * @param string $key The  property key.
+	 * @return bool True if the property exists.
+	 */
+	public function __isset($key)
+	{
+		return (isset($this->_properties[$key]));
 	}
 };
 ?>
