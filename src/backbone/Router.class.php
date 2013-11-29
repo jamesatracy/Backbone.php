@@ -170,7 +170,7 @@ class Router
 		}
 		$args = func_get_args();
 		$callback = $args[0];
-		$args = array_shift($args, 1);
+		array_shift($args);
 		self::invokeCallback($callback, $args);
 	}
 	/**
@@ -240,12 +240,22 @@ class Router
 			if(strpos($callback, "@") > -1) {
 				$tmp = explode("@", $callback);
 				$classpath = $tmp[0];
-				$classname = Backbone::getClassName($classpath);
-				$method = $tmp[1];
-				Backbone::uses($classpath);
-				$obj = new $classname();
-				if(method_exists($obj, $method)) {
-					$response = call_user_func_array(array($obj, $method), $args);
+				if($classpath === "View") {
+					// invoke a new view
+					Backbone::uses("View");
+					$viewname = $tmp[1];
+					$request = $args[0];
+					array_shift($args);
+					$response = View::create($request, $viewname, $args);
+				} else {
+					// invoke a controller method
+					$classname = Backbone::getClassName($classpath);
+					$method = $tmp[1];
+					Backbone::uses($classpath);
+					$obj = new $classname();
+					if(method_exists($obj, $method)) {
+						$response = call_user_func_array(array($obj, $method), $args);
+					}
 				}
 			} else {
 				$response = call_user_func_array($callback, $args);
