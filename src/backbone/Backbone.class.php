@@ -58,8 +58,7 @@ class Backbone
 			}
 			// (3) 404
 			$response = Response::create(404, "");
-			$response->header("X-Backbone-Version", Backbone::version());
-			$response->send();
+			return self::sendResponse($response);
 		} catch(Exception $e) {
 			// uncaught exception
 			$response = Events::trigger("backbone.exception", $request, $e);
@@ -196,34 +195,6 @@ class Backbone
 		$tmparr = explode("/", $path);	// pass strict mode
 		return end($tmparr);
 	}
-	
-	/**
-	 * Dispatches the request by trying to find a matching route among the registered routers.
-	 * 
-	 * @since 0.1.0
-	 * @return bool Returns true if the request was successfully routed, false otherwise
-	*/
-	// public static function dispatch()
-	// {
-		// $success = false;
-		// foreach(self::$routers as $router) {
-			// if($router->route()) {
-				// $success = true;
-				// break;
-			// }
-		// }
-		// if(!$success) {
-			// $here = trim(Request::here(), "/");
-			// // No routes are defined.
-			// // Auto route this page if we find a corresponding view that ends in '-page'
-			// if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {
-				// $router = new Router();
-				// $router->invokeRouteCallback(array($router, "loadView"), array($here."-page"));
-				// $success = true;
-			// }
-		// }
-		// return $success;
-	// }
 	
 	/**
 	 * Sends the given response back to the server.
