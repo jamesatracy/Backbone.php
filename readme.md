@@ -20,7 +20,7 @@ The framework is built with the following goals in mind:
 
 At its most simplest form, a Backbone.php application is nothing more than a series of url routes (such as "/about/") that are mapped to either views ("views/about-page.php") or callback methods ("public function about($args)") or combinations of both. 
 
-    // get route mapped to a controller method
+    // get route mapped to a controller method with a url alias
     Router::get("/", "/controllers/MyController@index")->alias("home");
     // get route mapped to a view
     Router::get("/about/", "View@about");
