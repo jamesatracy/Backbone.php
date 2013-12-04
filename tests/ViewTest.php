@@ -56,7 +56,6 @@ class ViewTest extends PHPUnit_Framework_TestCase
     {
         $request = Request::create();
         $resp = View::create($request, "i-dont-exist");
-        
     }
     
     public function testBehavior_block()

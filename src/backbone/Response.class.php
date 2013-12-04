@@ -183,10 +183,12 @@ class Response
 			foreach($header as $key => $value) {
 				$this->header($key, $value);
 			}
-			return $this->_headers;
+			return $this;
 		}
 		if($value !== null) {
 			$this->_headers[$header] = $value;
+		} else if($header !== null) {
+		    return $this->_headers[$header];
 		}
 		return $this;
 	}

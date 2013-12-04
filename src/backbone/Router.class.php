@@ -8,6 +8,16 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
+/**
+ * Class for creating and dispatching routes.
+ * 
+ * Examples:
+ *  Router::get("/", "function_name");
+ *  Router::get("/path/", "/controllers/AppController@handlePath")
+ *  Router::get("/path/", "View@path-view");
+ * 
+ * @since 0.3.0
+ */
 class Router
 {
 	/** 
@@ -40,7 +50,6 @@ class Router
 	 */
 	public function __construct($method, $route, $callback)
 	{
-		
 		$this->_route = $route;
 		if(!isset(self::$_routes[$route])) {
 			self::$_routes[$route] = array();
@@ -55,31 +64,78 @@ class Router
 		);
 	}
 	
+	/**
+	 * Clear all routes and aliases.
+	 * @since 0.3.0
+	 */
+	public static function clear()
+	{
+	    self::$_routes = array();
+	    self::$_aliases = array();
+	}
+	
+	/**
+	 * Construct a new GET route.
+	 * @since 0.3.0
+	 * @param string The path relative to the web root
+	 * @param string The callback method.
+	 */
 	public static function get($route, $callback)
 	{
 		return new Router("GET", $route, $callback);
 	}
 	
+	/**
+	 * Construct a new POST route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
 	public static function post($route, $callback)
 	{
 		return new Router("POST", $route, $callback);
 	}
 	
+	/**
+	 * Construct a new PUT route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
 	public static function put($route, $callback)
 	{
 		return new Router("PUT", $route, $callback);
 	}
 	
+	/**
+	 * Construct a new DELETE route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
 	public static function delete($route, $callback)
 	{
 		return new Router("DELETE", $route, $callback);
 	}
 	
+	/**
+	 * Construct a new PATCH route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
 	public static function patch($route, $callback)
 	{
 		return new Router("PATCH", $route, $callback);
 	}
 	
+	/**
+	 * Construct a new route with a givne method name.
+	 * @since 0.3.0
+	 * @param string $method The HTTP method
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
 	public static function method($method, $route, $callback)
 	{
 		return new Router($method, $route, $callback);
