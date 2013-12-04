@@ -20,18 +20,15 @@ The framework is built with the following goals in mind:
 
 At its most simplest form, a Backbone.php application is nothing more than a series of url routes (such as "/about/") that are mapped to either views ("views/about-page.php") or callback methods ("public function about($args)") or combinations of both. 
 
-	class MyRouter extends Router
-	{
-		public function __construct() {
-			// map url paths to class methods
-			$this->get("/", "index");
-			$this->get("/about/", "about");
-			$this->post("/contact/", "contactSubmit");
-			$this->put("/settings/update/:alpha/:number", "update");
-		}
-		
-		// implementations go here
-	}
+    // get route mapped to a controller method
+    Router::get("/", "/controllers/MyController@index")->alias("home");
+    // get route mapped to a view
+    Router::get("/about/", "View@about");
+    // get route with argument parameters, mapped to a controller method
+	Router::get("/jobs/:department/:id/", "/controllers/MyController@jobDesc");
+	// post route mapped to a controller method
+	Router::post("/contact/", "/controllers/MyController@processContactForm");
+	
 
 That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a SQL database in the form of Models and Collections.
 
