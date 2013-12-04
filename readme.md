@@ -18,16 +18,29 @@ The framework is built with the following goals in mind:
 
 * *Best Practices*: Backbone.php is designed with software engineering best practices in mind, including MVC, Object-Oriented programming, and unit testing.
 
-At its most simplest form, a Backbone.php application is nothing more than a series of url routes (such as "/about/") that are mapped to either views ("views/about-page.php") or callback methods ("public function about($args)") or combinations of both. 
+At its most simplest form, a Backbone.php application is nothing more than a series of url routes (such as "/about/") that are mapped to either views ("views/about-page.php") or callback methods ("public function about($request)") or combinations of both. 
 
-    // get route mapped to a controller method with a url alias
-    Router::get("/", "/controllers/MyController@index")->alias("home");
-    // get route mapped to a view
-    Router::get("/about/", "View@about");
-    // get route with argument parameters, mapped to a controller method
+	// get route mapped to a controller method with a url alias
+	Router::get("/", "/controllers/MyController@index")->alias("home");
+	// get route mapped to a view
+	Router::get("/about/", "View@about");
+	// get route with argument parameters, mapped to a controller method
 	Router::get("/jobs/:department/:id/", "/controllers/MyController@jobDesc");
 	// post route mapped to a controller method
 	Router::post("/contact/", "/controllers/MyController@processContactForm");
+	
+	class MyController
+	{
+		public function index($request)
+		{
+		}
+		
+		public function jobDesc($request, $dept, $id)
+		{
+		}
+		
+		...
+	}
 	
 
 That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a SQL database in the form of Models and Collections.
