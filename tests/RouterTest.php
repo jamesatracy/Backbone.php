@@ -207,5 +207,16 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($resp->status(), 405);
 		$this->assertEquals($resp->header("Allow"), "GET");
 	}
+	
+	public function testBehavior_routeAliases()
+	{
+	    Router::get("/", "global_func_callback")->alias("home");
+	    Router::get("/path/", "global_func_callback")->alias("path");
+	    Router::get("/path/:name/:id/", "global_func_callback")->alias("path-name-id");
+	    
+		$this->assertEquals(Router::getRouteFromAlias("home"), "/");
+		$this->assertEquals(Router::getRouteFromAlias("path"), "/path/");
+		$this->assertEquals(Router::getRouteFromAlias("path-name-id", array("abc", 12)), "/path/abc/12/");
+	}
 }
 ?>
