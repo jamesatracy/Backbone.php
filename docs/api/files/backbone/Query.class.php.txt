@@ -7,8 +7,6 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
-namespace Backbone; 
-use \Backbone;
 
 /**
  * Query builder class.
@@ -93,7 +91,7 @@ class Query
 	public function update($fields)
 	{
 		if(empty($fields)) {
-			throw new \InvalidArgumentException("Query: Missing fields to update");
+			throw new InvalidArgumentException("Query: Missing fields to update");
 		}
 		$this->_updates = $fields;
 		$this->_command = "update";
@@ -114,7 +112,7 @@ class Query
 	public function insert($fields)
 	{
 		if(empty($fields)) {
-			throw new \InvalidArgumentException("Query: Missing fields to update");
+			throw new InvalidArgumentException("Query: Missing fields to update");
 		}
 		$this->_inserts = $fields;
 		$this->_command = "insert";
@@ -227,7 +225,7 @@ class Query
 		$args = func_get_args();
 		$count = count($args);
 		if($count === 0) {
-			throw new \InvalidArgumentException("Query: Missing arguments to where");
+			throw new InvalidArgumentException("Query: Missing arguments to where");
 		}
 		$pdo = DB::getPDO();
 		if($count === 3) {
@@ -259,7 +257,7 @@ class Query
 		$args = func_get_args();
 		$count = count($args);
 		if($count === 0) {
-			throw new \InvalidArgumentException("Query: Missing arguments to orWhere");
+			throw new InvalidArgumentException("Query: Missing arguments to orWhere");
 		}
 		$pdo = DB::getPDO();
 		if($count === 3) {
@@ -489,7 +487,7 @@ class Query
 	}
 	
 	/**
-	 * Get the fully formed wher clause for the current query
+	 * Get the fully formed where clause for the current query
 	 * based on the data passed to any of the various where 
 	 * builder methods.
 	 *
@@ -532,7 +530,7 @@ class Query
 	public function exec()
 	{
 		if(!DB::isConnected()) {
-			throw new \RuntimeException("Query: No valid DB connection");
+			throw new RuntimeException("Query: No valid DB connection");
 		}
 		$query = $this->getQuery();
 		if(empty($query)) {
@@ -541,11 +539,11 @@ class Query
 		$pdo = DB::getPDO();
 		if($this->_command === "select" || $this->_command === "describe") {
 			// return the result set
-			$smt = $pdo->query($query, \PDO::FETCH_ASSOC);
+			$smt = $pdo->query($query, PDO::FETCH_ASSOC);
 			return $smt->fetchAll();
 		} else if($this->_command === "count") {
 			// return the count
-			$smt = $pdo->query($query, \PDO::FETCH_NUM);
+			$smt = $pdo->query($query, PDO::FETCH_NUM);
 			$row = $smt->fetch();
 			return $row[0];
 		}

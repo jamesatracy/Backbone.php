@@ -138,31 +138,29 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2009257720"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2073330321"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-2009257720" class="accordion-body collapse in">
+            <div id="namespace-2073330321" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
                     <ul>
                                                                                                     <li class="class"><a href="../classes/Validate.html">Validate</a></li>
-                                                    <li class="class"><a href="../classes/MySQL.html">MySQL</a></li>
-                                                    <li class="class"><a href="../classes/MySQL_Logger.html">MySQL_Logger</a></li>
                                                     <li class="class"><a href="../classes/Response.html">Response</a></li>
                                                     <li class="class"><a href="../classes/Model.html">Model</a></li>
+                                                    <li class="class"><a href="../classes/ModelQuery.html">ModelQuery</a></li>
                                                     <li class="class"><a href="../classes/View.html">View</a></li>
+                                                    <li class="class"><a href="../classes/Query.html">Query</a></li>
                                                     <li class="class"><a href="../classes/Request.html">Request</a></li>
                                                     <li class="class"><a href="../classes/Sanitize.html">Sanitize</a></li>
-                                                    <li class="class"><a href="../classes/DataMap.html">DataMap</a></li>
                                                     <li class="class"><a href="../classes/Schema.html">Schema</a></li>
                                                     <li class="class"><a href="../classes/Collection.html">Collection</a></li>
                                                     <li class="class"><a href="../classes/Backbone.html">Backbone</a></li>
+                                                    <li class="class"><a href="../classes/DB.html">DB</a></li>
                                                     <li class="class"><a href="../classes/Events.html">Events</a></li>
-                                                    <li class="class"><a href="../classes/Connections.html">Connections</a></li>
                                                     <li class="class"><a href="../classes/Router.html">Router</a></li>
                                                     <li class="class"><a href="../classes/Html.html">Html</a></li>
-                                                    <li class="class"><a href="../classes/DataSource.html">DataSource</a></li>
                                             </ul>
                 </div>
             </div>
@@ -181,7 +179,7 @@
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
                     <h1><small>\</small>Collection</h1>
-                    <p><em>Base Collection class for representing an ordered list of model objects.</em></p>
+                    <p><em>Collection class for representing an ordered list of model objects.</em></p>
                     
 
 
@@ -201,9 +199,7 @@
                         <section class="row-fluid public">
                             <section class="span4">
                                                                     <a href="../classes/Collection.html#method___construct" class="">__construct()</a><br />
-                                                                    <a href="../classes/Collection.html#method_count" class="">count()</a><br />
-                                                                    <a href="../classes/Collection.html#method_fetch" class="">fetch()</a><br />
-                                                                    <a href="../classes/Collection.html#method_get" class="">get()</a><br />
+                                                                    <a href="../classes/Collection.html#method_getAt" class="">getAt()</a><br />
                                                                     <a href="../classes/Collection.html#method_current" class="">current()</a><br />
                                                                     <a href="../classes/Collection.html#method_key" class="">key()</a><br />
                                                                     <a href="../classes/Collection.html#method_next" class="">next()</a><br />
@@ -213,9 +209,7 @@
                                                                     <a href="../classes/Collection.html#method_pluck" class="">pluck()</a><br />
                                                                     <a href="../classes/Collection.html#method_toJSON" class="">toJSON()</a><br />
                                                                     <a href="../classes/Collection.html#method_getModelName" class="">getModelName()</a><br />
-                                                                    <a href="../classes/Collection.html#method_getTableName" class="">getTableName()</a><br />
                                                                     <a href="../classes/Collection.html#method_reset" class="">reset()</a><br />
-                                                                    <a href="../classes/Collection.html#method_createModel" class="">createModel()</a><br />
                                                                     <a href="../classes/Collection.html#method_getErrors" class="">getErrors()</a><br />
                                                             </section>
                             <section class="span4">
@@ -230,8 +224,6 @@
                                                                     <em>No protected methods found</em>
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/Collection.html#property__db" class="">$_db</a><br />
-                                                                    <a href="../classes/Collection.html#property__table" class="">$_table</a><br />
                                                                     <a href="../classes/Collection.html#property__model" class="">$_model</a><br />
                                                                     <a href="../classes/Collection.html#property__models" class="">$_models</a><br />
                                                                     <a href="../classes/Collection.html#property__position" class="">$_position</a><br />
@@ -322,56 +314,6 @@
 
                                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property__db" name="property__db" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$_db</h3>
-                <pre class="signature">$_db : \MySQL</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                <a href="../classes/MySQL.html">\MySQL</a>
-                &mdash; The database connection                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property__table" name="property__table" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$_table</h3>
-                <pre class="signature">$_table : string</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                string
-                &mdash; The table associated with this collection                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
             <a id="property__model" name="property__model" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$_model</h3>
@@ -382,7 +324,7 @@
 
                                 <h4>Type</h4>
                 string
-                &mdash; The class name of the model class contained by the collection                            </article>
+                &mdash; The model contained by the collection                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -483,7 +425,7 @@
             <article class="method">
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct( <span class="argument">$table</span>,  <span class="argument">$options</span>)</pre>
+                <pre class="signature" style="margin-right: 54px;">__construct(string <span class="argument">$model</span>, array <span class="argument">$data</span>)</pre>
                 <p><em>Constructor</em></p>
                 
 
@@ -491,15 +433,15 @@
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td></td>
-                                <td>$table</td>
-                                <td>
+                                <td>string</td>
+                                <td>$model</td>
+                                <td><p>The name of the model class</p>
 </td>
                             </tr>
                                                     <tr>
-                                <td></td>
-                                <td>$options</td>
-                                <td>
+                                <td>array</td>
+                                <td>$data</td>
+                                <td><p>The raw attribute data</p>
 </td>
                             </tr>
                                             </table>
@@ -520,128 +462,21 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_count" name="method_count" class="anchor"></a>
+            <a id="method_getAt" name="method_getAt" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">count()</h3>
+                <h3 class="public ">getAt()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">count(array <span class="argument">$options</span>) : int</pre>
-                <p><em>Get the number of items in a collection without performing a fetch().</em></p>
+                <pre class="signature" style="margin-right: 54px;">getAt( <span class="argument">$index</span>) : \Model</pre>
+                <p><em>Get a model by index.</em></p>
                 
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>array</td>
-                                <td>$options</td>
-                                <td><p>Fetch options.
-    "where" => array()
-    "order_by" => array("field", ["ASC"/"DESC"])
-    "limit" => integer</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    int
-                                            &mdash; <p>The number of items.</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_fetch" name="method_fetch" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">fetch()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">fetch(array <span class="argument">$options</span>) : bool</pre>
-                <p><em>Fetch a collection from the database</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>array</td>
-                                <td>$options</td>
-                                <td><p>Fetch options.
-    "where" => array()
-    "order_by" => array("field", ["ASC"/"DESC"])
-    "limit" => integer
-    "offset" => integer</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                                    <h4>Throws</h4>
-                    <dl>
-                                                    <dt>\RuntimeException</dt>
-                            <dd>
-</dd>
-                                                                    </dl>
-                
-                                    <h4>Returns</h4>
-                    bool
-                                            &mdash; <p>True if successful.</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_get" name="method_get" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">get()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get(string <span class="argument">$id</span>) : \Model</pre>
-                <p><em>Get a model by ID (primary key).</em></p>
-                <p>Uses the results returned by a call to fetch().</p>
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$id</td>
-                                <td><p>The model's ID</p>
+                                <td></td>
+                                <td>$index</td>
+                                <td>
 </td>
                             </tr>
                                             </table>
@@ -959,20 +794,11 @@
             <article class="method">
                 <h3 class="public ">toJSON()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">toJSON(bool <span class="argument">$compact</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">toJSON() : array</pre>
                 <p><em>Return the raw model data.</em></p>
                 
 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>bool</td>
-                                <td>$compact</td>
-                                <td><p>Whether or not to include the model keys in the representation.</p>
-</td>
-                            </tr>
-                                            </table>
                 
                 
                                     <h4>Returns</h4>
@@ -1040,44 +866,6 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_getTableName" name="method_getTableName" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getTableName()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getTableName() : string</pre>
-                <p><em>Get the associated model table</em></p>
-                
-
-
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The associated model's table name.</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
             <a id="method_reset" name="method_reset" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">reset()</h3>
@@ -1090,50 +878,6 @@
                 
                 
                             </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_createModel" name="method_createModel" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">createModel()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">createModel() : mixed</pre>
-                <p><em>Create a new instance of the Collection&#039;s model class</em></p>
-                
-
-
-                
-                                    <h4>Throws</h4>
-                    <dl>
-                                                    <dt>\RuntimeException</dt>
-                            <dd>
-</dd>
-                                                                    </dl>
-                
-                                    <h4>Returns</h4>
-                    mixed
-                                            &mdash; <p>The model object</p>
-
-                                                </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -1241,7 +985,7 @@
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 19th, 2013 at 20:40.
+                    on December 5th, 2013 at 01:57.
                 </section>
             </section>
         </section>

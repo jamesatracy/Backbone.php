@@ -7,8 +7,6 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
-namespace Backbone; 
-use \Backbone;
 
 Backbone::uses("Query");
 
@@ -46,8 +44,8 @@ class DB
 		
 		try {
 			self::$_pdo = new \PDO($dsn, $user, $password, $config);
-		} catch (\PDOException $e) {
-			throw new \RuntimeException($e->getMessage(), (int)$e->getCode());
+		} catch (PDOException $e) {
+			throw new RuntimeException($e->getMessage(), (int)$e->getCode());
 		}
 	}
 	
@@ -111,12 +109,12 @@ class DB
 	 * 
 	 * @since 0.3.0
 	 * @return int The last insert ID
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public static function lastInsertID()
 	{
 	    if(!self::isConnected()) {
-			throw new \RuntimeException("DB: No valid DB connection");
+			throw new RuntimeException("DB: No valid DB connection");
 		}
 		
 		return self::$_pdo->lastInsertId();
@@ -127,12 +125,12 @@ class DB
 	 * 
 	 * @since 0.3.0
 	 * @return array Array of error info
-	 * @throws \RuntimeException
+	 * @throws RuntimeException
 	 */
 	public static function errorInfo()
 	{
 	    if(!self::isConnected()) {
-			throw new \RuntimeException("DB: No valid DB connection");
+			throw new RuntimeException("DB: No valid DB connection");
 		}
 		
 		return self::$_pdo->errorInfo();
@@ -148,7 +146,7 @@ class DB
 	public static function errorMessage()
 	{
 	    if(!self::isConnected()) {
-			throw new \RuntimeException("DB: No valid DB connection");
+			throw new RuntimeException("DB: No valid DB connection");
 		}
 		
 		$info = self::$_pdo->errorInfo();
@@ -169,7 +167,7 @@ class DB
 	public static function raw($query)
 	{
 		if(!self::isConnected()) {
-			throw new \RuntimeException("DB: No valid DB connection");
+			throw new RuntimeException("DB: No valid DB connection");
 		}
 		$smt = self::$_pdo->query($query, \PDO::FETCH_ASSOC);
 		$rows = $smt->fetchAll();

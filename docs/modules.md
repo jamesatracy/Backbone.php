@@ -8,8 +8,7 @@ Backbone.php modules are classes or a collection of related classes. A module is
 	Backbone::uses("Model");
 	
 	// load multiple backbone modules
-	Backbone::uses(array("Model", "View", "Collection"));
-	Backbone::uses("Model,View,Collection");
+	Backbone::uses("Model", "View", "Collection");
 	
 	// load a backbone extension
 	Backbone::uses("/extensions/ExtensionModule");

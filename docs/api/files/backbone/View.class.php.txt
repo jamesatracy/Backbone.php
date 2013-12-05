@@ -8,16 +8,24 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
+Backbone::uses("Html");
+ 
 /**
- * Base class for all Backbone.php views.
+ * View class implementation.
+ *
+ * Example:
+ *		$response = View::create("home");
  *
  * @since 0.1.0
  */
 class View
-{
+{	
+	/** @var Request The active request object */
+	public $request = null;
+	
+	/** @var string The name of this view */
+	public $name = "";
+	
 	/** @var array Array of view properties */
 	protected $_properties = array();
 	
@@ -34,53 +42,92 @@ class View
 	protected $_extensions = array();
 	
 	/**
-	 * Constructor
-	 * 
 	 * @constructor
+	 * @since 0.3.0
+	 * @param Request $request The request object.
+	 * @param string $name The name of the view file to load.
 	 */
-	public function __construct()
+	public function __construct($request, $name, $properties = array())
 	{
-	    Backbone::uses("Html");
-		$this->html = new Html();
+		$this->request = $request;
+		$this->name = $name;
+		$this->_properties = $properties;
+	}
+	
+	/**
+	 * Create a new view with the given view file and load it.
+	 * @since 0.3.0
+	 * @param Request $request The request object.
+	 * @param string $name The name of the view file to load.
+	 * @return Response The response object.
+	 */
+	public static function create($request, $name, $properties = array())
+	{
+		$view = new View($request, $name);
+		Events::trigger("view.create", $name, $view);
+		return $view->load($name);
 	}
 	
 	/**
 	 * Shortcut for view code to construct an internal URL. This method
-	 * will echo the fully resolved URL string.
+	 * will return the fully resolved URL string.
 	 *
-	 * Wraps Request::link().
+	 * Wraps $request->makeURL()
 	 *
 	 * @since 0.2.3
 	 * @param string $path The relative url path.
+	 * @param bool $ssl Force the url to be secure.
 	 */
-	public function url($path)
+	public function url($path, $ssl = false)
 	{
-		echo Request::link($path);
+		return $this->request->makeURL($path, $ssl);
+	}
+	
+	/**
+	 * Shortcut for view code to construct an internal URL from an alias.
+	 * This method will return the fully resolved URL string.
+	 *
+	 * @since 0.2.3
+	 * @param string $alias The name of the alias.
+	 * @param bool $ssl Force the url to be secure.
+	 */
+	public function urlAlias($alias, $ssl = false)
+	{
+		return $this->url(Router::getRouteFromAlias($alias), $ssl);
 	}
 	
 	/**
 	 * Load a view to execute from the application's /views/ directory
 	 *
-	 * Exs: 
+	 * Examples: 
 	 *
-	 *	To load /views/about.php:	
-	 *  $view->load("about");
+	 *	To load /views/about.php:
+	 *  $view = new View($request, "about");
+	 *  $view->load();
 	 *	
 	 *	To load /views/products/hammer.php
-	 * 	$view->load("products/hammer");
+	 *  $view = new View($request, "products/hammer");
+	 * 	$view->load();
 	 *
 	 * @since 0.1.0
-	 * @param string name The name of the view
+	 * @param string name The name of the view.
+	 * @return Response The response object.
+	 * @throws RuntimeException
 	 */
-	public function load($name)
+	public function load()
 	{
+		$name = $this->name;
+		
+		ob_start();
 		if(substr($name, 0, 1) == "/") {
 			$name = substr($name, 1);
 		}
 		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
-		if($fullpath) {
-			require($fullpath);
+		if(!$fullpath) {
+		    throw new RuntimeException("View: Not found: ".$name);
 		}
+		
+		require($fullpath);
 		
 		// load extensions
 		$count = count($this->_extensions);
@@ -91,6 +138,8 @@ class View
 				require($fullpath);
 			}
 		}
+		$ob = ob_get_clean();
+		return Response::create(200, $ob);
 	}
 	
 	/**
@@ -349,7 +398,38 @@ class View
 			echo $this->_blocks[$key];
 		}
 	}
+	
+	/**
+	 * Wraps the get() method.
+	 * @since 0.3.0
+	 * @param string $key The property name.
+	 * @return Mixed The value of the property.
+	 */
+	public function __get($key)
+	{
+		return $this->get($key);
+	}
+	
+	/**
+	 * Wraps the set() method.
+	 * @since 0.3.0
+	 * @param string $key The property name.
+	 * @param Mixed $value The property value.
+	 */
+	public function __set($key, $value)
+	{
+		return $this->set($key, $value);
+	}
+	
+	/**
+	 * Returns true if a property exists.
+	 * @since 0.3.0
+	 * @param string $key The  property key.
+	 * @return bool True if the property exists.
+	 */
+	public function __isset($key)
+	{
+		return (isset($this->_properties[$key]));
+	}
 };
-
 ?>
-

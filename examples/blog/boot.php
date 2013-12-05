@@ -4,7 +4,7 @@
  * That includes setting up routes and other resources (database connections, etc.).
  */
 
- // Include modules
+// Include modules
 Backbone::uses("DB");
 
 // Routes

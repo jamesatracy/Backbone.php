@@ -1,10 +1,10 @@
 [Backbone.php Homepage](https://github.com/jamesatracy/Backbone.php) | [Table of Contents](toc.md)
 
-To get a Backbone.php website up and running place a copy of the `/backbone/` directory as well as the files 'htacces', 'backbone.php', 'config.php', 'boot.php', and 'index.php' in your web root. 
+To get a Backbone.php website up and running place a copy of the `/backbone/` directory as well as the files 'htacces', 'config.php', 'boot.php', and 'index.php' in your web root. 
 
-Modify the `congif.php` file to set the path to the backbone core directory, application files, view files, and router files, all relative to your web root. Note that your copy of the backbone core directory need not be located under your site's web root if you wish to share it among several websites. 
+Modify the `congif.php` file to set the path to the backbone core directory, application files, and view files, all relative to your web root. Note that your copy of the backbone core directory need not be located under your site's web root if you wish to share it among several websites. 
 
-Both the view and router paths can take a semi-colon delimited list of relative paths in the event that you need to split up your views and routers among multiple directories. Backbone will search for the file in each directory, in the order listed, until it is found.
+The view path can take a semi-colon delimited list of relative paths in the event that you need to split up your views among multiple directories. Backbone will search for the file in each directory, in the order listed, until it is found.
 
 	<?php
 	/* Backbone.php configuration file. */
@@ -16,12 +16,9 @@ Both the view and router paths can take a semi-colon delimited list of relative 
 	// View path constant. Semicolon delimited list of paths to search for views.
 	// Must be relative to the abspath.
 	define('VIEWPATH', "/views/");
-	// Router path constant. Semicolon delimited list of paths to search for routers.
-	// Must be relative to the abspath.
-	define('ROUTERPATH', "/routers/");
 	?>
 	
-Modify the `boot.php` file to set your web root's path (if not the top level directory of your domain) and perform all other bootstrap operations, like loading Routers, setting configurations, and initiating database connections. Note that setting the web root path and loading the main Router are the bare minimum requirements for getting a Backbone.php website up and running.
+Modify the `boot.php` file to perform all other bootstrap operations, like defining routes, setting configurations, and initiating database connections. Note that defining at least one route is the bare minimum requirements for getting a Backbone.php website up and running.
 
 	<?php
 	/*
@@ -29,15 +26,14 @@ Modify the `boot.php` file to set your web root's path (if not the top level dir
 	That includes loading Routers and other resources (database connections, etc.).
 	*/
 
-	// Set the web root path
-	Backbone::$root = "/Backbone.php/examples/blog/";
-
-	// Load routers
-	Backbone::loadRouter("BlogRouter");
-
 	// Include modules
-	Backbone::uses(array("Connections", "MySQL"));
-
-	// Database
-	Connections::create("default", "MySQL", array("server" => "localhost", "user" => "root", "pass" => ""));
+    Backbone::uses("DB");
+    
+    // Routes
+    Router::get("/", "/controllers/BlogController@index");
+    Router::get("/create/", "/controllers/BlogController@create");
+    Router::post("/create/", "/controllers/BlogController@createSubmit");
+    
+    // Database
+    DB::connect("mysql:dbname=".DATABASE_NAME.";host=".DB_SERVER, DB_USER, DB_PASS);
 	?>

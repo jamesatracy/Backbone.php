@@ -8,486 +8,316 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
- * Base class for all Backbone.php routers.
+ * Class for creating and dispatching routes.
  * 
- * Router allows you to map one request url endpoint to one
- * function implementation if you pass a string along with
- * the pattern to match:
+ * Examples:
+ *  Router::get("/", "function_name");
+ *  Router::get("/path/", "/controllers/AppController@handlePath")
+ *  Router::get("/path/", "View@path-view");
  * 
- * 		public function __construct()
- *		{
- *			parent::__construct(array(
- *				"/about/" => "aboutPage",
- *				"/about/careers/" => "careersPage"
- *				)
- *			));
- *		}
- * 
- * As of 0.2.4, you can also implement a RESTful interface by mapping
- * one request url endpoint to one or more function implementations
- * based on the request method.
- *
- * Example:
- *
- * I want to implement GET, POST, PUT, and DELETE methods for the
- * the following endpoints:
- *
- * GET		/api/dept/engineering/employee/:integer/
- * POST	/api/dept/engineering/employee/
- * PUT		/api/dept/engineering/employee/:integer/
- * DELETE	/api/dept/engineering/employee/:integer/
- *
- * Here is what the code in the constructor would look like in
- * the child class:
- *
- *		public function __construct()
- *		{
- *			parent::__construct(array(
- *				"/api/dept/engineering/employee/:integer/" => array(
- *					"GET" => "getEmployee",
- *					"PUT" => "updateEmployee",
- *					"DELETE" => "deleteEmployee"
- *				),
- *				"/api/dept/engineering/employee/" => array(
- *					"POST" => "createEmployee"
- *				)
- *			));
- *		}
- *
- *	You can map as many HTTP methods as you want. If an endpoint is called
- * 	with an unsupported method, Router will return a 405 Method Not
- *	Allowed response with a list of Allowed methods.
- * 
- *  You can also use these convenience methods as an alternative syntax:
- * 
- *      public function __construct()
- *      {
- *          parent::__construct();
- *          $this->get("/api/dept/engineering/employee/:integer/", "getEmployee");
- *          $this->put("/api/dept/engineering/employee/:integer/", "updateEmployee");
- *          $this->post("/api/dept/engineering/employee/", "createEmployee");
- *          $this->delete("/api/dept/engineering/employee/:integer/", "deleteEmployee");
- *      }
- *
- * @since 0.1.0
+ * @since 0.3.0
  */
-class Router 
+class Router
 {
-	/** @var array Array of route mappings */
-	protected $_routes = array();
-	
-	/** @var View The active view class for the request */
-	protected $view;
-	
 	/** 
-	 * @var Response The active reponse object. 
-	 * @since 0.2.0
-	 */
-	protected $response;
-	
-	/** 
-	 * @var string The currently matched pattern, or empty string.
-	 * @since 0.1.1
-	 */
-	protected $pattern = "";
-	
-	/**
-	 * @var array The currently matched arguments, or empty array.
-	 * @since 0.2.4
-	 */
-	protected $arguments = array();
-	
-	/** @var string The root of the router's url maps, if any */
-	public $root = "";
-	
-	/**
-	 * constructor
-	 */
-	public function __construct()
-	{
-		// empty
-	}
-	
-	/**
-	 * Get the list of routes for this Router
+	 * @var array The array of route patterns to match the request against 
 	 *
-	 * @since 0.1.0
-	 * @return array The array of routes
+	 * Each Router pattern is stored as follows:
+	 *	$_routes['/path/to/:model/:id/'] = 
+	 *		array(
+	 *			'get' => array(
+	 *				'regex' => '/path/to/([a-z0-9_\-]+)/([a-z0-9_\-]+)/',
+	 *				'callback' => '/controllers/Controller@handleRoute;
+	 *			)
+	 *		);
 	 */
-	public function getRoutes()
-	{
-		return $this->_routes;
-	}
+	protected static $_routes = array();
+	
+	/** @var array Alias mapping to route patterns */
+	protected static $_aliases = array();
+	
+	/** @var string The pattern assigned to the current Router instance */
+	protected $_route = "";
 	
 	/**
-	 * Add a route or routes mapping to the Router
-	 *
-	 * Ex: add("/about/", "about")
-	 * Ex: add(array("/about/" => "about", "/products/" => "products"
-	 *
-	 * @since 0.1.0
-	 * @param array|string $routes Either an array of routes (path => callback method) or a path
-	 * @param string $callback The callback method, if $routes is a string, otherwise null
-	 */
-	protected function add($routes, $callback = null)
-	{
-		if(is_array($routes)) {
-			foreach($routes as $key => $route)
-				$this->_routes[$key] = $route;
-		} else {
-			if($callback) {
-				$this->_routes[$routes] = $callback;
-			}
-		}
-	}
-	
-	/**
-	 * Add a HTTP GET method route.
-	 * 
-	 * @since 0.2.4
-	 * @param string $pattern The pattern to match
-	 * @param string $callback The function to call when matched
-	 */
-	protected function get($pattern, $callback)
-	{
-	    $this->addMethodRoute("GET", $pattern, $callback);
-	}
-	
-	/**
-	 * Add a HTTP POST method route.
-	 * 
-	 * @since 0.2.4
-	 * @param string $pattern The pattern to match
-	 * @param string $callback The function to call when matched
-	 */
-	protected function post($pattern, $callback)
-	{
-	    $this->addMethodRoute("POST", $pattern, $callback);
-	}
-	
-	/**
-	 * Add a HTTP PUT method route.
-	 * 
-	 * @since 0.2.4
-	 * @param string $pattern The pattern to match
-	 * @param string $callback The function to call when matched
-	 */
-	protected function put($pattern, $callback)
-	{
-	    $this->addMethodRoute("PUT", $pattern, $callback);
-	}
-	
-	/**
-	 * Add a HTTP DELETE method route.
-	 * 
-	 * @since 0.2.4
-	 * @param string $pattern The pattern to match
-	 * @param string $callback The function to call when matched
-	 */
-	protected function delete($pattern, $callback)
-	{
-	    $this->addMethodRoute("DELETE", $pattern, $callback);
-	}
-	
-	/**
-	 * Checks the lists of routes against the given request.
-	 * If there is a match, then the callback method is invoked.
-	 *
-	 * @since 0.1.0
-	 * @return bool True if the the request was routed, false otherwise
-	 */
-	public function route()
-	{
-		$success = false;
-		$uri = Request::here();
-		
-		// reset the last matched pattern and args
-		$this->pattern = "";
-		$this->arguments = array();
-		
-		if(!$this->onPreMatchHook($uri)) {
-			return true;
-		}
-		if($this->root != "") {
-			if(strpos($uri, $this->root) != 0)
-				return false; // skip these routes
-		}
-		
-		foreach($this->_routes as $pattern => $route) {
-			if($this->routeMatches($uri, $pattern)) {
-				// url match
-				if(is_array($route)) {
-				    // get the http method
-		            $method = strtoupper(Request::method());
-		            if(isset($route[$method])) {
-		                $callback = $route[$method];
-		            } else {
-		                // no method match...
-		                $this->response = new Response();
-            			$this->response->status(405);
-            			$this->response->header("Allow", strtoupper(join(", ", array_keys($route))));
-            			return true;
-		            }
-				} else {
-				    // route is the callback method
-				    $callback = $route;
-				}
-				if(method_exists($this, $callback)) {
-					// check pre route hook
-					if($this->onPreRouteHook($uri)) {
-					    // routeMatches stores args in $this->arguments
-						$this->invokeRouteCallback(array($this, $callback), $this->arguments);
-					}
-					$success = true;
-				}
-				break;
-			}
-		}
-		return $success;
-	}
-	
-	/**
-	 * This function takes a callback and optional params and invokes the
-	 * callback in the context of a properly initialized router.
-	 *
-	 * @since 0.2.3
-	 * @param string|array $callback A valid php callback
-	 * @param array $params Optional array of parameters for the callback.
-	 */
-	public function invokeRouteCallback($callback, $params = array())
-	{
-		// initialize the response and view objects
-		$this->view = $this->createView();
-		$this->response = new Response();
-		$this->response->header("X-Backbone-Version", Backbone::version());
-		
-		// call the callback method
-		// if there is an uncaught application exception, then a 500 error is sent
-		ob_start();
-		try {
-			if(count($params) > 0) {				
-				$return = call_user_func_array($callback, $params);
-			} else {
-				$return = call_user_func($callback);
-			}
-			$this->onPostRouteHook($return);
-		} catch(Exception $e) {
-			// return a 500 error
-			$this->handleException($e);
-		}
-		// send the response and flush any output
-		$this->sendResponse();
-		ob_end_flush();
-	}
-	
-	/**
-	 * Loads a view file directly 
-	 *
-	 * @since 0.1.0
-	 * @param string $name The name of the view
-	*/
-	public function loadView($name)
-	{
-		if($this->view) {
-			$this->view->load($name);
-		}
-	}
-	
-	/**
-	 * Get the matched pattern string.
-	 * 
-	 * @since 0.1.1
-	 * @return string The last matched pattern or an empty string if none.
-	 */
-	public function getMatchedPattern()
-	{
-		return $this->pattern;
-	}
-	
-	/**
-	 * Get the active response object.
-	 * 
-	 * @since 0.2.4
-	 * @return Response The active response object.
-	 */
-	public function getResponse()
-	{
-	    return $this->response;
-	}
-	
-	/**
-	 * Immediately stops execution of the script and returns the response code
-	 * and body passed in as parameters OR it returns the headers contained in
-	 * the Router's active response object.
-	 * 
-	 * @since 0.2.4
-	 * @param int $status The status code
-	 * @param string $body The message body
-	 */
-	public function stop($status = null, $body = null)
-	{
-	    if($stats === null && $body === null) {
-	        $this->response->send();
-	        exit(0);
-	    }
-	    if($body === null) {
-	        $body = "";
-	    }
-	    
-	    $resp = new Response();
-	    $resp->status($status);
-	    $resp->body($body);
-	    $resp->send();
-	    exit(0);
-	}
-	
-	/**
-	 * Stub function for providing a hook before a route is matched.
-	 *
-	 * You can prevent the route from being matched by returning false.
-	 * This allows you to bypass the default route matching mechanism.
-	 *
-	 * @since 0.1.0
-	 * @return bool
-	 */
-	protected function onPreMatchHook($url)
-	{
-		return true;
-	}
-	
-	/**
-	 * Stub function for providing a hook before a route is dispatched.
-	 *
-	 * You can prevent the route from being dispatched by returning false.
-	 * Useful for authentication logic.
-	 *
-	 * @since 0.1.0
-	 * @return bool
-	 */
-	protected function onPreRouteHook($url)
-	{
-		return true;
-	}
-	
-	/**
-	 * Stub function for providing a hook after a route is dispatched.
-	 *
-	 * It is past the return value of the router method that was invoked.
-	 *
-	 * @since 0.1.0
-	 * @param bool $response The return value of the router method that was invoked.
-	 */
-	protected function onPostRouteHook($response)
-	{
-		return true;
-	}
-	
-	/**
-	 * Initializes a view object for the current route.
-	 *
-	 * Child classes of Router can override this method to use a custom class
-	 * descended from View.
-	 *
-	 * @since 0.2.3
-	 * @return View An instantiated view object.
-	 */
-	protected function createView()
-	{
-	    Backbone::uses("View");
-		return new View();
-	}
-	
-	/**
-	 * Adds a route based on a given HTTP method.
-	 * 
-	 * @since 0.2.4
+	 * Creates a new Router object
+	 * @since 0.3.0
+	 * @constructor
 	 * @param string $method The HTTP method.
-	 * @param string $pattern The pattern to match
-	 * @param string $callback The function to call when matched
+	 * @param string $route The route to match.
+	 * @param string $callback Callback method.
 	 */
-	public function addMethodRoute($method, $pattern, $callback)
+	public function __construct($method, $route, $callback)
 	{
-	    if(isset($this->_routes[$pattern])) {
-	        $route = $this->_routes[$pattern];
-	        if(is_array($route)) {
-	            $route[$method] = $callback;
-				$this->_routes[$pattern] = $route;
-	        }
-	    } else {
-	        $this->_routes[$pattern] = array();
-	        $this->_routes[$pattern][$method] = $callback;
-	    }
+		$this->_route = $route;
+		if(!isset(self::$_routes[$route])) {
+			self::$_routes[$route] = array();
+		}
+		$method = strtolower($method);
+		if(!isset(self::$_routes[$route][$method])) {
+			self::$_routes[$route][$method] = array();
+		}
+		self::$_routes[$route][$method] = array(
+			"regex" => preg_replace("/(:[a-z0-9_\-]+)/", "([a-z0-9_\-]+)", $route),
+			"callback" => $callback
+		);
 	}
 	
 	/**
-	 * Determines whether a given route matches a page route pattern.
-	 *
-	 * The matched pattern is saved to $this->pattern.
-	 * The matched arguments are saved to $this->arguments.
-	 *
-	 * @since 0.2.4
-	 * @param string $url The url fragement to match the pattern against
-	 * 		Ex: /page/to/url/
-	 * @param string $pattern The page's route pattern as defined in the page.
-	 * @return bool True if the route matches the pattern.
+	 * Clear all routes and aliases.
+	 * @since 0.3.0
 	 */
-	protected function routeMatches($url, $pattern)
+	public static function clear()
 	{
-		// convert the pattern placeholders to regex style
-		$test = str_replace(array(":alphanum", ":alpha", ":number"), array("([a-z0-9_\-]+)", "([a-z_\-]+)", "([0-9]+)"), $pattern);
+	    self::$_routes = array();
+	    self::$_aliases = array();
+	}
+	
+	/**
+	 * Construct a new GET route.
+	 * @since 0.3.0
+	 * @param string The path relative to the web root
+	 * @param string The callback method.
+	 */
+	public static function get($route, $callback)
+	{
+		return new Router("GET", $route, $callback);
+	}
+	
+	/**
+	 * Construct a new POST route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
+	public static function post($route, $callback)
+	{
+		return new Router("POST", $route, $callback);
+	}
+	
+	/**
+	 * Construct a new PUT route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
+	public static function put($route, $callback)
+	{
+		return new Router("PUT", $route, $callback);
+	}
+	
+	/**
+	 * Construct a new DELETE route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
+	public static function delete($route, $callback)
+	{
+		return new Router("DELETE", $route, $callback);
+	}
+	
+	/**
+	 * Construct a new PATCH route.
+	 * @since 0.3.0
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
+	public static function patch($route, $callback)
+	{
+		return new Router("PATCH", $route, $callback);
+	}
+	
+	/**
+	 * Construct a new route with a givne method name.
+	 * @since 0.3.0
+	 * @param string $method The HTTP method
+	 * @param string $route The path relative to the web root
+	 * @param string $callback The callback method.
+	 */
+	public static function method($method, $route, $callback)
+	{
+		return new Router($method, $route, $callback);
+	}
+	
+	/**
+	 * Dispatch the request.
+	 *
+	 * The dispatch method will either return value returned by the
+	 * callback handler for the matched route, or false if no routes
+	 * were matched.
+	 *
+	 * @since 0.3.0
+	 * @param Request $request The request object.
+	 * @return Response|bool The response or false if there is no response.
+	 */
+	public static function dispatch($request)
+	{
+		$response = false;
+		$path = $request->getPath();
+		$method = strtolower($request->getMethod());
 		
-		$params = array();
-		if(preg_match("{^".$test."$}", $url, $params)) {
-			// we have a match
-			if(count($params) > 0) {
-				$params = array_slice($params, 1);
+		// get all routes
+		$routes = self::$_routes;
+		
+		if(isset($routes[$path])) {
+			// exact match
+			$methods = $routes[$path];
+			if(!isset($methods[$method])) {
+				// in this case the route exists but does not suppor the given
+				// method.
+				return Response::create(405)
+				->header("Allow", strtoupper(join(", ", array_keys($methods))));
 			}
-			$this->pattern = $pattern;
-			$this->arguments = $params;
-			return true;
+			$route = $methods[$method];
+			$callback = $route['callback'];
+			Events::trigger("router.match", $request, $path);
+			// invoke the callback method
+			$response = self::invokeCallback($callback, array($request));
+		} else {
+			// may container route parameters
+			foreach($routes as $pattern => $methods) {
+				if(!isset($methods[$method])) {
+					// in this case the route exists but does not suppor the given
+					// method.
+					return Response::create(405)
+					->header("Allow", strtoupper(join(", ", array_keys($methods))));
+				}
+				$route = $methods[$method];
+				$regex = $route['regex'];
+				$callback = $route['callback'];
+				$params = array();
+				if(preg_match("{^".$regex."$}", $path, $params)) {
+					// we have a match
+					Events::trigger("router.match", $request, $path);
+					if(count($params) > 0) {
+						//$params = array_slice($params, 1);
+						$params[0] = $request;
+					} else {
+						$params = array($request);
+					}
+					// invoke the callback method
+					$response = self::invokeCallback($callback, $params);
+				}
+			}
+		}
+		
+		if(is_string($response)) {
+			$response = Response::create(200, $response);
+		}
+		return $response;
+	}
+	
+	/**
+	 * Manually invoke a controller callback method.
+	 *
+	 * The first argument must be the controller. You can pass parameters
+	 * in subsequent arguments.
+	 *
+	 * @since 0.3.0
+	 * @return Response The response object.
+	 * @throws InvalidArgumentException
+	 */
+	public static function route()
+	{
+		if(func_num_args() == 0) {
+			throw new InvalidArgumentException("Router: Missing controller argument");
+		}
+		$args = func_get_args();
+		$callback = $args[0];
+		array_shift($args);
+		self::invokeCallback($callback, $args);
+	}
+	/**
+	 * Returns a route for a given alias, if one exists. Any parameter
+	 * placeholders in the route will be replaced by the given array
+	 * of arguments.
+	 *
+	 * @since 0.3.0
+	 * @param string $alias The alias name.
+	 * @param array $args Optional route parameters.
+	 * @return string|bool Returns the route or false if the alias 
+	 *	does not exist.
+	 */
+	public static function getRouteFromAlias($alias, $args = array())
+	{
+		if(isset(self::$_aliases[$alias])) {
+			$route = self::$_aliases[$alias];
+			if(count($args) > 0) {
+				$patterns = array();
+				foreach($args as $val) {
+					$patterns[] = "/(:[a-z0-9_\-]+)/";
+				}
+				return preg_replace($patterns, $args, $route, 1);
+			} 
+			return $route;
 		}
 		return false;
 	}
 	
 	/**
-	 * Sends the response back to the client via the $this->response object.
+	 * Create an alias for the route.
 	 *
-	 * @since 0.2.0
+	 * An alias alows you to construct a fully qualified url for a
+	 * valid route, including route parameters, without the need
+	 * to manually type out the path. As such, you could change the
+	 * route for a path without the need to also change all references
+	 * to it elsewhere.
+	 *
+	 * @since 0.3.0
+	 * @param string $name The name of the alias.
+	 * @return Router The $this object.
 	 */
-	protected function sendResponse()
+	public function alias($name)
 	{
-		$this->response->send();
+		self::$_aliases[$name] = $this->_route;
+		return $this;
 	}
 	
 	/**
-	 * Handles an internal exception by sending a HTTP 500.
+	 * Invoke a route's callback method.
+	 * 
+	 * Fires a router.controller event.
 	 *
-	 * Applications can capture a 500 error and show a custom error page by
-	 * binding an action to the "response.500" global event through the Events
-	 * object.
-	 *
-	 * Applications can capture an uncaught exception more specificaly by
-	 * binding an action to the "router.uncaught-exception" global event
-	 * through the Events object. Alternatively, this method may be
-	 * overridden in any child class implementation.
-	 *
-	 * @since 0.2.0
-	 * @param Exception $e The Exception object
+	 * @since 0.3.0
+	 * @param string|array $callback The callback.
+	 * @param array $args Optional arguments for the callback.
+	 * @return mixed The return value of the callback method.
 	 */
-	protected function handleException($e)
+	protected static function invokeCallback($callback, $args = array())
 	{
-		ob_end_clean();
-		Events::trigger("router.uncaught-exception", $e);
-		$resp = $this->response;
-		$resp->status(500);
-		$resp->send();
-		exit();
+		$response = false;
+		Events::trigger("router.controller", $callback, $args);
+		// invoke the callback method
+		if(is_array($callback)) {
+			$response = call_user_func_array($callback, $args);
+		} else {
+			if(strpos($callback, "@") > -1) {
+				$tmp = explode("@", $callback);
+				$classpath = $tmp[0];
+				if($classpath === "View") {
+					// invoke a new view
+					Backbone::uses("View");
+					$viewname = $tmp[1];
+					$request = $args[0];
+					array_shift($args);
+					$response = View::create($request, $viewname, $args);
+				} else {
+					// invoke a controller method
+					$classname = Backbone::getClassName($classpath);
+					$method = $tmp[1];
+					Backbone::uses($classpath);
+					$obj = new $classname();
+					if(method_exists($obj, $method)) {
+						$response = call_user_func_array(array($obj, $method), $args);
+					}
+				}
+			} else {
+				$response = call_user_func_array($callback, $args);
+			}
+		}
+		return $response;
 	}
-};
-
+}
 ?>
-

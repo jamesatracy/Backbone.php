@@ -22,10 +22,10 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 
 	// get route mapped to a controller method with a url alias
 	Router::get("/", "/controllers/MyController@index")->alias("home");
-	// get route mapped to a view
+	// get route mapped to a view located at /views/about.php
 	Router::get("/about/", "View@about");
 	// get route with argument parameters, mapped to a controller method
-	Router::get("/jobs/:department/:id/", "/controllers/MyController@jobDesc");
+	Router::get("/jobs/:department/:id/", "/controllers/MyController@jobDesc")->alias("job-description");
 	// post route mapped to a controller method
 	Router::post("/contact/", "/controllers/MyController@processContactForm");
 	
@@ -41,6 +41,11 @@ At its most simplest form, a Backbone.php application is nothing more than a ser
 		
 		...
 	}
+	
+	// returns "/"
+	Router::getRouteFromAlias("home");
+	// returns /jobs/engineering/24/
+	Router::getRouteFromAlias("job-description", array("engineering", 24));
 	
 
 That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a SQL database in the form of Models and Collections.
