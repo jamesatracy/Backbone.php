@@ -20,33 +20,52 @@ The framework is built with the following goals in mind:
 
 At its most simplest form, a Backbone.php application is nothing more than a series of url routes (such as "/about/") that are mapped to either views ("views/about-page.php") or callback methods ("public function about($request)") or combinations of both. 
 
-	// get route mapped to a controller method with a url alias
-	Router::get("/", "/controllers/MyController@index")->alias("home");
-	// get route mapped to a view located at /views/about.php
-	Router::get("/about/", "View@about");
-	// get route with argument parameters, mapped to a controller method
-	Router::get("/jobs/:department/:id/", "/controllers/MyController@jobDesc")->alias("job-description");
-	// post route mapped to a controller method
-	Router::post("/contact/", "/controllers/MyController@processContactForm");
+You can define routes for any HTTP method:
+
+	// index is a global function
+	Router::get("/", "index");
+	Router::post("/", "index");
+	Router::put("/", "index");
+	Router::delete("/", "index");
+	Router::method("CUSTOM", "/", "index");
 	
-	class MyController
+You can route requests directly to view files:
+
+	// routes to view file located at /views/about.php
+	Router::get("/about", "View@about");
+	// routes to view file located at /views/about/jobs.php
+	Router::get("/about/jobs/", "View@about/jobs");
+	
+You can route requests to controller methods:
+
+	// routes to AppController->index() located at /controllers/AppController.class.php
+	Router::get("/", "/controllers/AppController@index");
+	
+	public function index($request)
 	{
-		public function index($request)
-		{
-		}
-		
-		public function jobDesc($request, $dept, $id)
-		{
-		}
-		
 		...
 	}
 	
-	// returns "/"
-	Router::getRouteFromAlias("home");
-	// returns /jobs/engineering/24/
-	Router::getRouteFromAlias("job-description", array("engineering", 24));
+You can create routes with url arguments:
+
+	Router::get("/path/:name/:id/", "/controllers/AppController@doSomething");
 	
+	public function doSomething($request, $name, $id)
+	{
+		...
+	}
+
+You can also define route aliases so that you can generate links with correct paths:
+
+	Router::get("/", "/controllers/MyController@index")->alias("home");
+	Router::getRouteFromAlias("home");
+	// returns "/"
+	
+You can even use `getRouteFromAlias` to generate paths with url arguments filled in:
+	
+	Router::get("/jobs/:department/:id/", "/controllers/MyController@jobDesc")->alias("job-description");
+	Router::getRouteFromAlias("job-description", array("engineering", 24));
+	// returns "/jobs/engineering/24/"
 
 That is essentially all that you need to get a Backbone.php application up and running. However, the framework also provides a number of classes for working specifically with data backed by a SQL database in the form of Models and Collections.
 
