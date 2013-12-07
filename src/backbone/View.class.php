@@ -63,7 +63,7 @@ class View
 	 */
 	public static function create($request, $name, $properties = array())
 	{
-		$view = new View($request, $name);
+		$view = new View($request, $name, $properties);
 		Events::trigger("view.create", $name, $view);
 		return $view->load($name);
 	}

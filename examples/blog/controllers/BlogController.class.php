@@ -11,13 +11,12 @@ class BlogController
 	 */
 	public function index($request)
 	{
-		$foo = "bar";
 		Backbone::uses("/models/Post");
 		$posts = Post::fetch()->limit(10)->orderBy("post_created DESC")->exec();
-		$view = new View($request, "home");
-		$view->set("title", "Blog Example");
-		$view->set("posts", $posts);
-		return $view->load();
+		return View::create($request, 'home', array(
+			'title' => 'Blog Example',
+			'posts' => $posts
+		));
 	}
 	
 	/*
@@ -26,8 +25,7 @@ class BlogController
 	 */
 	public function create($request)
 	{
-		$view = new View($request, "create-post");
-		return $view->load();
+		return View::create($request, "create-post");
 	}
 	
 	/*
