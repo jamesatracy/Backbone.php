@@ -95,7 +95,7 @@ The Backbone.php framework consists of the following 14 modules:
 Dependencies
 ------------
 
-Requires PHP version 5.2+. 
+Requires PHP version 5.3+. 
 		
 Documentation
 -------------
