@@ -138,31 +138,29 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-211670242"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1198793026"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-211670242" class="accordion-body collapse in">
+            <div id="namespace-1198793026" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
                     <ul>
                                                                                                     <li class="class"><a href="../classes/Validate.html">Validate</a></li>
-                                                    <li class="class"><a href="../classes/MySQL.html">MySQL</a></li>
-                                                    <li class="class"><a href="../classes/MySQL_Logger.html">MySQL_Logger</a></li>
                                                     <li class="class"><a href="../classes/Response.html">Response</a></li>
                                                     <li class="class"><a href="../classes/Model.html">Model</a></li>
+                                                    <li class="class"><a href="../classes/ModelQuery.html">ModelQuery</a></li>
                                                     <li class="class"><a href="../classes/View.html">View</a></li>
+                                                    <li class="class"><a href="../classes/Query.html">Query</a></li>
                                                     <li class="class"><a href="../classes/Request.html">Request</a></li>
                                                     <li class="class"><a href="../classes/Sanitize.html">Sanitize</a></li>
-                                                    <li class="class"><a href="../classes/DataMap.html">DataMap</a></li>
                                                     <li class="class"><a href="../classes/Schema.html">Schema</a></li>
                                                     <li class="class"><a href="../classes/Collection.html">Collection</a></li>
                                                     <li class="class"><a href="../classes/Backbone.html">Backbone</a></li>
+                                                    <li class="class"><a href="../classes/DB.html">DB</a></li>
                                                     <li class="class"><a href="../classes/Events.html">Events</a></li>
-                                                    <li class="class"><a href="../classes/Connections.html">Connections</a></li>
                                                     <li class="class"><a href="../classes/Router.html">Router</a></li>
                                                     <li class="class"><a href="../classes/Html.html">Html</a></li>
-                                                    <li class="class"><a href="../classes/DataSource.html">DataSource</a></li>
                                             </ul>
                 </div>
             </div>
@@ -181,8 +179,9 @@
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
                     <h1><small>\</small>View</h1>
-                    <p><em>Base class for all Backbone.php views.</em></p>
-                    
+                    <p><em>View class implementation.</em></p>
+                    <p>Example:
+    $response = View::create("home");</p>
 
 
                     <section id="summary">
@@ -201,7 +200,9 @@
                         <section class="row-fluid public">
                             <section class="span4">
                                                                     <a href="../classes/View.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/View.html#method_create" class="">create()</a><br />
                                                                     <a href="../classes/View.html#method_url" class="">url()</a><br />
+                                                                    <a href="../classes/View.html#method_urlAlias" class="">urlAlias()</a><br />
                                                                     <a href="../classes/View.html#method_load" class="">load()</a><br />
                                                                     <a href="../classes/View.html#method_display" class="">display()</a><br />
                                                                     <a href="../classes/View.html#method_extend" class="">extend()</a><br />
@@ -217,9 +218,13 @@
                                                                     <a href="../classes/View.html#method_end" class="">end()</a><br />
                                                                     <a href="../classes/View.html#method_clear" class="">clear()</a><br />
                                                                     <a href="../classes/View.html#method_render" class="">render()</a><br />
+                                                                    <a href="../classes/View.html#method___get" class="">__get()</a><br />
+                                                                    <a href="../classes/View.html#method___set" class="">__set()</a><br />
+                                                                    <a href="../classes/View.html#method___isset" class="">__isset()</a><br />
                                                             </section>
                             <section class="span4">
-                                                                    <em>No public properties found</em>
+                                                                    <a href="../classes/View.html#property_request" class="">$request</a><br />
+                                                                    <a href="../classes/View.html#property_name" class="">$name</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No constants found</em>
@@ -293,6 +298,56 @@
                 </div>
                 <aside class="span4 detailsbar"></aside>
             </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_request" name="property_request" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$request</h3>
+                <pre class="signature">$request : \Request</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                <a href="../classes/Request.html">\Request</a>
+                &mdash; The active request object                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_name" name="property_name" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$name</h3>
+                <pre class="signature">$name : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The name of this view                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
 
                                                     <div class="row-fluid">
         <div class="span8 content class">
@@ -432,11 +487,32 @@
             <article class="method">
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct()</pre>
-                <p><em>Constructor</em></p>
+                <pre class="signature" style="margin-right: 54px;">__construct(\Request <span class="argument">$request</span>, string <span class="argument">$name</span>,  <span class="argument">$properties</span>)</pre>
+                <p><em></em></p>
                 
 
 
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Request.html">\Request</a></td>
+                                <td>$request</td>
+                                <td><p>The request object.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name</td>
+                                <td><p>The name of the view file to load.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$properties</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
                 
                 
                             </article>
@@ -456,6 +532,75 @@
 
                                                     </td>
                     </tr>
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create" name="method_create" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">create()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create(\Request <span class="argument">$request</span>, string <span class="argument">$name</span>,  <span class="argument">$properties</span>) : \Response</pre>
+                <p><em>Create a new view with the given view file and load it.</em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Request.html">\Request</a></td>
+                                <td>$request</td>
+                                <td><p>The request object.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name</td>
+                                <td><p>The name of the view file to load.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$properties</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Response.html">\Response</a>
+                                            &mdash; <p>The response object.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
                             </table>
         </aside>
     </div>
@@ -466,10 +611,10 @@
             <article class="method">
                 <h3 class="public ">url()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">url(string <span class="argument">$path</span>)</pre>
+                <pre class="signature" style="margin-right: 54px;">url(string <span class="argument">$path</span>, bool <span class="argument">$ssl</span>)</pre>
                 <p><em>Shortcut for view code to construct an internal URL. This method
-will echo the fully resolved URL string.</em></p>
-                <p>Wraps Backbone::$request->link().</p>
+will return the fully resolved URL string.</em></p>
+                <p>Wraps $request->makeURL()</p>
 
 
                                     <h4>Parameters</h4>
@@ -478,6 +623,61 @@ will echo the fully resolved URL string.</em></p>
                                 <td>string</td>
                                 <td>$path</td>
                                 <td><p>The relative url path.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>bool</td>
+                                <td>$ssl</td>
+                                <td><p>Force the url to be secure.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_urlAlias" name="method_urlAlias" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">urlAlias()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">urlAlias(string <span class="argument">$alias</span>, bool <span class="argument">$ssl</span>)</pre>
+                <p><em>Shortcut for view code to construct an internal URL from an alias.</em></p>
+                <p>This method will return the fully resolved URL string.</p>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$alias</td>
+                                <td><p>The name of the alias.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>bool</td>
+                                <td>$ssl</td>
+                                <td><p>Force the url to be secure.</p>
 </td>
                             </tr>
                                             </table>
@@ -510,29 +710,32 @@ will echo the fully resolved URL string.</em></p>
             <article class="method">
                 <h3 class="public ">load()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">load( <span class="argument">$name</span>)</pre>
+                <pre class="signature" style="margin-right: 54px;">load() : \Response</pre>
                 <p><em>Load a view to execute from the application&#039;s /views/ directory</em></p>
-                <p>Exs:</p>
+                <p>Examples:</p>
 
 <p>To load /views/about.php:
- $view->load("about");</p>
+ $view = new View($request, "about");
+ $view->load();</p>
 
 <p>To load /views/products/hammer.php
-    $view->load("products/hammer");</p>
+ $view = new View($request, "products/hammer");
+    $view->load();</p>
 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td></td>
-                                <td>$name</td>
-                                <td>
-</td>
-                            </tr>
-                                            </table>
                 
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
                 
-                            </article>
+                                    <h4>Returns</h4>
+                    <a href="../classes/Response.html">\Response</a>
+                                            &mdash; <p>The response object.</p>
+
+                                                </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -1168,6 +1371,149 @@ If this is not defined, then it includes everything on the page until the next $
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___get" name="method___get" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__get()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__get(string <span class="argument">$key</span>) : Mixed</pre>
+                <p><em>Wraps the get() method.</em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$key</td>
+                                <td><p>The property name.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    Mixed
+                                            &mdash; <p>The value of the property.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___set" name="method___set" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__set()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__set(string <span class="argument">$key</span>, Mixed <span class="argument">$value</span>)</pre>
+                <p><em>Wraps the set() method.</em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$key</td>
+                                <td><p>The property name.</p>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td>Mixed</td>
+                                <td>$value</td>
+                                <td><p>The property value.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___isset" name="method___isset" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__isset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__isset(string <span class="argument">$key</span>) : bool</pre>
+                <p><em>Returns true if a property exists.</em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$key</td>
+                                <td><p>The  property key.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    bool
+                                            &mdash; <p>True if the property exists.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
                                                                     </div>
     </section>
 
@@ -1217,7 +1563,7 @@ If this is not defined, then it includes everything on the page until the next $
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 19th, 2013 at 20:40.
+                    on December 5th, 2013 at 01:57.
                 </section>
             </section>
         </section>

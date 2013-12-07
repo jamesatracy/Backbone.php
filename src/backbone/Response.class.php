@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
  * Handles sending HTTP response headers and content.
  *
@@ -77,14 +74,20 @@ class Response
 		505 => 'Unsupported Version'
 	);
 	
+	public static function create($status = 200, $body = null)
+	{
+		return new Response($status, $body);
+	}
+	
 	/**
 	 * Constructor. Optionally set the status.
 	 *
 	 * @param int The response status
 	 */
-	public function __construct($status = 200)
+	public function __construct($status = 200, $body = null)
 	{
 		$this->status($status);
+		$this->body($body);
 	}
 	
 	/**
@@ -97,6 +100,7 @@ class Response
 	{
 		$this->status(302);
 		$this->header("Location", $url);
+		return $this;
 	}
 	
 	/** 
@@ -110,8 +114,8 @@ class Response
 		if($status !== null) {
 			$this->status($status);
 		}
-		// trigger pre response status code event
-		Events::trigger("Response:".$this->_status.":before", $this);
+		// trigger response status code event
+		Events::trigger("response.".$this->_status, $this);
 		// send protocol and status
 		$code_message = $this->_status_codes[$this->_status];
 		$this->sendHeader($this->_protocol." ".$this->_status." ".$code_message);
@@ -125,8 +129,6 @@ class Response
 		if($this->_body !== null) {
 			echo $this->_body;
 		}
-		// trigger post response status code event
-		Events::trigger("Response:".$this->_status.":after", $this);
 	}
 	
 	/**
@@ -143,10 +145,10 @@ class Response
 			return $this->_status;
 		}
 		if(!isset($this->_status_codes[$code])) {
-			throw new \InvalidArgumentException("Response: Invalid status code ".$code);
+			throw new InvalidArgumentException("Response: Invalid status code ".$code);
 		}
 		$this->_status = $code;
-		return $this->_status;
+		return $this;
 	}
 
 	/**
@@ -162,7 +164,7 @@ class Response
 			return $this->_content_type;
 		}
 		$this->_content_type = $type;
-		return $this->_content_type;
+		return $this;
 	}
 	
 	/** Gets or sets header(s)
@@ -181,12 +183,14 @@ class Response
 			foreach($header as $key => $value) {
 				$this->header($key, $value);
 			}
-			return $this->_headers;
+			return $this;
 		}
 		if($value !== null) {
 			$this->_headers[$header] = $value;
+		} else if($header !== null) {
+		    return $this->_headers[$header];
 		}
-		return $this->_headers;
+		return $this;
 	}
 	
 	/**
@@ -202,7 +206,7 @@ class Response
 			return $this->_body;
 		}
 		$this->_body = $body;
-		return $this->_body;
+		return $this;
 	}
 	
 	/**

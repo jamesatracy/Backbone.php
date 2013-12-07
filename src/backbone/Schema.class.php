@@ -8,11 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
-Backbone::uses("Connections");
-
 /**
  * Schema represents the definition of a data resource and
  * is the base class for Backbone.php's Model class. 
@@ -20,10 +15,7 @@ Backbone::uses("Connections");
  * Schema is responsible for providing information about a model's
  * definition and for validation of data against that definition.
  * This provides a layer of security between data input and the 
- * database itself. Schema itself is database agnostic - it depends
- * on the database object to implement a "schmea" method that converts
- * the resource's schmea into the definition outlined below. The
- * database object should be an extension of DataSource.
+ * database itself. 
  *
  * The schema is also used to populate new model's with default data.
  *
@@ -58,13 +50,20 @@ Backbone::uses("Connections");
 class Schema
 {
 	/** @var string Optional pointer to schema file name */
-	public $schemaFile = null;
+	public static $schemaFile = null;
+	
+	/** 
+	 * @var array Optional additional validation rules 
+	 * 
+	 *	Ex:
+	 *	    public static $rules = array(
+	 *		    array("email" => array("email" => true))
+	 *	    );
+	 */
+	public static $rules = array();
 	
 	/** @var array A central cache for schema definitions */
 	protected static $_schema_cache = array();
-	
-	/** @var object Database connection */
-	protected $_db = null;
 	
 	/** @var array Associated array of field definitions */
 	protected $_fields = array();
@@ -76,27 +75,6 @@ class Schema
 	protected $_errors = array();
 	
 	/**
-	 * Constructor
-	 *
-	 * @constructor
-	 * @param string $connection The name of the database connection.
-	 * @throws RuntimeException
-	 */
-	public function __construct($connection = "default")
-	{
-		if(is_string($connection)) {
-			// string name of the connection
-			$this->_db = Connections::get($connection);
-		} else {
-			// assume database object instance
-			$this->_db = $connection;
-		}
-		if(!$this->_db) {
-			throw new RuntimeException("Error: Invalid connection supplied to Schema");
-		}
-	}
-	
-	/**
 	 * Initialize the schema
 	 *
 	 * @since 0.1.0
@@ -106,28 +84,9 @@ class Schema
 	 */
 	public function initialize($table, $cacheable = true)
 	{
-		if($this->_db && $this->_db->isConnected()) {
-			if($cacheable) {
-				if(isset(Schema::$_schema_cache[$table])) {
-					$cache = Schema::$_schema_cache[$table];
-					$this->_fields = $cache['schema'];
-					$this->_id = $cache['id'];
-					return $this->_fields;
-				}
-			}
-			if($this->schemaFile) {
-				$cache = json_decode(file_get_contents(ABSPATH.$this->schemaFile), TRUE);
-				$this->_fields = $cache['schema'];
-				$this->_id = $cache['id'];
-			} else {
-				$schema = $this->_db->schema($table);
-				$this->_id = $schema['id'];
-				$this->_fields = $schema['schema'];
-			}
-			if($cacheable) {
-				Schema::$_schema_cache[$table] = array("id" => $this->_id, "schema" => $this->_fields);
-			}
-		}
+		$schema = self::loadSchema($table);
+		$this->_id = $schema['id'];
+		$this->_fields = $schema['schema'];
 		return $this->_fields;
 	}
 	
@@ -140,29 +99,6 @@ class Schema
 	public function isInitialized()
 	{
 		return (!empty($this->_fields));
-	}
-	
-	/**
-	 * Add additional validation rules to a group of fields.
-	 *
-	 * @since 0.1.0
-	 * @param array An array of key => value pairs, where the value corresponds to
-	 *	a rule or an array of rules to add to the field.
-	 *	
-	 *	Ex:
-	 *		$schema->rules(
-	 *			array("email" => array("email" => true))
-	 *		);
-	 */
-	public function rules($rules)
-	{
-		if($this->_fields && is_array($rules)) {
-			foreach($rules as $key => $values) {
-				if(isset($this->_fields[$key])) {
-					$this->_fields[$key]['rules'] = $values;
-				}
-			}
-		}
 	}
 	
 	/**
@@ -321,9 +257,9 @@ class Schema
 		}
 		
 		// check for custom validation rules
-		if(isset($field['rules'])) {
+		if(!empty(static::$rules) && isset(static::$rules[$name])) {
 			Backbone::uses("Validate");
-			foreach($field['rules'] as $rule => $args) {
+			foreach(static::$rules[$name] as $rule => $args) {
 				if(Validate::invoke($rule, $name, $value, $args) === false) {
 					$this->_errors[] = Validate::$last_error;
 					return;
@@ -428,6 +364,105 @@ class Schema
 			}
 		}
 	}
-};
+	
+	/**
+	 * Loads a schema from an existing database table.
+	 * 
+	 * May also pull from a schema file or from the intrnal cache.
+	 *
+	 * @since 0.2.0
+	 * @param string $table The table name
+	 * @return array The schema structure
+	 * @throws RuntimeException
+	 */
+	public static function loadSchema($table)
+	{
+	    if(isset(Schema::$_schema_cache[$table])) {
+			return Schema::$_schema_cache[$table];
+		}
 
+	    if(static::$schemaFile) {
+			$cache = json_decode(file_get_contents(ABSPATH.static::$schemaFile), TRUE);
+			Schema::$_schema_cache[$table] = $cache;
+			return $cache;
+		}
+		
+		if(!DB::isConnected()) {
+			throw new RuntimeException("Schema: Invalid connection");
+		}
+		
+		$id = 0;
+		$fields = array();
+		$result = DB::table($table)->describe()->exec();
+		foreach($result as $row) {
+			$attrs = array();
+			$field = $row['Field'];
+			$type = $row['Type'];
+			$null = $row['Null'];
+			$default = $row['Default'];
+			
+			if($row['Key'] == "PRI") {
+				// set the primary key
+				$id = $field;
+				$attrs['primary'] = true;
+			}
+			
+			// format type
+			if(substr($type, 0, 3) == "int" || substr($type, 0, 7) == "tinyint" || substr($type, 0, 8) == "smallint" || substr($type, 0, 9) == "mediumint" || substr($type, 0, 6) == "bigint") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "integer";
+				$attrs["size"] = substr($type, 0, strpos($type, "("));
+				$attrs["length"] = $matches[1][0];
+				
+				if(stripos($type, "unsigned") !== false) {
+					$attrs["unsigned"] = "1";
+				} else {
+					$attrs["unsigned"] = "0";
+				}
+				
+				if($default == null && $null == "NO") {
+					$default = "0";
+				}
+			} else if(substr($type, 0, 5) == "float" || substr($type, 0, 6) == "double") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "float";
+				$attrs["size"] = substr($type, 0, strpos($type, "("));
+				$attrs["length"] = $matches[1][0];
+			} else if(substr($type, 0, 7) == "varchar") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "string";
+				$attrs["length"] = $matches[1][0];
+			} else if(substr($type, 0, 4) == "char") {
+				// get size
+				preg_match_all('/\((.*?)\)/', $type, $matches);
+				$attrs["type"] = "char";
+				$attrs["length"] = $matches[1][0];
+			} else if(substr($type, 0, 4) == "text" || substr($type, 0, 8) == "longtext") {
+				// get size
+				$attrs["type"] = "string";
+				$attrs["length"] = null;
+			} else {
+				$attrs["type"] = $type;
+			}
+			
+			// null
+			if($null == "NO") {
+				$attrs["acceptNULL"] = '0';
+			} else {
+				$attrs["acceptNULL"] = '1';
+			}
+			
+			// default
+			$attrs["default"] = ($default == null ? "" : ($default == "NULL" ? null : $default));
+			
+			$fields[$field] = $attrs;
+		}
+		$schema = array("id" => $id, "schema" => $fields);
+		Schema::$_schema_cache[$table] = $schema;
+		return $schema;
+	}
+};
 ?>

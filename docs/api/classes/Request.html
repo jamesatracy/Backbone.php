@@ -138,31 +138,29 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-946059087"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1988720542"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-946059087" class="accordion-body collapse in">
+            <div id="namespace-1988720542" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
                     <ul>
                                                                                                     <li class="class"><a href="../classes/Validate.html">Validate</a></li>
-                                                    <li class="class"><a href="../classes/MySQL.html">MySQL</a></li>
-                                                    <li class="class"><a href="../classes/MySQL_Logger.html">MySQL_Logger</a></li>
                                                     <li class="class"><a href="../classes/Response.html">Response</a></li>
                                                     <li class="class"><a href="../classes/Model.html">Model</a></li>
+                                                    <li class="class"><a href="../classes/ModelQuery.html">ModelQuery</a></li>
                                                     <li class="class"><a href="../classes/View.html">View</a></li>
+                                                    <li class="class"><a href="../classes/Query.html">Query</a></li>
                                                     <li class="class"><a href="../classes/Request.html">Request</a></li>
                                                     <li class="class"><a href="../classes/Sanitize.html">Sanitize</a></li>
-                                                    <li class="class"><a href="../classes/DataMap.html">DataMap</a></li>
                                                     <li class="class"><a href="../classes/Schema.html">Schema</a></li>
                                                     <li class="class"><a href="../classes/Collection.html">Collection</a></li>
                                                     <li class="class"><a href="../classes/Backbone.html">Backbone</a></li>
+                                                    <li class="class"><a href="../classes/DB.html">DB</a></li>
                                                     <li class="class"><a href="../classes/Events.html">Events</a></li>
-                                                    <li class="class"><a href="../classes/Connections.html">Connections</a></li>
                                                     <li class="class"><a href="../classes/Router.html">Router</a></li>
                                                     <li class="class"><a href="../classes/Html.html">Html</a></li>
-                                                    <li class="class"><a href="../classes/DataSource.html">DataSource</a></li>
                                             </ul>
                 </div>
             </div>
@@ -181,7 +179,7 @@
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
                     <h1><small>\</small>Request</h1>
-                    <p><em>Convenience class for accessing the request URI, generating links, and working with $_POST, $_GET, and $_FILES.</em></p>
+                    <p><em>Holds information related to a HTTP request.</em></p>
                     
 
 
@@ -200,24 +198,37 @@
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/Request.html#method_base" class="">base()</a><br />
-                                                                    <a href="../classes/Request.html#method_url" class="">url()</a><br />
-                                                                    <a href="../classes/Request.html#method_path" class="">path()</a><br />
-                                                                    <a href="../classes/Request.html#method_here" class="">here()</a><br />
-                                                                    <a href="../classes/Request.html#method_queryString" class="">queryString()</a><br />
-                                                                    <a href="../classes/Request.html#method_query" class="">query()</a><br />
-                                                                    <a href="../classes/Request.html#method_ipaddress" class="">ipaddress()</a><br />
-                                                                    <a href="../classes/Request.html#method_link" class="">link()</a><br />
-                                                                    <a href="../classes/Request.html#method_is" class="">is()</a><br />
-                                                                    <a href="../classes/Request.html#method_method" class="">method()</a><br />
-                                                                    <a href="../classes/Request.html#method_getHeaders" class="">getHeaders()</a><br />
-                                                                    <a href="../classes/Request.html#method_getData" class="">getData()</a><br />
-                                                                    <a href="../classes/Request.html#method_get" class="">get()</a><br />
-                                                                    <a href="../classes/Request.html#method_post" class="">post()</a><br />
-                                                                    <a href="../classes/Request.html#method_files" class="">files()</a><br />
+                                                                    <a href="../classes/Request.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Request.html#method_create" class="">create()</a><br />
+                                                                    <a href="../classes/Request.html#method_getRequest" class="">getRequest()</a><br />
+                                                                    <a href="../classes/Request.html#method_setRequest" class="">setRequest()</a><br />
+                                                                    <a href="../classes/Request.html#method_getQuery" class="">getQuery()</a><br />
+                                                                    <a href="../classes/Request.html#method_setQuery" class="">setQuery()</a><br />
+                                                                    <a href="../classes/Request.html#method_getFile" class="">getFile()</a><br />
+                                                                    <a href="../classes/Request.html#method_setFile" class="">setFile()</a><br />
+                                                                    <a href="../classes/Request.html#method_getServer" class="">getServer()</a><br />
+                                                                    <a href="../classes/Request.html#method_setServer" class="">setServer()</a><br />
+                                                                    <a href="../classes/Request.html#method_getHeader" class="">getHeader()</a><br />
+                                                                    <a href="../classes/Request.html#method_setHeader" class="">setHeader()</a><br />
+                                                                    <a href="../classes/Request.html#method_getURL" class="">getURL()</a><br />
+                                                                    <a href="../classes/Request.html#method_makeURL" class="">makeURL()</a><br />
+                                                                    <a href="../classes/Request.html#method_getBaseURL" class="">getBaseURL()</a><br />
+                                                                    <a href="../classes/Request.html#method_getMethod" class="">getMethod()</a><br />
+                                                                    <a href="../classes/Request.html#method_isSecure" class="">isSecure()</a><br />
+                                                                    <a href="../classes/Request.html#method_getScheme" class="">getScheme()</a><br />
+                                                                    <a href="../classes/Request.html#method_getHost" class="">getHost()</a><br />
+                                                                    <a href="../classes/Request.html#method_getURI" class="">getURI()</a><br />
+                                                                    <a href="../classes/Request.html#method_getPort" class="">getPort()</a><br />
+                                                                    <a href="../classes/Request.html#method_getQueryString" class="">getQueryString()</a><br />
+                                                                    <a href="../classes/Request.html#method_getBasePath" class="">getBasePath()</a><br />
+                                                                    <a href="../classes/Request.html#method_getPath" class="">getPath()</a><br />
                                                             </section>
                             <section class="span4">
-                                                                    <em>No public properties found</em>
+                                                                    <a href="../classes/Request.html#property_request" class="">$request</a><br />
+                                                                    <a href="../classes/Request.html#property_query" class="">$query</a><br />
+                                                                    <a href="../classes/Request.html#property_files" class="">$files</a><br />
+                                                                    <a href="../classes/Request.html#property_server" class="">$server</a><br />
+                                                                    <a href="../classes/Request.html#property_headers" class="">$headers</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No constants found</em>
@@ -228,7 +239,14 @@
                                                                     <em>No protected methods found</em>
                                                             </section>
                             <section class="span4">
-                                                                    <em>No protected properties found</em>
+                                                                    <a href="../classes/Request.html#property_method" class="">$method</a><br />
+                                                                    <a href="../classes/Request.html#property_scheme" class="">$scheme</a><br />
+                                                                    <a href="../classes/Request.html#property_host" class="">$host</a><br />
+                                                                    <a href="../classes/Request.html#property_uri" class="">$uri</a><br />
+                                                                    <a href="../classes/Request.html#property_port" class="">$port</a><br />
+                                                                    <a href="../classes/Request.html#property_query_string" class="">$query_string</a><br />
+                                                                    <a href="../classes/Request.html#property_root" class="">$root</a><br />
+                                                                    <a href="../classes/Request.html#property_path" class="">$path</a><br />
                                                             </section>
                             <section class="span4">
                                 <em>N/A</em>
@@ -280,150 +298,32 @@
             </div>
 
                         
-                        
-                                    <a id="methods" name="methods"></a>
+                                    <a id="properties" name="properties"></a>
             <div class="row-fluid">
-                <div class="span8 content class"><h2>Methods</h2></div>
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
                 <aside class="span4 detailsbar"></aside>
             </div>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_base" name="method_base" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">base()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">base() : string</pre>
-                <p><em>Get the base url</em></p>
-                <p>Ex: http://www.example.com/path/to/here/?p=1 => http://www.example.com</p>
-
-
+            <a id="property_request" name="property_request" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$request</h3>
+                <pre class="signature">$request : array</pre>
+                <p><em></em></p>
                 
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The base url of the request</p>
 
-                                                </article>
+
+                                <h4>Type</h4>
+                array
+                &mdash; The request (post) parameters.                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_url" name="method_url" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">url()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">url() : string</pre>
-                <p><em>Get the full url of the request</em></p>
-                <p>Ex: http://www.example.com/path/to/here/?p=1 => http://www.example.com/path/to/here/?p=1</p>
-
-
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The full url of the request, including query strings</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_path" name="method_path" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">path()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">path() : \[string]</pre>
-                <p><em>Get the url path (portion that follows the base, minus query strings)</em></p>
-                <p>Ex: http://www.example.com/path/to/here/?p=1 => /path/to/here/</p>
-
-
-                
-                
-                                    <h4>Returns</h4>
-                    \[string]
-                                            &mdash; <p>The url path, excluding query strings</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_here" name="method_here" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">here()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">here() : string</pre>
-                <p><em>Get the current path of the request</em></p>
-                <p>Ex: http://www.example.com/path/to/here/?p=1 => /path/to/here/ (the root here is "")</p>
-
-
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>Trims the web root off of the path for the relative path and returns it</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
+                        <dl>
+                                                            </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
                                     <tr><td colspan="2"><em>None found</em></td></tr>
@@ -433,70 +333,932 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_queryString" name="method_queryString" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">queryString()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">queryString() : string</pre>
-                <p><em>Get the query string</em></p>
-                <p>Ex: http://www.example.com/path/to/here/?p=1 => ?p=1</p>
-
-
+            <a id="property_query" name="property_query" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$query</h3>
+                <pre class="signature">$query : array</pre>
+                <p><em></em></p>
                 
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The query string</p>
 
-                                                </article>
+
+                                <h4>Type</h4>
+                array
+                &mdash; The query (get) parameters.                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
+                        <dl>
+                                                            </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
                             </table>
         </aside>
     </div>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_query" name="method_query" class="anchor"></a>
+            <a id="property_files" name="property_files" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$files</h3>
+                <pre class="signature">$files : array</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                array
+                &mdash; The file (files) parameters.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_server" name="property_server" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$server</h3>
+                <pre class="signature">$server : array</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                array
+                &mdash; Wraps the $_SERVER superglobal.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_headers" name="property_headers" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$headers</h3>
+                <pre class="signature">$headers : array</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                array
+                &mdash; The request headers.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_method" name="property_method" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$method</h3>
+                <pre class="signature">$method : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The request method, uppercase. This is a variable cache.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_scheme" name="property_scheme" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$scheme</h3>
+                <pre class="signature">$scheme : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The request scheme (http or https). This is a variable cache.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_host" name="property_host" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$host</h3>
+                <pre class="signature">$host : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The request host name. This is a variable cache.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_uri" name="property_uri" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$uri</h3>
+                <pre class="signature">$uri : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The request URI. This is a variable cache.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_port" name="property_port" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$port</h3>
+                <pre class="signature">$port : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The request port number. This is a variable cache.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_query_string" name="property_query_string" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$query_string</h3>
+                <pre class="signature">$query_string : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The request query string. This is a variable cache.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_root" name="property_root" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$root</h3>
+                <pre class="signature">$root : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The root path for this request.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_path" name="property_path" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$path</h3>
+                <pre class="signature">$path : string</pre>
+                <p><em></em></p>
+                
+
+
+                                <h4>Type</h4>
+                string
+                &mdash; The relative (to root) path for this request.                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">query()</h3>
+                <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">query( <span class="argument">$arg</span>) : string</pre>
-                <p><em>Get a query string argument, if it exists, from $_SERVER[&#039;QUERY_STRING&#039;]</em></p>
-                <p>Ex: http://www.example.com/path/to/here/?p=1&amp;q=2
-    $request->query("p") => 1
-    $request->query("q") => 2
-    $request->query("r") => null</p>
+                <pre class="signature" style="margin-right: 54px;">__construct( <span class="argument">$request</span>,  <span class="argument">$query</span>,  <span class="argument">$files</span>,  <span class="argument">$server</span>,  <span class="argument">$headers</span>)</pre>
+                <p><em></em></p>
+                
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td></td>
-                                <td>$arg</td>
+                                <td>$request</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$query</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$files</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$server</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$headers</td>
                                 <td>
 </td>
                             </tr>
                                             </table>
                 
                 
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                                    <tr>
+                        <th>
+                            constructor
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create" name="method_create" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">create()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create() : \Request</pre>
+                <p><em>Constructs a new Request object based on the current PHP super globals.</em></p>
+                
+
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Request.html">\Request</a>
+                                            &mdash; <p>A new request object.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getRequest" name="method_getRequest" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getRequest()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getRequest( <span class="argument">$key</span>,  <span class="argument">$default</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$default</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setRequest" name="method_setRequest" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setRequest()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setRequest( <span class="argument">$key</span>,  <span class="argument">$value</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$value</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getQuery" name="method_getQuery" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getQuery()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getQuery( <span class="argument">$key</span>,  <span class="argument">$default</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$default</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setQuery" name="method_setQuery" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setQuery()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setQuery( <span class="argument">$key</span>,  <span class="argument">$value</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$value</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getFile" name="method_getFile" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getFile()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getFile( <span class="argument">$key</span>,  <span class="argument">$default</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$default</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setFile" name="method_setFile" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setFile()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setFile( <span class="argument">$key</span>,  <span class="argument">$value</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$value</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getServer" name="method_getServer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getServer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getServer( <span class="argument">$key</span>,  <span class="argument">$default</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$default</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setServer" name="method_setServer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setServer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setServer( <span class="argument">$key</span>,  <span class="argument">$value</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$value</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getHeader" name="method_getHeader" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getHeader()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getHeader( <span class="argument">$key</span>,  <span class="argument">$default</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$default</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setHeader" name="method_setHeader" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setHeader()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setHeader( <span class="argument">$key</span>,  <span class="argument">$value</span>)</pre>
+                <p><em></em></p>
+                
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$key</td>
+                                <td>
+</td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$value</td>
+                                <td>
+</td>
+                            </tr>
+                                            </table>
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getURL" name="method_getURL" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getURL()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getURL() : string</pre>
+                <p><em>Get the fully resolved URL string.</em></p>
+                
+
+
+                
+                
                                     <h4>Returns</h4>
                     string
-                                            &mdash; <p>The query argument value or null</p>
+                                            &mdash; <p>The URL.</p>
 
                                                 </article>
         </div>
@@ -521,81 +1283,34 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_ipaddress" name="method_ipaddress" class="anchor"></a>
+            <a id="method_makeURL" name="method_makeURL" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">ipaddress()</h3>
+                <h3 class="public ">makeURL()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">ipaddress() : string</pre>
-                <p><em>Get the IP address of the request</em></p>
+                <pre class="signature" style="margin-right: 54px;">makeURL(string <span class="argument">$path</span>, bool <span class="argument">$ssl</span>)</pre>
+                <p><em>Makes a fully resolved URL string given a path relative to the
+base path.</em></p>
                 
-
-
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The IP address</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_link" name="method_link" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">link()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">link(string <span class="argument">$subpath</span>, bool <span class="argument">$print</span>, bool <span class="argument">$ssl</span>) : string</pre>
-                <p><em>Builds a link from the base and the given subpath (or relative path)</em></p>
-                <p>Ex: link("/about/team/") => http://www.example.com/about/team/</p>
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td>string</td>
-                                <td>$subpath</td>
-                                <td><p>The relative path</p>
-</td>
-                            </tr>
-                                                    <tr>
-                                <td>bool</td>
-                                <td>$print</td>
-                                <td><p>If true, then echo the link, otherwise return the string</p>
+                                <td>$path</td>
+                                <td><p>The relative url path.</p>
 </td>
                             </tr>
                                                     <tr>
                                 <td>bool</td>
                                 <td>$ssl</td>
-                                <td><p>Force the link to SSL, if not already</p>
+                                <td><p>Force the url to be secure.</p>
 </td>
                             </tr>
                                             </table>
                 
                 
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The link if $print = false</p>
-
-                                                </article>
+                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -618,65 +1333,12 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_is" name="method_is" class="anchor"></a>
+            <a id="method_getBaseURL" name="method_getBaseURL" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">is()</h3>
+                <h3 class="public ">getBaseURL()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">is(\[string] <span class="argument">$prop</span>) : \[boolean]</pre>
-                <p><em>Check for a particular property of the request.</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>\[string]</td>
-                                <td>$prop</td>
-                                <td><p>The property to check for.
-    These include:
-        "get"
-        "post"
-        "put"
-        "ajax"
-        "ssl"</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    \[boolean]
-                                            &mdash; <p>True if the request is $prop</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_method" name="method_method" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">method()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">method() : string</pre>
-                <p><em>Get the HTTP method type</em></p>
+                <pre class="signature" style="margin-right: 54px;">getBaseURL() : string</pre>
+                <p><em>Get the fully resolved base URL string.</em></p>
                 
 
 
@@ -684,7 +1346,7 @@
                 
                                     <h4>Returns</h4>
                     string
-                                            &mdash; <p>The HTTP request method.</p>
+                                            &mdash; <p>The base URL.</p>
 
                                                 </article>
         </div>
@@ -709,23 +1371,18 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_getHeaders" name="method_getHeaders" class="anchor"></a>
+            <a id="method_getMethod" name="method_getMethod" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">getHeaders()</h3>
+                <h3 class="public ">getMethod()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getHeaders() : array</pre>
-                <p><em>Gets an array of key =&gt; value pairs for each header sent by the
-HTTP request.</em></p>
+                <pre class="signature" style="margin-right: 54px;">getMethod()</pre>
+                <p><em></em></p>
                 
 
 
                 
                 
-                                    <h4>Returns</h4>
-                    array
-                                            &mdash; <p>The HTTP request headers.</p>
-
-                                                </article>
+                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -748,22 +1405,18 @@ HTTP request.</em></p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_getData" name="method_getData" class="anchor"></a>
+            <a id="method_isSecure" name="method_isSecure" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">getData()</h3>
+                <h3 class="public ">isSecure()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getData() : array</pre>
-                <p><em>Gets the request data as an argument array.</em></p>
+                <pre class="signature" style="margin-right: 54px;">isSecure()</pre>
+                <p><em></em></p>
                 
 
 
                 
                 
-                                    <h4>Returns</h4>
-                    array
-                                            &mdash; <p>An array of key value pairs.</p>
-
-                                                </article>
+                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -786,32 +1439,18 @@ HTTP request.</em></p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_get" name="method_get" class="anchor"></a>
+            <a id="method_getScheme" name="method_getScheme" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">get()</h3>
+                <h3 class="public ">getScheme()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">get(string <span class="argument">$key</span>) : string|null|array</pre>
-                <p><em>Get a specific GET parameter, or get the entire array of GET parameters</em></p>
+                <pre class="signature" style="margin-right: 54px;">getScheme()</pre>
+                <p><em></em></p>
                 
 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$key</td>
-                                <td><p>The key to retrieve</p>
-</td>
-                            </tr>
-                                            </table>
                 
                 
-                                    <h4>Returns</h4>
-                    string|null|array
-                                            &mdash; <p>The value of the key if $key is provided, null if the key does not exist,
-    or the array of $_GET params if no $key is supplied</p>
-
-                                                </article>
+                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -834,32 +1473,18 @@ HTTP request.</em></p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_post" name="method_post" class="anchor"></a>
+            <a id="method_getHost" name="method_getHost" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">post()</h3>
+                <h3 class="public ">getHost()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">post(string <span class="argument">$key</span>) : string|null|array</pre>
-                <p><em>Get a specific POST parameter, or get the entire array of POST parameters</em></p>
+                <pre class="signature" style="margin-right: 54px;">getHost()</pre>
+                <p><em></em></p>
                 
 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$key</td>
-                                <td><p>The key to retrieve</p>
-</td>
-                            </tr>
-                                            </table>
                 
                 
-                                    <h4>Returns</h4>
-                    string|null|array
-                                            &mdash; <p>The value of the key if $key is provided, null if the key does not exist,
-    or the array of $_POST params if no $key is supplied</p>
-
-                                                </article>
+                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -882,32 +1507,154 @@ HTTP request.</em></p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_files" name="method_files" class="anchor"></a>
+            <a id="method_getURI" name="method_getURI" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">files()</h3>
+                <h3 class="public ">getURI()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">files(string <span class="argument">$key</span>) : string|null|array</pre>
-                <p><em>Get a specific FILES parameter, or get the entire array of FILES parameters</em></p>
+                <pre class="signature" style="margin-right: 54px;">getURI()</pre>
+                <p><em></em></p>
                 
 
 
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$key</td>
-                                <td><p>The key to retrieve</p>
-</td>
-                            </tr>
-                                            </table>
                 
                 
-                                    <h4>Returns</h4>
-                    string|null|array
-                                            &mdash; <p>The value of the key if $key is provided, null if the key does not exist,
-    or the array of $_FILES params if no $key is supplied</p>
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
 
-                                                </article>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getPort" name="method_getPort" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getPort()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getPort()</pre>
+                <p><em></em></p>
+                
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getQueryString" name="method_getQueryString" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getQueryString()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getQueryString()</pre>
+                <p><em></em></p>
+                
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getBasePath" name="method_getBasePath" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getBasePath()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getBasePath()</pre>
+                <p><em></em></p>
+                
+
+
+                
+                
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getPath" name="method_getPath" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getPath()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getPath()</pre>
+                <p><em></em></p>
+                
+
+
+                
+                
+                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -977,7 +1724,7 @@ HTTP request.</em></p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on October 19th, 2013 at 20:40.
+                    on December 5th, 2013 at 01:57.
                 </section>
             </section>
         </section>

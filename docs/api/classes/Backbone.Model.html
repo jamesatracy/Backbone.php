@@ -139,37 +139,37 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-159024115"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1424186310"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-159024115" class="accordion-body collapse in">
+            <div id="namespace-1424186310" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-700660559"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-845045636"></a>
                                 <a href="../namespaces/Backbone.html" style="margin-left: 30px; padding-left: 0">Backbone</a>
             </div>
-            <div id="namespace-700660559" class="accordion-body collapse ">
+            <div id="namespace-845045636" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
                     <ul>
                                                                                                     <li class="class"><a href="../classes/Backbone.Validate.html">Validate</a></li>
-                                                    <li class="class"><a href="../classes/Backbone.MySQL.html">MySQL</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Response.html">Response</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Model.html">Model</a></li>
+                                                    <li class="class"><a href="../classes/Backbone.ModelQuery.html">ModelQuery</a></li>
                                                     <li class="class"><a href="../classes/Backbone.View.html">View</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Request.html">Request</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Sanitize.html">Sanitize</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Schema.html">Schema</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Collection.html">Collection</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Events.html">Events</a></li>
-                                                    <li class="class"><a href="../classes/Backbone.Connections.html">Connections</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Router.html">Router</a></li>
                                                     <li class="class"><a href="../classes/Backbone.Html.html">Html</a></li>
-                                                    <li class="class"><a href="../classes/Backbone.DataSource.html">DataSource</a></li>
+                                                    <li class="class"><a href="../classes/Backbone.Query.html">Query</a></li>
+                                                    <li class="class"><a href="../classes/Backbone.DB.html">DB</a></li>
                                             </ul>
                 </div>
             </div>
@@ -198,8 +198,8 @@
 
                     <h1><small>\Backbone</small>Model</h1>
                     <p><em>Base Model class for database objects.</em></p>
-                    <p>Provides basic methods for creating, updating, fetching, and validating model data.
-This class can be used on its own or extended to implement more specialized model functionality.</p>
+                    <p>Provides basic methods for creating, updating, fetching, and
+validating model data.</p>
 
 
                     <section id="summary">
@@ -217,15 +217,14 @@ This class can be used on its own or extended to implement more specialized mode
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.Schema.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Backbone.Model.html#method___construct" class="">__construct()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_fetch" class="">fetch()</a><br />
+                                                                    <a href="../classes/Backbone.Model.html#method_create" class="">create()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_get" class="">get()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_set" class="">set()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_save" class="">save()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_delete" class="">delete()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_validateModel" class="">validateModel()</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#method_model" class="">model()</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#method_collection" class="">collection()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_toJSON" class="">toJSON()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_getAttributes" class="">getAttributes()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_has" class="">has()</a><br />
@@ -236,7 +235,6 @@ This class can be used on its own or extended to implement more specialized mode
                                                                     <a href="../classes/Backbone.Model.html#method_hasChanged" class="">hasChanged()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_changedAttributes" class="">changedAttributes()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method_sanitations" class="">sanitations()</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#method_getTable" class="">getTable()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method___get" class="">__get()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method___set" class="">__set()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method___isset" class="">__isset()</a><br />
@@ -251,11 +249,10 @@ This class can be used on its own or extended to implement more specialized mode
                                                                     <a href="../classes/Backbone.Schema.html#method_hasErrors" class="">hasErrors()</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#method_validate" class="">validate()</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#method_defaultValues" class="">defaultValues()</a><br />
+                                                                    <a href="../classes/Backbone.Schema.html#method_loadSchema" class="">loadSchema()</a><br />
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.Model.html#property_hasModels" class="">$hasModels</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#property_hasCollections" class="">$hasCollections</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#property_where" class="">$where</a><br />
+                                                                    <a href="../classes/Backbone.Model.html#property_table" class="">$table</a><br />
                                                                     <a href="../classes/Backbone.Model.html#property_created" class="">$created</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#property_schemaFile" class="">$schemaFile</a><br />
                                                             </section>
@@ -265,21 +262,14 @@ This class can be used on its own or extended to implement more specialized mode
                         </section>
                         <section class="row-fluid protected">
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.Model.html#method__with" class="">_with()</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#method__fetchModel" class="">_fetchModel()</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#method__fetchCollection" class="">_fetchCollection()</a><br />
                                                                     <a href="../classes/Backbone.Model.html#method__applySanitation" class="">_applySanitation()</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#method__validateField" class="">_validateField()</a><br />
                                                             </section>
                             <section class="span4">
-                                                                    <a href="../classes/Backbone.Model.html#property__table" class="">$_table</a><br />
                                                                     <a href="../classes/Backbone.Model.html#property__attributes" class="">$_attributes</a><br />
                                                                     <a href="../classes/Backbone.Model.html#property__changed" class="">$_changed</a><br />
                                                                     <a href="../classes/Backbone.Model.html#property__sanitations" class="">$_sanitations</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#property__models" class="">$_models</a><br />
-                                                                    <a href="../classes/Backbone.Model.html#property__collections" class="">$_collections</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#property__schema_cache" class="">$_schema_cache</a><br />
-                                                                    <a href="../classes/Backbone.Schema.html#property__db" class="">$_db</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#property__fields" class="">$_fields</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#property__id" class="">$_id</a><br />
                                                                     <a href="../classes/Backbone.Schema.html#property__errors" class="">$_errors</a><br />
@@ -346,67 +336,17 @@ This class can be used on its own or extended to implement more specialized mode
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property_hasModels" name="property_hasModels" class="anchor"></a>
+            <a id="property_table" name="property_table" class="anchor"></a>
             <article class="property">
-                <h3 class="public ">$hasModels</h3>
-                <pre class="signature">$hasModels : array</pre>
+                <h3 class="public ">$table</h3>
+                <pre class="signature">$table : string</pre>
                 <p><em></em></p>
                 
 
 
                                 <h4>Type</h4>
-                array
-                &mdash; Array of has one model association definitions                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_hasCollections" name="property_hasCollections" class="anchor"></a>
-            <article class="property">
-                <h3 class="public ">$hasCollections</h3>
-                <pre class="signature">$hasCollections : array</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                array
-                &mdash; Array of has one collection association definitions                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_where" name="property_where" class="anchor"></a>
-            <article class="property">
-                <h3 class="public ">$where</h3>
-                <pre class="signature">$where : array</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                array
-                &mdash; Array of additional where conditions to be applied to every model db action                            </article>
+                string
+                &mdash; The database table name associated with this model                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -431,7 +371,7 @@ This class can be used on its own or extended to implement more specialized mode
 
                                 <h4>Type</h4>
                 string
-                &mdash; Field to update with current timestamp when model is created                            </article>
+                &mdash; The field name of the created timestamp, if any                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -472,31 +412,6 @@ This class can be used on its own or extended to implement more specialized mode
     </div>
 
                                                     <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property__table" name="property__table" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$_table</h3>
-                <pre class="signature">$_table : string</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                string
-                &mdash; The database table name associated with this model                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
         <div class="span8 content class">
             <a id="property__attributes" name="property__attributes" class="anchor"></a>
             <article class="property">
@@ -573,56 +488,6 @@ This class can be used on its own or extended to implement more specialized mode
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="property__models" name="property__models" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$_models</h3>
-                <pre class="signature">$_models : array</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                array
-                &mdash; Hash map of model associations                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property__collections" name="property__collections" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$_collections</h3>
-                <pre class="signature">$_collections : array</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                array
-                &mdash; Hash map of collection associations                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
             <a id="property__schema_cache" name="property__schema_cache" class="anchor"></a>
             <article class="property">
                 <h3 class="protected ">$_schema_cache</h3>
@@ -634,33 +499,6 @@ This class can be used on its own or extended to implement more specialized mode
                                 <h4>Type</h4>
                 array
                 &mdash; A central cache for schema definitions                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                    <dt>Inherited from</dt>
-                    <dd><a href="../classes/Backbone.Schema.html"><div class="path-wrapper">\Backbone\Schema</div></a></dd>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property__db" name="property__db" class="anchor"></a>
-            <article class="property">
-                <h3 class="protected ">$_db</h3>
-                <pre class="signature">$_db : object</pre>
-                <p><em></em></p>
-                
-
-
-                                <h4>Type</h4>
-                object
-                &mdash; Database connection                            </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -769,41 +607,33 @@ This class can be used on its own or extended to implement more specialized mode
             <article class="method">
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(string <span class="argument">$connection</span>)</pre>
-                <p><em>Constructor</em></p>
+                <pre class="signature" style="margin-right: 54px;">__construct(array <span class="argument">$fields</span>)</pre>
+                <p><em>Constructs a new model with an optional set of initial values.</em></p>
                 
 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>string</td>
-                                <td>$connection</td>
-                                <td><p>The name of the database connection.</p>
+                                <td>array</td>
+                                <td>$fields</td>
+                                <td><p>Optional initial values as key - value pairs.</p>
 </td>
                             </tr>
                                             </table>
                 
-                                    <h4>Throws</h4>
-                    <dl>
-                                                    <dt>\Backbone\RuntimeException</dt>
-                            <dd>
-</dd>
-                                                                    </dl>
                 
                             </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
-                                                    <dt>Inherited from</dt>
-                    <dd><a href="../classes/Backbone.Schema.html"><div class="path-wrapper">\Backbone\Schema</div></a></dd>
-                                                            </dl>
+                                                                            </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
                                     <tr>
                         <th>
-                            constructor
+                            since
                         </th>
                         <td>
                                                             
@@ -820,9 +650,14 @@ This class can be used on its own or extended to implement more specialized mode
             <article class="method">
                 <h3 class="public ">fetch()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">fetch(int <span class="argument">$id</span>, array <span class="argument">$options</span>) : bool</pre>
-                <p><em>Fetch a model from the server based on the primary key</em></p>
-                
+                <pre class="signature" style="margin-right: 54px;">fetch(int <span class="argument">$id</span>) : \Backbone\Model|\Backbone\ModelQuery</pre>
+                <p><em>Fetch one or more models from the database.</em></p>
+                <p>When a primary key value is given, the model with that key is
+returned or false if it does not exist.</p>
+
+<p>When no primary key is given, the method returns a query builder
+object for constructing more complex select queries. The query builder
+always returns the results as a collection.</p>
 
 
                                     <h4>Parameters</h4>
@@ -830,28 +665,83 @@ This class can be used on its own or extended to implement more specialized mode
                                                     <tr>
                                 <td>int</td>
                                 <td>$id</td>
-                                <td><p>The primary key</p>
-</td>
-                            </tr>
-                                                    <tr>
-                                <td>array</td>
-                                <td>$options</td>
-                                <td><p>Hash map of options.
-"with" => array of model/collection associations to pull in with
-    this fetch request.</p>
+                                <td><p>The primary key (optional)</p>
 </td>
                             </tr>
                                             </table>
                 
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\InvalidArgumentException|\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
                 
                                     <h4>Returns</h4>
-                    bool
-                                            &mdash; <p>True if the operation succeeded, false otherwise</p>
+                    <a href="../classes/Backbone.Model.html">\Backbone\Model</a>|<a href="../classes/Backbone.ModelQuery.html">\Backbone\ModelQuery</a>
+                                            &mdash; <p>Returns the Model if a key is given.</p>
 
                                                 </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_create" name="method_create" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">create()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">create(array <span class="argument">$data</span>) : \Backbone\Model|bool</pre>
+                <p><em>Creates a new model and saves it to the database.</em></p>
+                <p>This is functionally equivalent to performing:
+$model = new Model($data);
+$model->save();</p>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$data</td>
+                                <td><p>The attributes to set on the new model.</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Backbone.Model.html">\Backbone\Model</a>|bool
+                                            &mdash; <p>The new model object or false if it failed.</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
                                                             <dl>
                                                                             </dl>
             <h2>Tags</h2>
@@ -979,6 +869,12 @@ to the server to be inserted.</p>
 
 
                 
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
                 
                                     <h4>Returns</h4>
                     bool
@@ -1017,6 +913,12 @@ to the server to be inserted.</p>
 
 
                 
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
                 
                                     <h4>Returns</h4>
                     bool
@@ -1083,135 +985,15 @@ to the server to be inserted.</p>
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_model" name="method_model" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">model()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">model(string <span class="argument">$key</span>, bool <span class="argument">$fetch</span>) : array|null</pre>
-                <p><em>Get a reference to an associated model, if it exists.</em></p>
-                <p>The model must have been fetched via the "with" option or $fetch
-must be set to true.</p>
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$key</td>
-                                <td><p>This model's foreign key to the other model.</p>
-</td>
-                            </tr>
-                                                    <tr>
-                                <td>bool</td>
-                                <td>$fetch</td>
-                                <td><p>Whether or not to force a fetch of the model</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    array|null
-                                            &mdash; <p>Returns the model object, or null</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_collection" name="method_collection" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">collection()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">collection(string <span class="argument">$key</span>, bool <span class="argument">$fetch</span>) : array|null</pre>
-                <p><em>Get a reference to an associated collection, if it exists.</em></p>
-                <p>The collection must have been fetched via the "with" option or $fetch
-must be set to true.</p>
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>string</td>
-                                <td>$key</td>
-                                <td><p>This collection's table name.</p>
-</td>
-                            </tr>
-                                                    <tr>
-                                <td>bool</td>
-                                <td>$fetch</td>
-                                <td><p>Whether or not to force a fetch of the collection</p>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    array|null
-                                            &mdash; <p>Returns the collection object, or null</p>
-
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
             <a id="method_toJSON" name="method_toJSON" class="anchor"></a>
             <article class="method">
                 <h3 class="public ">toJSON()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">toJSON(bool <span class="argument">$compact</span>) : array</pre>
+                <pre class="signature" style="margin-right: 54px;">toJSON() : array</pre>
                 <p><em>Return a JSON representation of the model.</em></p>
                 <p>This is not a string, but an associative array that you can pass to json_encode().</p>
 
-<p>The JSON is compacted by leaving out the field names and returning the values
-as a plain array.</p>
 
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>bool</td>
-                                <td>$compact</td>
-                                <td><p>Whether or not to use a compact representation</p>
-</td>
-                            </tr>
-                                            </table>
                 
                 
                                     <h4>Returns</h4>
@@ -1580,44 +1362,6 @@ as a plain array.</p>
                 
                 
                             </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_getTable" name="method_getTable" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getTable()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getTable() : string</pre>
-                <p><em>Get the table name used for this model</em></p>
-                
-
-
-                
-                
-                                    <h4>Returns</h4>
-                    string
-                                            &mdash; <p>The table name</p>
-
-                                                </article>
         </div>
         <aside class="span4 detailsbar">
             <h1><i class="icon-arrow-down"></i></h1>
@@ -2271,140 +2015,63 @@ in the active schema.</p>
         </aside>
     </div>
 
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_loadSchema" name="method_loadSchema" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">loadSchema()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">loadSchema(string <span class="argument">$table</span>) : array</pre>
+                <p><em>Loads a schema from an existing database table.</em></p>
+                <p>May also pull from a schema file or from the intrnal cache.</p>
+
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$table</td>
+                                <td><p>The table name</p>
+</td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\RuntimeException</dt>
+                            <dd>
+</dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array
+                                            &mdash; <p>The schema structure</p>
+
+                                                </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                            <span class="label label-info">static</span>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Backbone.Schema.html"><div class="path-wrapper">\Backbone\Schema</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            
+
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
                                                     <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method__with" name="method__with" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">_with()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">_with( <span class="argument">$with</span>)</pre>
-                <p><em>Internal function that loops over with options and pulls in associated models/collections.</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td></td>
-                                <td>$with</td>
-                                <td>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method__fetchModel" name="method__fetchModel" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">_fetchModel()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">_fetchModel( <span class="argument">$key</span>) : mixed</pre>
-                <p><em>Internal function to fetch an associated model</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td></td>
-                                <td>$key</td>
-                                <td>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    mixed
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method__fetchCollection" name="method__fetchCollection" class="anchor"></a>
-            <article class="method">
-                <h3 class="protected ">_fetchCollection()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">_fetchCollection( <span class="argument">$key</span>) : mixed</pre>
-                <p><em>Internal function to fetch an associated collection</em></p>
-                
-
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td></td>
-                                <td>$key</td>
-                                <td>
-</td>
-                            </tr>
-                                            </table>
-                
-                
-                                    <h4>Returns</h4>
-                    mixed
-                                                </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            
-
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
         <div class="span8 content class">
             <a id="method__applySanitation" name="method__applySanitation" class="anchor"></a>
             <article class="method">
@@ -2564,7 +2231,7 @@ in the active schema.</p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on November 1st, 2013 at 00:39.
+                    on November 14th, 2013 at 01:53.
                 </section>
             </section>
         </section>

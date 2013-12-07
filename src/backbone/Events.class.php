@@ -8,9 +8,6 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-namespace Backbone;
-use \Backbone as Backbone;
-
 /**
  * Class for triggering and delegating events and callbacks.
  *
@@ -61,18 +58,23 @@ class Events
 	}
 	
 	/**
-	 * Trigger an event
+	 * Trigger an event. You can pass as many additional params to trigger
+	 * as you like - listeners will receive them.
 	 *
 	 * @since 0.1.0
 	 * @param string $event The event name
-	 * @param mixed $params Parameters to pass along with the event
 	 * @return bool False if the event was cancelled, True otherwise
 	 */
-	public static function trigger($event, $params = null)
+	public static function trigger($event)
 	{
+		$params = array();
+		if(func_num_args() > 1) {
+			$params = array_slice(func_get_args(), 1);
+		}
 		if(isset(self::$_events[$event])) {
 			return self::dispatch(self::$_events[$event], $params);
 		}
+		return null;
 	}
 	
 	/**
@@ -87,7 +89,8 @@ class Events
 	{
 	    $result = true;
 		foreach($callbacks as $callable) {
-			if(call_user_func($callable, $params) === false) {
+			$result = call_user_func_array($callable, $params);
+			if($result === false) {
 				// stop further propagation
 				$result = false;
 				break;
@@ -95,7 +98,5 @@ class Events
 		}
 		return $result;
 	}
-	
 };
-
 ?>

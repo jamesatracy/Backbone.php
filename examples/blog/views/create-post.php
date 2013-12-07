@@ -1,5 +1,7 @@
 <?php
 $this->extend("layout");
+$this->set("title", "Create Blog Post");
+$request = $this->request;
 ?>
 
 <?php $this->define("content"); ?>
@@ -7,13 +9,13 @@ $this->extend("layout");
 	<fieldset>
 		<strong>Title:</strong>
 		<br/>
-		<input type="text" id="post_title" name="post_title" value="<?php echo Backbone\Request::post("post_title"); ?>" style="width:100%" />
+		<input type="text" id="post_title" name="post_title" value="<?php echo $request->getRequest("post_title"); ?>" style="width:100%" />
 		<strong>Author:</strong>
 		<br/>
-		<input type="text" id="post_author" name="post_author" value="<?php echo Backbone\Request::post("post_author"); ?>" style="width:100%" />
+		<input type="text" id="post_author" name="post_author" value="<?php echo $request->getRequest("post_author"); ?>" style="width:100%" />
 		<strong>Post:</strong>
 		<br/>
-		<textarea id="post_body" name="post_body" rows="20" style="width:100%"><?php echo Backbone\Request::post("post_body"); ?></textarea>
+		<textarea id="post_body" name="post_body" rows="20" style="width:100%"><?php echo $request->getRequest("post_body"); ?></textarea>
 		<br/>
 		<?php if($this->get("errors")): ?>
 			<div style="color:red;font-weight:bold"><?php echo $this->get("errors"); ?></div>

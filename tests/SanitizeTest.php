@@ -10,8 +10,6 @@
 
 Backbone::uses("Sanitize");
 
-use Backbone\Sanitize as Sanitize;
-
 /**
  * PHPUnit Test suite for Sanitize class
  *
@@ -27,7 +25,7 @@ class SanitizeTest extends PHPUnit_Framework_TestCase
 {
     public function testSanity()
     {
-        $this->assertTrue(class_exists("Backbone\Sanitize"));
+        $this->assertTrue(class_exists("Sanitize"));
     }
 }
 ?>

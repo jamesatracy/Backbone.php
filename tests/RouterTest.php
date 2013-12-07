@@ -8,110 +8,11 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses("Router,Request,View");
+Backbone::uses("Router", "Request");
 
-use Backbone\Router as Router;
-use Backbone\Request as Request;
-use Backbone\View as View;
-
-/**
- * Test View class
- */
-class TestView extends View
+function global_func_callback()
 {
-	public $test = true;
-}
-
-/**
- * Test router for testing.
- */
-class TestRouter extends Router
-{
-	public $methodCalled = false;
-	public $argsPassed = array();
-	public $preMatchHookCalled = false;
-	public $preRouteHookCalled = false;
-	public $postRouteHookCalled = false;
-	
-	public function __construct()
-	{
-		$this->add(
-			array(
-				"/" => "onRoute",
-				"/path/" => "onRoute",
-				"/double/path/" => "onRoute",
-				"/test-number-param/:number/" => "onRoute",
-				"/test-alpha-param/:alpha/" => "onRoute",
-				"/test-alphanum-param/:alphanum/" => "onRoute"
-			)
-		);
-	}
-	
-	public function onRoute()
-	{
-		$this->methodCalled = true;
-		$this->argsPassed = func_get_args();
-	}
-	
-	public function onPreMatchHook($url)
-	{
-		$this->preMatchHookCalled = true;
-		return true;
-	}
-	
-	public function onPreRouteHook($url)
-	{
-		$this->preRouteHookCalled = true;
-		return true;
-	}
-	
-	public function onPostRouteHook($response)
-	{
-		$this->postRouteHookCalled = true;
-		return true;
-	}
-	
-	public function getView()
-	{
-		return $this->view;
-	}
-	
-	protected function createView()
-	{
-		return new TestView();
-	}
-}
-
-/**
- * Test router for testing.
- */
-class TestMethodRouter extends Router
-{
-	public $methodCalled = false;
-	public $argsPassed = array();
-	
-	public function __construct()
-	{
-		$this->add(
-			array(
-				"/path/" => array(
-				    "GET" => "onRoute"
-				),
-				"/another/path/" => array(
-				    "PUT" => "onRoute" ,
-				    "DELETE" => "onRoute"
-				)
-			)
-		);
-		
-		$this->post("/a/path/to/post/", "onRoute");
-	}
-	
-	public function onRoute()
-	{
-		$this->methodCalled = true;
-		$this->argsPassed = func_get_args();
-	}
+	return;
 }
 
 /**
@@ -127,162 +28,195 @@ class TestMethodRouter extends Router
  */
 class RouterTest extends PHPUnit_Framework_TestCase
 {
-	public function setUp()
+    protected static $methodCalled = false;
+    protected static $argsPassed = array();
+    
+    public function setUp()
+    {
+        Router::clear();
+        self::$methodCalled = false;
+        self::$argsPassed = array();
+    }
+    
+    public function onRoute()
+    {
+        self::$methodCalled = true;
+        self::$argsPassed = func_get_args();
+    }
+    
+	public function test_Sanity()
 	{
-		Backbone::$root = "/";
-		$this->router = new TestRouter();
+		$this->assertTrue(class_exists("Router"));
 	}
 	
-	/** Testing route behaviors */
 	public function testBehavior_indexRoute()
 	{
-		$_SERVER['REQUEST_URI'] = "/";
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertEmpty($this->router->argsPassed);
+	    Router::get("/", "global_func_callback");
+	    
+	    // test with root == /
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
 		
 		// test with root == /path/
-		Backbone::$root = "/path/";
-		$_SERVER['REQUEST_URI'] = "/path/";
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertEmpty($this->router->argsPassed);
-		
-		// test custom view class instantiated
-		$this->assertEquals(get_class($this->router->getView()), "TestView");
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/",
+				'SCRIPT_NAME' => "/path/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
 	}
 	
 	public function testBehavior_simplePathRoute()
 	{
-		$_SERVER['REQUEST_URI'] = "/path/";
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/path/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertEmpty($this->router->argsPassed);
+	    Router::get("/path/", "global_func_callback");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
+	}
+	
+	public function testBehavior_unmatchedRoute()
+	{
+	    Router::get("/", "global_func_callback");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) == false);
 	}
 	
 	public function testBehavior_doublePathRoute()
 	{
-		$_SERVER['REQUEST_URI'] = "/double/path/";
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/double/path/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertEmpty($this->router->argsPassed);
+	    Router::get("/double/path/", "global_func_callback");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/double/path/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
+	}
+	
+	public function testBehavior_simpleControllerRoute()
+	{
+	    Router::get("/path/", "/tests/RouterTest@onRoute");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
+		$this->assertTrue(self::$methodCalled);
 	}
 	
 	public function testBehavior_numberParamRoute()
 	{
-		$_SERVER['REQUEST_URI'] = "/test-number-param/12/";
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/test-number-param/:number/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertCount(1, $this->router->argsPassed);
-		$this->assertEquals($this->router->argsPassed[0], 12);
-		
-		$_SERVER['REQUEST_URI'] = "/test-number-param/abc/";
-		$this->assertFalse($this->router->route());
+	    Router::get("/path/:id/", "/tests/RouterTest@onRoute");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/12/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
+		$this->assertTrue(self::$methodCalled);
+		// first argument is the request object
+		$this->assertCount(2, self::$argsPassed);
+		$this->assertEquals(get_class(self::$argsPassed[0]), "Request");
+		$this->assertEquals(self::$argsPassed[1], 12);
 	}
 	
 	public function testBehavior_alphaParamRoute()
 	{
-		$_SERVER['REQUEST_URI'] = "/test-alpha-param/abc/";
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/test-alpha-param/:alpha/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertCount(1, $this->router->argsPassed);
-		$this->assertEquals($this->router->argsPassed[0], "abc");
-		
-		$_SERVER['REQUEST_URI'] = "/test-alpha-param/12/";
-		$this->assertFalse($this->router->route());
+		Router::get("/path/:name/", "/tests/RouterTest@onRoute");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/abc/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
+		$this->assertTrue(self::$methodCalled);
+		// first argument is the request object
+		$this->assertCount(2, self::$argsPassed);
+		$this->assertEquals(get_class(self::$argsPassed[0]), "Request");
+		$this->assertEquals(self::$argsPassed[1], "abc");
 	}
 	
-	public function testBehavior_alphanumParamRoute()
+	public function testBehavior_multipleParamRoute()
 	{
-		$_SERVER['REQUEST_URI'] = "/test-alphanum-param/abc/";
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/test-alphanum-param/:alphanum/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertCount(1, $this->router->argsPassed);
-		$this->assertEquals($this->router->argsPassed[0], "abc");
-		
-		$_SERVER['REQUEST_URI'] = "/test-alphanum-param/12/";
-		$this->router->methodCalled = false;
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/test-alphanum-param/:alphanum/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertCount(1, $this->router->argsPassed);
-		$this->assertEquals($this->router->argsPassed[0], "12");
-		
-		$_SERVER['REQUEST_URI'] = "/test-alphanum-param/abc12/";
-		$this->router->methodCalled = false;
-		$this->assertTrue($this->router->route());
-		$this->assertEquals($this->router->getMatchedPattern(), "/test-alphanum-param/:alphanum/");
-		$this->assertTrue($this->router->methodCalled);
-		$this->assertCount(1, $this->router->argsPassed);
-		$this->assertEquals($this->router->argsPassed[0], "abc12");
+		Router::get("/path/:id/:name/", "/tests/RouterTest@onRoute");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "GET",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/12/abc/"
+			)
+		);
+		$this->assertTrue(Router::dispatch($request) !== false);
+		$this->assertTrue(self::$methodCalled);
+		// first argument is the request object
+		$this->assertCount(3, self::$argsPassed);
+		$this->assertEquals(get_class(self::$argsPassed[0]), "Request");
+		$this->assertEquals(self::$argsPassed[1], 12);
+		$this->assertEquals(self::$argsPassed[2], "abc");
 	}
 	
-	public function testBehavior_httpMethodRoutes()
+	public function testBehavior_unmatchedMethodRoute()
 	{
-	    $router = new TestMethodRouter(); 
-		$_SERVER['REQUEST_URI'] = "/path/";
-		$_SERVER['REQUEST_METHOD'] = "GET";
-		$this->assertTrue($router->route());
-		$this->assertEquals($router->getMatchedPattern(), "/path/");
-		$this->assertTrue($router->methodCalled);
-		$this->assertEmpty($router->argsPassed);
-		
-		$_SERVER['REQUEST_METHOD'] = "POST";
-		$this->assertTrue($router->route());
-		$resp = $router->getResponse();
+	    Router::get("/path/", "global_func_callback");
+	    
+		$request = new Request(array(), array(), array(), 
+			array(
+				'REQUEST_METHOD' => "POST",
+				'SERVER_NAME' => "/",
+				'REQUEST_URI' => "/path/"
+			)
+		);
+		$resp = Router::dispatch($request);
+		$this->assertTrue($resp !== false);
+		$this->assertEquals(get_class($resp), "Response");
 		$this->assertEquals($resp->status(), 405);
-		
-		$_SERVER['REQUEST_URI'] = "/another/path/";
-		$_SERVER['REQUEST_METHOD'] = "PUT";
-		$this->assertTrue($router->route());
-		$this->assertEquals($router->getMatchedPattern(), "/another/path/");
-		$this->assertTrue($router->methodCalled);
-		$this->assertEmpty($router->argsPassed);
-		
-		$_SERVER['REQUEST_METHOD'] = "DELETE";
-		$this->assertTrue($router->route());
-		$this->assertEquals($router->getMatchedPattern(), "/another/path/");
-		$this->assertTrue($router->methodCalled);
-		$this->assertEmpty($router->argsPassed);
-		
-		$_SERVER['REQUEST_URI'] = "/unmatched/path/";
-		$this->assertFalse($router->route());
-		
-		$_SERVER['REQUEST_URI'] = "/a/path/to/post/";
-		$_SERVER['REQUEST_METHOD'] = "POST";
-		$this->assertTrue($router->route());
-		$this->assertEquals($router->getMatchedPattern(), "/a/path/to/post/");
-		$this->assertTrue($router->methodCalled);
-		$this->assertEmpty($router->argsPassed);
+		$this->assertEquals($resp->header("Allow"), "GET");
 	}
 	
-	/** Testing route hook methods */
-	public function testMethod_onPreMatchHook()
+	public function testBehavior_routeAliases()
 	{
-		$_SERVER['REQUEST_URI'] = "/";
-		$this->router->route();
-		$this->assertTrue($this->router->preMatchHookCalled);
-	}
-	
-	public function testMethod_onPreRouteHook()
-	{
-		$_SERVER['REQUEST_URI'] = "/";
-		$this->router->route();
-		$this->assertTrue($this->router->preRouteHookCalled);
-	}
-	
-	public function testMethod_onPostRouteHook()
-	{
-		$_SERVER['REQUEST_URI'] = "/";
-		$this->router->route();
-		$this->assertTrue($this->router->postRouteHookCalled);
+	    Router::get("/", "global_func_callback")->alias("home");
+	    Router::get("/path/", "global_func_callback")->alias("path");
+	    Router::get("/path/:name/:id/", "global_func_callback")->alias("path-name-id");
+	    
+		$this->assertEquals(Router::getRouteFromAlias("home"), "/");
+		$this->assertEquals(Router::getRouteFromAlias("path"), "/path/");
+		$this->assertEquals(Router::getRouteFromAlias("path-name-id", array("abc", 12)), "/path/abc/12/");
 	}
 }
 ?>

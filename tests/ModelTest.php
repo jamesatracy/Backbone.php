@@ -8,10 +8,18 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses(array("Model", "/tests/helpers/MockModel"));
+Backbone::uses("Model", "/tests/helpers/MockDB", "/tests/helpers/MockModel");
 
-use Backbone\Connections as Connections;
-use Backbone\Model as Model;
+/**
+ * Custom query class
+ */
+class MockModelQuery extends ModelQuery
+{
+    public function isMale()
+    {
+        return $this->where("gender", "Male");   
+    }
+}
 
 /**
  * PHPUnit Test suite for Model class
@@ -30,8 +38,7 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	
 	public function setUp()
 	{
-		Backbone::uses("/tests/helpers/MockDatabase");
-		$this->db = Connections::create("default", "MockDatabase", array("server" => "localhost", "user" => "root", "pass" => ""));
+		DB::connect("", "", "");
 	}
 	
 	public function testBehavior_DefaultValues()
@@ -119,9 +126,8 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	// Test the fetch methdod
 	public function testMethod_fetch()
 	{
-		$model = new MockModel();
-		
-		$this->db->setResultsData(array(
+		$pdo = DB::getPDO();
+		$pdo->setResultsData(array(
 			array(
 				"ID" => 1,
 				"first" => "John",
@@ -132,52 +138,127 @@ class ModelTest extends PHPUnit_Framework_TestCase
 				"created" => "0000-00-00 00:00:00"
 			)
 		));
-		$this->assertTrue($model->fetch(1));
-		$this->assertEquals($model->ID, 1);
-		$this->assertEquals($model->first, "John");
-		$this->assertEquals($model->last, "Doe");
-		$this->assertEquals($model->age, 21);
-		$this->assertEquals($model->gender, "Male");
+ 		$model = MockModel::fetch(1);
+ 		$this->assertNotNull($model);
+ 		$this->assertEquals($model->ID, 1);
+ 		$this->assertEquals($model->first, "John");
+ 		$this->assertEquals($model->last, "Doe");
+		
+ 		$this->assertEquals($model->age, 21);
+ 		$this->assertEquals($model->gender, "Male");
 		
 		// simulate no result
-		$this->db->setResultsData(array());
-		$this->assertFalse($model->fetch(1));
+		$pdo->setResultsData(array());
+		$this->assertNull(MockModel::fetch(1));
 		
 		// simulate invalid result
-		$this->db->setResultsData(null);
-		$this->assertFalse($model->fetch(1));
+		$pdo->setResultsData(null);
+		$this->assertNull(MockModel::fetch(1));
+	}
+	
+	// Test magic query filters
+	public function testbehavior_magicQueries()
+	{
+		$pdo = DB::getPDO();
+		$pdo->setResultsData(array(
+			array(
+				"ID" => 1,
+				"first" => "John",
+				"last" => "Doe",
+				"age" => 21,
+				"gender" => "Male",
+				"modified" => "0000-00-00 00:00:00",
+				"created" => "0000-00-00 00:00:00"
+			)
+		));
+
+        $query = MockModel::fetch()->gender("Male")->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE gender = 'Male'");
+        
+		$collection = MockModel::fetch()->gender("Male")->exec();
+ 		$this->assertEquals(get_class($collection), "Collection");
+ 		$this->assertEquals($collection->length, 1);
+ 		$this->assertEquals($collection->getAt(0)->gender, "Male");
+ 		
+ 		$query = MockModel::fetch()->age(">=", 21)->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE age >= '21'");
+ 		
+ 		$collection = MockModel::fetch()->age(">=", 21)->exec();
+ 		$this->assertEquals(get_class($collection), "Collection");
+ 		$this->assertEquals($collection->length, 1);
+ 		$this->assertEquals($collection->getAt(0)->gender, "Male");
+ 		
+ 		// AND conjunction
+ 		$query = MockModel::fetch()
+ 		->gender("Male")
+ 		->age(">=", 21)
+ 		->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE gender = 'Male' AND age >= '21'");
+        
+        // OR conjunction
+        $query = MockModel::fetch()
+ 		->gender("Male")
+ 		->or_age(">=", 21)
+ 		->getQuery();
+        $this->assertEquals($query, "SELECT * FROM mock WHERE gender = 'Male' OR age >= '21'");
+	}
+	
+	// Test custom query filters
+	public function testbehavior_customQueries()
+	{
+		$pdo = DB::getPDO();
+		$pdo->setResultsData(array(
+			array(
+				"ID" => 1,
+				"first" => "John",
+				"last" => "Doe",
+				"age" => 21,
+				"gender" => "Male",
+				"modified" => "0000-00-00 00:00:00",
+				"created" => "0000-00-00 00:00:00"
+			)
+		));
+		MockModel::$queryClass = "MockModelQuery";
+		$collection = MockModel::fetch()->isMale()->exec();
+ 		$this->assertEquals(get_class($collection), "Collection");
+ 		$this->assertEquals($collection->length, 1);
+ 		$this->assertEquals($collection->getAt(0)->gender, "Male");
+ 		MockModel::$queryClass = "ModelQuery";
 	}
 	
 	// Test the save() method
 	public function testMethod_save()
 	{
+	    $pdo = DB::getPDO();
 		$model = new MockModel();
 		
 		// save a new model with defaults
 		$this->assertTrue($model->save());
-		$this->assertEquals($this->db->getMethodCalled(), "insert");
+		$this->assertEquals($pdo->getMethodCalled(), "INSERT");
 		$this->assertFalse($model->isNew());
 		$this->assertEquals($model->ID, 1);
 		$this->assertEquals($model->age, 13);
 		$this->assertEquals($model->gender, "Male");
 		
 		// update the model; only changed field is updated
-		$model->set("age", 21);
-		$this->assertTrue($model->save());
-		$this->assertEquals($this->db->getMethodCalled(), "update");
-		$this->assertEquals($this->db->getResultsData(), array(array("age" => 21)));
+ 		$model->set("age", 21);
+ 		$this->assertTrue($model->save());
+ 		$this->assertEquals($pdo->getMethodCalled(), "UPDATE");
+ 		$this->assertEquals($pdo->getResultsData(), array(array("age" => 21)));
 	}
 	
 	// Test the delete() method
 	public function testMethod_delete()
 	{
+	    $pdo = DB::getPDO();
 		$model = new MockModel();
 		
 		// cannot delete new model
 		$this->assertFalse($model->delete());
 		$model->set("ID", 1);
+		$model->save();
 		$this->assertTrue($model->delete());
-		$this->assertEquals($this->db->getMethodCalled(), "delete");
+		$this->assertEquals($pdo->getMethodCalled(), "DELETE");
 	}
 	
 	// Test the clearChanged() method
@@ -243,9 +324,9 @@ class ModelTest extends PHPUnit_Framework_TestCase
 	{
 		$model = new MockModel();
 		
-		$model->rules(array(
+		$model::$rules = array(
 			"first" => array("required" => true, "maxlength" => 10)
-		));
+		);
 		$model->set("first", "");
 		$this->assertFalse($model->save());
 		$this->assertTrue(count($model->getErrors()) > 0);

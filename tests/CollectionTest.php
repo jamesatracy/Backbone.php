@@ -8,11 +8,7 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
-Backbone::uses(array("Model", "Collection", "/tests/helpers/MockCollection"));
-
-use Backbone\Connections as Connections;
-use Backbone\Model as Model;
-use Backbone\Collection as Collection;
+Backbone::uses("Model", "Collection", "/tests/helpers/MockModel", "/tests/helpers/MockCollection");
 
 /**
  * PHPUnit Test suite for Collection class
@@ -27,65 +23,37 @@ use Backbone\Collection as Collection;
  */
 class CollectionTest extends PHPUnit_Framework_TestCase
 {
-	protected $db = null;
-	
-	public function setUp()
-	{
-		Backbone::uses("/tests/helpers/MockDatabase");
-		$this->db = Connections::create("default", "MockDatabase", array("server" => "localhost", "user" => "root", "pass" => ""));
-	}
-	
-	public function testMethod_fetch()
+	public function testMethod_constructor()
 	{
 		$collection = new MockCollection();
-		
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-		
-		$this->assertTrue($collection->fetch());
 		$this->assertEquals($collection->length, 3);
 	}
 	
-	public function testMethod_get()
+	public function testMethod_getAt()
 	{
 		$collection = new MockCollection();
 		
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-		
-		$this->assertTrue($collection->fetch());
-		
-		$model = $collection->get(1);
+		$model = $collection->getAt(0);
 		$this->assertNotNull($model);
 		$this->assertEquals(get_class($model), "MockModel");
 		$this->assertEquals($model->get("ID"), 1);
 		$this->assertEquals($model->get("first"), "John");
 		
-		$model = $collection->get(2);
+		$model = $collection->getAt(1);
 		$this->assertNotNull($model);
 		
-		$model = $collection->get(3);
+		$model = $collection->getAt(2);
 		$this->assertNotNull($model);
 		
-		// invalid ID
-		$model = $collection->get(4);
+		// invalid index
+		$model = $collection->getAt(3);
 		$this->assertNull($model);
-	}
-	
-	public function testMethod_count()
-	{
-		$collection = new MockCollection();
-
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-
-		$this->assertEquals($collection->count(), 3);
 	}
 	
 	public function testBehavior_iterator()
 	{
 		$collection = new MockCollection();
 
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-
-		$this->assertTrue($collection->fetch());
 		// starts at position 0
 		$this->assertEquals($collection->key(), 0);
 		// is valid
@@ -131,9 +99,6 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 	{
 		$collection = new MockCollection();
 
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-
-		$this->assertTrue($collection->fetch());
 		$attrs = $collection->pluck("first");
 		$this->assertCount(3, $attrs);
 		$this->assertEquals($attrs[0], "John");
@@ -144,28 +109,14 @@ class CollectionTest extends PHPUnit_Framework_TestCase
 	public function testMethod_getModelName()
 	{
 		$collection = new MockCollection();
-
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-		
-		$this->assertEquals($collection->getModelName(), "/tests/helpers/MockModel");
+		$this->assertEquals($collection->getModelName(), "MockModel");
 	}
 	
-	public function testMethod_getTableName()
-	{
-		$collection = new MockCollection();
-
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-		
-		$this->assertEquals($collection->getTableName(), "table");
-	}
 	
 	public function testMethod_reset()
 	{
 		$collection = new MockCollection();
 
-		$this->db->setResultsData(json_decode(file_get_contents(ABSPATH."tests/fixtures/collection_test_fixture.json"), TRUE));
-
-		$this->assertTrue($collection->fetch());
 		$collection->reset();
 		$this->assertEquals($collection->length, 0);
 		$this->assertEmpty($collection->toJSON());

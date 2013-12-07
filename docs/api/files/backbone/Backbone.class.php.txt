@@ -21,38 +21,57 @@
  */
  
 // Load required framework classes
-require_once(FRAMEWORK."Response.class.php");
 require_once(FRAMEWORK."Request.class.php");
+require_once(FRAMEWORK."Response.class.php");
 require_once(FRAMEWORK."Router.class.php");
 require_once(FRAMEWORK."Events.class.php");
 
 class Backbone
-{	
-	/** @var string Defines the root URI directory */
-	public static $root = "/";
-	
-	/** @var DataMap Global configuration object for application specific configurations */
-	//public static $config = null;
-	
-	/** @var array List of registered routers */
-	public static $routers = array();
-	
+{		
 	/** @var array List of loaded modules */
 	public static $modules = array();
+	
+	/** @var Request The active Backbone Request object */
+	public static $request = null;
 	
 	/** @var string Version info */
 	protected static $version = "0.3.0";
 	
 	/**
-	 * Initialize Backbone.php 
-	 * 
-	 * @since 0.1.0
+	 * Start backbone. Creates a request and attempts to dispatch the route.
+	 * @since 0.3.0
 	 */
-	public static function initialize()
+	public static function start()
 	{
-		return;
+		$request = Request::create();
+		Backbone::$request = $request;
+		try {
+			// (1) request
+			$response = Events::trigger("backbone.request", $request);
+			if($response && get_class($response) === "Response") {
+				return self::sendResponse($response);
+			}
+			// (2) dispatch
+			$response = Router::dispatch($request);
+			if($response && get_class($response) === "Response") {
+				return self::sendResponse($response);
+			}
+			// (3) 404
+			$response = Response::create(404, "");
+			return self::sendResponse($response);
+		} catch(Exception $e) {
+			// uncaught exception
+			$response = Events::trigger("backbone.exception", $request, $e);
+			if($response && get_class($response) === "Response") {
+				return self::sendResponse($response);
+			}
+			// 500
+			$response = Response::create(500, "")
+			->header("X-Backbone-Exception", get_class($e).": ".$e->getMessage());
+			return self::sendResponse($response);
+		}
 	}
-	
+	 
 	/**
 	 * Get the version info 
 	 * 
@@ -99,45 +118,20 @@ class Backbone
 	 * @since 0.1.0
 	 * @param string|array $name The class name or an array of class names
 	 */
-	public static function uses($name)
+	public static function uses()
 	{
-		if(is_string($name)) {
-			$name = explode(",", $name);
+		$argsv = func_get_args();
+		$argsc = count($argsv);
+		if($argsc === 1 && is_string($argsv[0])) {
+			$names = explode(",", $argsv[0]);
+		} else if($argsc === 1 && is_array($argsv[0])) {
+		    $names = $argsv[0];
+		} else {
+			$names = $argsv;
 		}
 
-		foreach($name as $classname) {
+		foreach($names as $classname) {
 			self::loadModule($classname);
-		}
-	}
-	
-	/**
-	 * Registers a router with Backbone.php 
-	 * 
-	 * @since 0.1.0
-	 * @param Router $router An instance of the Router derived class
-	 */
-	public static function addRouter($router)
-	{
-		array_push(self::$routers, $router);
-	}
-	
-	/**
-	 * Loads a Router class.
-	 * 
-	 * Router must be located in one of the paths defined by the 
-	 * ROUTERPATH global system constant.
-	 * 
-	 * @since 0.1.0
-	 * @param string $name The name of the router
-	 */
-	public static function loadRouter($name)
-	{
-		$fullpath = self::resolvePath(ROUTERPATH, $name.".class.php");
-		if($fullpath) {
-			require_once($fullpath);
-			if(class_exists($name)) {
-				self::addRouter(new $name());
-			}
 		}
 	}
 	
@@ -165,7 +159,7 @@ class Backbone
 	 * @param string $filename The name of the file to search for.
 	 * @return string|null Returns the full absolute path of the file, or null
 	 */
-	public function resolvePath($path, $filename)
+	public static function resolvePath($path, $filename)
 	{
 		if(empty($path)) {
 			return null;
@@ -203,31 +197,21 @@ class Backbone
 	}
 	
 	/**
-	 * Dispatches the request by trying to find a matching route among the registered routers.
-	 * 
-	 * @since 0.1.0
-	 * @return bool Returns true if the request was successfully routed, false otherwise
-	*/
-	public static function dispatch()
+	 * Sends the given response back to the server.
+	 *
+	 * Adds a X-Backbone-Version response header before sending.
+	 * Triggers a backbone.response event before sending so that the
+	 * application can intercept all responses and perform any
+	 * processing or additional augmentation.
+	 *
+	 * @since 0.3.0
+	 * @param Response $response The response object.
+	 */
+	protected static function sendResponse($response)
 	{
-		$success = false;
-		foreach(self::$routers as $router) {
-			if($router->route()) {
-				$success = true;
-				break;
-			}
-		}
-		if(!$success) {
-			$here = trim(Backbone\Request::here(), "/");
-			// No routes are defined.
-			// Auto route this page if we find a corresponding view that ends in '-page'
-			if(Backbone::resolvePath(VIEWPATH, $here."-page.php")) {
-				$router = new Router();
-				$router->invokeRouteCallback(array($router, "loadView"), array($here."-page"));
-				$success = true;
-			}
-		}
-		return $success;
+		Events::trigger("backbone.response", $response);
+		$response->header("X-Backbone-Version", Backbone::version());
+		$response->send();
 	}
 	
 	/**
@@ -246,7 +230,6 @@ class Backbone
 	 */
 	protected static function loadModule($name)
 	{
-		$classname = self::getClassName($name);
 		if(!isset(self::$modules[$name])) {
 			self::$modules[$name] = true;
 			if(substr($name, 0, 1) == "/") {
