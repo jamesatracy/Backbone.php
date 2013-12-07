@@ -68,6 +68,7 @@ class Request
 	}
 	
 	/**
+	 * Factory method.
 	 * Constructs a new Request object based on the current PHP super globals.
 	 * @since 0.3.0
 	 * @return Request A new request object.
@@ -275,7 +276,7 @@ class Request
 		
 		$port = $this->getPort();
 		$scheme = $this->getScheme();
-		if (($scheme == 'http' && $port == 80) || ($scheme == 'https' && $port == 443)) {
+		if (!$port || ($scheme == 'http' && $port == 80) || ($scheme == 'https' && $port == 443)) {
             return $this->host;
         }
 		
@@ -322,7 +323,12 @@ class Request
 	{
 		if($this->root === null) {
 			$script_name = $this->getServer('SCRIPT_NAME');
-			$this->root = substr($script_name, 0, strrpos($script_name, "/") + 1);
+			$pos = strrpos($script_name, "/");
+			if($pos !== FALSE) {
+			    $this->root = substr($script_name, 0, strrpos($script_name, "/") + 1);
+			} else {
+			    $this->root = "/";
+			}
 		}
 		return $this->root;
 	}
