@@ -23,8 +23,8 @@ if(!defined('APPPATH')) {
 	echo "Backbone.php configuration error: APPPATH not defined.";
 	exit(1);
 }
-if(!defined('VIEWPATH')) {
-	echo "Backbone.php configuration error: VIEWPATH not defined.";
+if(!$VIEWPATH) {
+	echo "Backbone.php configuration error: \$VIEWPATH not defined.";
 	exit(1);
 }
 

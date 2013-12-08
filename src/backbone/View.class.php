@@ -116,13 +116,15 @@ class View
 	 */
 	public function load()
 	{
+		global $VIEWPATH;
+		
 		$name = $this->name;
 		
 		ob_start();
 		if(substr($name, 0, 1) == "/") {
 			$name = substr($name, 1);
 		}
-		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		$fullpath = Backbone::resolvePath($VIEWPATH, $name.".php");
 		if(!$fullpath) {
 		    throw new RuntimeException("View: Not found: ".$name);
 		}
@@ -133,7 +135,7 @@ class View
 		$count = count($this->_extensions);
 		for($i = $count - 1; $i >= 0; $i--) {
 			$name = $this->_extensions[$i];
-			$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+			$fullpath = Backbone::resolvePath($VIEWPATH, $name.".php");
 			if($fullpath) {
 				require($fullpath);
 			}
@@ -158,10 +160,11 @@ class View
 	 */
 	public function display($name)
 	{
+		global $VIEWPATH;
 		if(substr($name, 0, 1) == "/") {
 			$name = substr($name, 1);
 		}
-		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		$fullpath = Backbone::resolvePath($VIEWPATH, $name.".php");
 		if($fullpath) {
 			require($fullpath);
 		}
@@ -181,10 +184,11 @@ class View
 	 */
 	public function extend($name)
 	{
+		global $VIEWPATH;
 		if(substr($name, 0, 1) == "/") {
 			$name = substr($name, 1);
 		}
-		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		$fullpath = Backbone::resolvePath($VIEWPATH, $name.".php");
 		if($fullpath) {
 			$this->_extensions[] = $name;
 		}
@@ -199,7 +203,8 @@ class View
 	 */
 	public function exists($name)
 	{
-		$fullpath = Backbone::resolvePath(VIEWPATH, $name.".php");
+		global $VIEWPATH;
+		$fullpath = Backbone::resolvePath($VIEWPATH, $name.".php");
 		return (!empty($fullpath));
 	}
 	

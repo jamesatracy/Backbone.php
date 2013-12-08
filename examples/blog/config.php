@@ -3,11 +3,9 @@
 
 // Framework path constant. Points to the backbone core.
 define('FRAMEWORK', ABSPATH."../../src/backbone/");
-// Application path constant. Points to the application's root directory
-define('APPPATH', ABSPATH."/");
-// View path constant. Semicolon delimited list of paths to search for views.
+// View path. Semicolon delimited list of paths to search for views.
 // Must be relative to the abspath.
-define('VIEWPATH', "/views/");
+$VIEWPATH = "/views/";
 
 /* Application specific defines */
 

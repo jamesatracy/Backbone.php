@@ -11,8 +11,7 @@ if(!defined('ABSPATH'))
 	define('ABSPATH', dirname(__FILE__).'/../');
 if(!defined('FRAMEWORK'))
 	define('FRAMEWORK', ABSPATH.'src/backbone/');
-if(!defined('VIEWPATH'))
-	define('VIEWPATH', ABSPATH.'tests/views/');
-	
+$VIEWPATH = ABSPATH.'tests/views/';
+
 require_once(FRAMEWORK.'Backbone.class.php');
 ?>
