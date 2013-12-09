@@ -8,6 +8,15 @@
  * @link https://github.com/jamesatracy/Backbone.php GitHub Page
  */
 
+// Constants
+define('BACKBONE_VERSION', '0.3.1');
+
+// Load required framework classes
+require_once(FRAMEWORK."Request.class.php");
+require_once(FRAMEWORK."Response.class.php");
+require_once(FRAMEWORK."Router.class.php");
+require_once(FRAMEWORK."Events.class.php");
+
 /**
  * Core Backbone module.
  * 
@@ -19,13 +28,6 @@
  * 
  * @since 0.1.0
  */
- 
-// Load required framework classes
-require_once(FRAMEWORK."Request.class.php");
-require_once(FRAMEWORK."Response.class.php");
-require_once(FRAMEWORK."Router.class.php");
-require_once(FRAMEWORK."Events.class.php");
-
 class Backbone
 {		
 	/** @var array List of loaded modules */
@@ -33,9 +35,6 @@ class Backbone
 	
 	/** @var Request The active Backbone Request object */
 	public static $request = null;
-	
-	/** @var string Version info */
-	protected static $version = "0.3.0";
 	
 	/**
 	 * Start backbone. Creates a request and attempts to dispatch the route.
@@ -80,7 +79,7 @@ class Backbone
 	 */
 	public static function version()
 	{
-		return self::$version;
+		return BACKBONE_VERSION;
 	}
 	
 	/**
@@ -210,7 +209,7 @@ class Backbone
 	protected static function sendResponse($response)
 	{
 		Events::trigger("backbone.response", $response);
-		$response->header("X-Backbone-Version", Backbone::version());
+		$response->header("X-Backbone-Version", BACKBONE_VERSION);
 		$response->send();
 	}
 	
