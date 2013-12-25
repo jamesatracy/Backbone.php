@@ -84,7 +84,13 @@ class Request
 			$header = str_replace(" ", "-", ucwords(str_replace("_", " ", strtolower(substr($key, 5)))));
 			$headers[$header] = $value;
 		}
-		return new Request($_POST, $_GET, $_FILES, $_SERVER, $headers);
+		$post_vars = array();
+		if($_SERVER['REQUEST_METHOD'] === 'PUT') {
+		    parse_str(file_get_contents("php://input"),$post_vars);
+		} else {
+		    $post_vars = $_POST;
+		}
+		return new Request($post_vars, $_GET, $_FILES, $_SERVER, $headers);
 	}
 	
 	/**
