@@ -85,7 +85,7 @@ class Request
 			$headers[$header] = $value;
 		}
 		$post_vars = array();
-		if($_SERVER['REQUEST_METHOD'] === 'PUT') {
+		if(isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
 		    parse_str(file_get_contents("php://input"),$post_vars);
 		} else {
 		    $post_vars = $_POST;
