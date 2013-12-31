@@ -234,8 +234,8 @@ class Backbone
 			if(substr($name, 0, 1) == "/") {
 				// load app specific code
 				$name = substr($name, 1);
-				if(file_exists(ABSPATH.$name.".class.php")) {
-					require_once(ABSPATH.$name.".class.php");
+				if(file_exists(APPPATH.$name.".class.php")) {
+					require_once(APPPATH.$name.".class.php");
 				}
 			} else {
 				// load framework code

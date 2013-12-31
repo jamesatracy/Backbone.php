@@ -43,7 +43,7 @@ class DB
 		DB::disconnect();
 		
 		try {
-			self::$_pdo = new \PDO($dsn, $user, $password, $config);
+			self::$_pdo = new PDO($dsn, $user, $password, $config);
 		} catch (PDOException $e) {
 			throw new RuntimeException($e->getMessage(), (int)$e->getCode());
 		}
@@ -169,7 +169,7 @@ class DB
 		if(!self::isConnected()) {
 			throw new RuntimeException("DB: No valid DB connection");
 		}
-		$smt = self::$_pdo->query($query, \PDO::FETCH_ASSOC);
+		$smt = self::$_pdo->query($query, PDO::FETCH_ASSOC);
 		$rows = $smt->fetchAll();
 		return $rows;
 	}
